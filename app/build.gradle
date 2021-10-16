@@ -29,10 +29,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
 
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.4.1'
     //MvRx
     implementation 'com.airbnb.android:mavericks:2.4.0'
     implementation "com.airbnb.android:epoxy:4.6.3"
