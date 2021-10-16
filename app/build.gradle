@@ -36,6 +36,7 @@ dependencies {
     //MvRx
     implementation 'com.airbnb.android:mavericks:2.4.0'
     implementation "com.airbnb.android:epoxy:4.6.3"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "com.airbnb.android:epoxy-processor:4.6.3"
 
     //Firebase
