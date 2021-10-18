@@ -6,7 +6,6 @@ import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.withState
 
-
 internal open class MavericksEpoxyController(
     val buildModelsCallback: EpoxyController.() -> Unit = {}
 ) : AsyncEpoxyController() {
@@ -78,14 +77,3 @@ fun <A : MavericksViewModel<B>,
         buildModels(state1, state2, state3)
     }
 }
-
-/*fun <A : MavericksViewModel<B>, B : MavericksState> MvRxBaseFragment.simpleController(
-    viewModel1: A,
-    buildModels: EpoxyController.(state1: B) -> Unit
-): EpoxyController = MavericksEpoxyController {
-    if (view == null || isRemoving) return@MavericksEpoxyController
-    withState(viewModel1) { state1 ->
-        buildModels(state1)
-    }*/
-//}
-

@@ -14,6 +14,12 @@ data class TaskModel(
     val status: Status
 )
 
-enum class Status {
-    DONE, TO_DO, IN_PROGRESS
-}
+/*enum class Status {
+    DONE, TO_DO,
+}*/
+
+sealed class Status
+
+object TO_DO: Status()
+
+class DONE(val doneTime: Long): Status()

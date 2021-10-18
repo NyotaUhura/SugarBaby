@@ -3,6 +3,7 @@ package com.example.sbaby.task
 import com.airbnb.mvrx.*
 import com.example.sbaby.TaskModel
 import com.example.sbaby.UserModel
+import kotlin.random.Random
 
 
 data class TaskState(
@@ -12,8 +13,9 @@ data class TaskState(
 
 class TaskViewModel(
     initialState: TaskState,
-    val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
 ) : MavericksViewModel<TaskState>(initialState) {
+
     init {
         setState {
             copy(user = Loading(), taskList = Loading())
@@ -26,13 +28,22 @@ class TaskViewModel(
         }
     }
 
+    fun changeUserName() {
+        withState { state ->
+            val user = state.user.invoke() ?: return@withState
+            val newUser = user.copy(name = Random.nextInt().toString())
+            setState { copy(user = Success(newUser)) }
+        }
+
+    }
+
     fun removeTask() {
         setState { copy(taskList = Success(listOf())) }
     }
 
     companion object : MavericksViewModelFactory<TaskViewModel, TaskState> {
 
-        override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel? {
+        override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel {
             val rep = TaskRepository()
             return TaskViewModel(state, rep)
         }
