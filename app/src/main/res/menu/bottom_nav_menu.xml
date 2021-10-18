@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/gift"
-        android:icon="@drawable/ic_giftbox"
+        android:icon="@drawable/ic_gift"
         android:title="gift" />
     <item
         android:id="@+id/calendar"
@@ -10,7 +10,7 @@
         android:title="calendar" />
     <item
         android:id="@+id/task"
-        android:icon="@drawable/ic_to_do_list"
+        android:icon="@drawable/ic_task"
         android:title="task" />
     <item
         android:id="@+id/settings"
