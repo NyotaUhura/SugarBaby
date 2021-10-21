@@ -38,6 +38,7 @@
                 tools:text="Wash the dishes" />
 
             <TextView
+                android:id="@+id/task_time"
                 style="@style/TextTaskStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

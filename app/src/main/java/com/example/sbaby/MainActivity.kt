@@ -3,6 +3,7 @@ package com.example.sbaby
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.sbaby.task.TaskFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -10,15 +11,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val giftFragment = GiftFragment()
         val calendarFragment = CalendarFragment()
         val taskFragment = TaskFragment()
         val settingsFragment = SettingsFragment()
 
-
         setCurrentFragment(taskFragment)
-
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {

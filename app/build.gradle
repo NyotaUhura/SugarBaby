@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -29,15 +30,24 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
 
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.4.1'
     //MvRx
     implementation 'com.airbnb.android:mavericks:2.4.0'
     implementation "com.airbnb.android:epoxy:4.6.3"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.airbnb.android:epoxy-processor:4.6.3"
     annotationProcessor "com.airbnb.android:epoxy-processor:4.6.3"
+    implementation 'androidx.multidex:multidex:2.0.0'
 
     //Firebase
     implementation 'com.google.firebase:firebase-config-ktx'
