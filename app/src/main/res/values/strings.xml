@@ -2,4 +2,5 @@
     <string name="app_name">SBaby</string>
     <string name="title">Hello</string>
     <string name="done">Done</string>
+    <string name="undo">Undo</string>
 </resources>
