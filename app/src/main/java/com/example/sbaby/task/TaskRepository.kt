@@ -1,6 +1,9 @@
 package com.example.sbaby.task
 
-import com.example.sbaby.*
+import com.example.sbaby.DONE
+import com.example.sbaby.TO_DO
+import com.example.sbaby.TaskModel
+import com.example.sbaby.UserModel
 
 class TaskRepository {
 

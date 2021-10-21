@@ -8,10 +8,7 @@ import com.example.sbaby.MvRxBaseFragment
 import com.example.sbaby.R
 import com.example.sbaby.databinding.FragmentTaskBinding
 import com.example.sbaby.simpleController
-import com.example.sbaby.viewholders.task.TaskCardViewHolder
-import com.example.sbaby.viewholders.task.TaskCardViewHolder_
 import com.example.sbaby.viewholders.task.taskCardViewHolder
-import com.example.sbaby.viewholders.task.userNameViewHolder
 
 class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 

@@ -37,10 +37,6 @@ class TaskViewModel(
 
     }
 
-    fun removeTask() {
-        setState { copy(taskList = Success(listOf())) }
-    }
-
     companion object : MavericksViewModelFactory<TaskViewModel, TaskState> {
 
         override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel {

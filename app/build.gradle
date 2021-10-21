@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.airbnb.android:mavericks:2.4.0'
     implementation "com.airbnb.android:epoxy:4.6.3"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt "com.airbnb.android:epoxy-processor:4.4.0"
+    kapt "com.airbnb.android:epoxy-processor:4.6.3"
     annotationProcessor "com.airbnb.android:epoxy-processor:4.6.3"
     implementation 'androidx.multidex:multidex:2.0.0'
 
