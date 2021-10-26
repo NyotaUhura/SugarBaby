@@ -15,15 +15,14 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/gift_title_text"
-            style="@style/TextGiftBody"
+            style="@style/TextGiftPlusBody"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:gravity="center"
             app:layout_constraintBottom_toTopOf="@id/price_block"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="You can get this bonus!" />
+            tools:text="+" />
 
         <LinearLayout
             android:id="@+id/price_block"
@@ -43,16 +42,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/money_icon"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="+10" />
-
-            <ImageView
-                android:id="@+id/money_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/money_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/money_text" />
+                tools:text="New idea" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -23,6 +23,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
         val user = state.user.invoke()
         val giftList = state.giftList.invoke()
 
+        // TODO: Add "plus" item
         giftList?.forEach { giftModel ->
             giftCardViewHolder {
                 id(giftModel.id)
