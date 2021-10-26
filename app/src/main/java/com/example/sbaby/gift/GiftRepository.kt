@@ -12,9 +12,19 @@ class GiftRepository {
     fun getGiftList(): List<GiftModel> {
         return listOf(
             GiftModel(
-                "1", "Watch film", "Free film", 20, 1),
+                "1", "Watch a film", "Free film", 20, 1),
             GiftModel(
-                "2", "Play on PC", "10 minutes", 5, 5)
+                "2", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5),
+            GiftModel(
+                "1", "Watch a film", "Free film", 20, 1),
+            GiftModel(
+                "2", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5),
+            GiftModel(
+                "1", "Watch a film", "Free film", 20, 1),
+            GiftModel(
+                "2", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5),
+            GiftModel(
+                "1", "Watch a film", "Free film", 20, 1),
         )
     }
 }

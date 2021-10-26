@@ -14,9 +14,7 @@ abstract class GiftCardViewHolder : ViewBindingEpoxyModelWithHolder<ParentGiftIt
     lateinit var gift: GiftModel
 
     override fun ParentGiftItemBinding.bind() {
-        giftTitle.text = gift.title
-        giftBodyText.text = gift.description
+        giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
-        giftCount.text = "${gift.availableCount}"
     }
 }
