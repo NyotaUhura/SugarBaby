@@ -1,5 +1,7 @@
 package com.example.sbaby
 
+
+// TODO: Add references to children
 data class UserModel(
     val id: String,
     val name: String
@@ -11,6 +13,7 @@ data class GiftModel(
     val description: String,
     val price: Int,
     val availableCount: Int,
+    val IsAgree: Boolean,
 )
 
 data class TaskModel(
@@ -26,3 +29,4 @@ sealed class Status
 object TO_DO: Status()
 
 class DONE(val doneTime: Long): Status()
+

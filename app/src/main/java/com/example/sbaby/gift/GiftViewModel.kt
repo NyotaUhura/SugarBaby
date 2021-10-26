@@ -1,5 +1,6 @@
 package com.example.sbaby.gift
 
+import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.GiftModel
 import com.example.sbaby.UserModel
@@ -29,10 +30,26 @@ class GiftViewModel(
 
 
     companion object : MavericksViewModelFactory<GiftViewModel, GiftState> {
-
         override fun create(viewModelContext: ViewModelContext, state: GiftState): GiftViewModel {
             val rep = GiftRepository()
             return GiftViewModel(state, rep)
         }
+    }
+
+    fun filterGifts(isNeedToBeDone: Boolean, isNeedAgreement: Boolean){
+        val giftList = giftRepository.getGiftList()
+        val newList = giftList.filter { gift ->
+            if (isNeedToBeDone || isNeedAgreement) {
+                gift.IsAgree == isNeedToBeDone || gift.IsAgree != isNeedAgreement
+            }
+            else{
+                false
+            }
+        }
+        Log.d("R", newList.count().toString())
+        setState {
+            copy(giftList = Success(newList))
+        }
+
     }
 }

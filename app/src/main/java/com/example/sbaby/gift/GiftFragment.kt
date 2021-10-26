@@ -1,7 +1,9 @@
 package com.example.sbaby.gift
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.CheckBox
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.mvrx.fragmentViewModel
@@ -39,6 +41,15 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
             binding.userNameTextView.text = user.name
         })
 
-        recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
+//        recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
+
+        binding.needToBeDoneCheckbox.setOnCheckedChangeListener { _, _ ->
+            viewModel.filterGifts(binding.needToBeDoneCheckbox.isChecked, binding.needAgreementCheckbox.isChecked)
+        }
+
+        binding.needAgreementCheckbox.setOnCheckedChangeListener { _, _ ->
+            viewModel.filterGifts(binding.needToBeDoneCheckbox.isChecked, binding.needAgreementCheckbox.isChecked)
+        }
+
     }
 }

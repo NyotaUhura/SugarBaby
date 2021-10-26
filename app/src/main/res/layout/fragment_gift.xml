@@ -54,11 +54,36 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/checkboxes"
+            app:layout_constraintTop_toBottomOf="@id/top_info_material_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/need_to_be_done_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/need_agreement_checkbox"
+                android:text="Need to be done"
+                />
+            <CheckBox
+                android:id="@+id/need_agreement_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/need_to_be_done_checkbox"
+                android:text="Need Agreement"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/top_info_material_card_view"
+            app:layout_constraintTop_toBottomOf="@+id/checkboxes"
             android:layout_marginTop="0dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

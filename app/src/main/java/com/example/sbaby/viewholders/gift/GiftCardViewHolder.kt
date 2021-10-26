@@ -16,5 +16,7 @@ abstract class GiftCardViewHolder : ViewBindingEpoxyModelWithHolder<ParentGiftIt
     override fun ParentGiftItemBinding.bind() {
         giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
+        completeCheckbox.setOnCheckedChangeListener { compoundButton, _ ->
+        }
     }
 }
