@@ -52,4 +52,17 @@ class GiftViewModel(
         }
 
     }
+
+    fun changeCheckGiftStatus(id: String) {
+        withState { state: GiftState ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val newGiftList = giftList.filter { gift ->
+                gift.id != id
+            }
+            // TODO: DELETE FROM DB
+            // TODO: MINUS COINS FROM CHILD
+
+            setState { copy(giftList = Success(newGiftList)) }
+        }
+    }
 }

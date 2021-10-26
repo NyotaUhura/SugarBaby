@@ -13,10 +13,18 @@ abstract class GiftCardViewHolder : ViewBindingEpoxyModelWithHolder<ParentGiftIt
     @EpoxyAttribute
     lateinit var gift: GiftModel
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    open lateinit var onClickListeners: buttonsOnclick
+
     override fun ParentGiftItemBinding.bind() {
         giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
         completeCheckbox.setOnCheckedChangeListener { compoundButton, _ ->
+                onClickListeners.checkButtonOnclick(gift.id)
         }
+    }
+
+    interface buttonsOnclick {
+        fun checkButtonOnclick(id: String)
     }
 }

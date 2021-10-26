@@ -11,6 +11,7 @@ import com.example.sbaby.MvRxBaseFragment
 import com.example.sbaby.R
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.simpleController
+import com.example.sbaby.viewholders.gift.GiftCardViewHolder
 import com.example.sbaby.viewholders.gift.giftCardViewHolder
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
@@ -21,6 +22,13 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private val viewModel: GiftViewModel by fragmentViewModel()
     private val binding: FragmentGiftBinding by viewBinding()
 
+    private val buttons: GiftCardViewHolder.buttonsOnclick =
+        object : GiftCardViewHolder.buttonsOnclick {
+            override fun checkButtonOnclick(id: String) {
+                viewModel.changeCheckGiftStatus(id)
+            }
+        }
+
     override fun epoxyController() = simpleController(viewModel) { state ->
         val user = state.user.invoke()
         val giftList = state.giftList.invoke()
@@ -30,6 +38,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
             giftCardViewHolder {
                 id(giftModel.id)
                 gift(giftModel)
+                onClickListeners(buttons)
             }
         }
     }
