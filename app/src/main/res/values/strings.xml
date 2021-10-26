@@ -3,4 +3,8 @@
     <string name="title">Hello</string>
     <string name="done">Done</string>
     <string name="undo">Undo</string>
+    <string name="buy_premium">Buy Premium</string>
+    <string name="best_features_for_you">Best features for you!</string>
+    <string name="add_task">Add task</string>
+    <string name="in_progress">In progress</string>
 </resources>

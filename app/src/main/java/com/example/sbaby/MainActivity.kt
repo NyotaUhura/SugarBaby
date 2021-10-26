@@ -1,5 +1,6 @@
 package com.example.sbaby
 
+import android.app.ActionBar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,6 +12,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val actionBar: androidx.appcompat.app.ActionBar? = getSupportActionBar()
+        actionBar?.hide()
 
         val giftFragment = GiftFragment()
         val calendarFragment = CalendarFragment()
@@ -21,9 +24,9 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
+                R.id.task -> setCurrentFragment(taskFragment)
                 R.id.gift -> setCurrentFragment(giftFragment)
                 R.id.calendar -> setCurrentFragment(calendarFragment)
-                R.id.task -> setCurrentFragment(taskFragment)
                 R.id.settings -> setCurrentFragment(settingsFragment)
             }
             true

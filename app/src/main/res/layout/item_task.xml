@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="32dp"
+    android:layout_marginVertical="9dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/corner_radius"
     app:layout_constraintStart_toStartOf="parent"
@@ -22,12 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/task_circle"
+            android:background="@drawable/task_circle_red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/task_title"
+            android:id="@+id/task_title_text_view"
             style="@style/TextTaskTitle"
             android:layout_marginStart="6dp"
             android:layout_marginTop="10dp"
@@ -36,11 +37,12 @@
             tools:text="Wash the dishes" />
 
         <TextView
+            android:id="@+id/task_time_text_view"
             style="@style/TextTaskStatus"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@color/red"
-            app:layout_constraintBaseline_toBaselineOf="@+id/task_title"
+            app:layout_constraintBaseline_toBaselineOf="@+id/task_title_text_view"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="till today 20:30" />
@@ -53,10 +55,10 @@
             app:cardCornerRadius="@dimen/corner_radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_title">
+            app:layout_constraintTop_toBottomOf="@+id/task_title_text_view">
 
             <ImageView
-                android:id="@+id/task_image"
+                android:id="@+id/task_image_view"
                 android:layout_width="95dp"
                 android:layout_height="95dp"
                 android:src="@mipmap/ic_launcher" />
@@ -64,26 +66,25 @@
 
 
         <TextView
-            android:id="@+id/task_body_text"
+            android:id="@+id/task_body_text_view"
             style="@style/TextTaskBody"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:paddingBottom="6dp"
-            app:layout_constraintEnd_toEndOf="@id/task_body"
-            app:layout_constraintStart_toStartOf="@id/task_body"
-            app:layout_constraintTop_toTopOf="@id/task_body"
+            app:layout_constraintEnd_toEndOf="@id/task_body_card"
+            app:layout_constraintStart_toStartOf="@id/task_body_card"
+            app:layout_constraintTop_toTopOf="@id/task_body_card"
             tools:text="You need to wash all the dishes after diner. Use “Vanish” to clean them better!" />
 
         <TextView
-            android:id="@+id/money_text"
+            android:id="@+id/money_text_view"
             style="@style/TextTaskMoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_marginTop="2dp"
-            app:layout_constraintBottom_toBottomOf="@id/task_body"
-            app:layout_constraintLeft_toLeftOf="@id/task_body"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="@id/task_body_card"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view"
             tools:text="+10" />
 
         <ImageView
@@ -94,11 +95,11 @@
             android:paddingTop="10dp"
             android:src="@drawable/ic_money"
             app:cornerRadius="@dimen/corner_radius"
-            app:layout_constraintLeft_toRightOf="@id/money_text"
-            app:layout_constraintTop_toBottomOf="@id/task_body_text" />
+            app:layout_constraintLeft_toRightOf="@id/money_text_view"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/task_body"
+            android:id="@+id/task_body_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="6dp"
@@ -106,11 +107,10 @@
             app:cardBackgroundColor="@color/light_brown"
             app:cardCornerRadius="@dimen/corner_radius"
             app:cardElevation="-1dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/task_image_card"
-            app:layout_constraintTop_toBottomOf="@+id/task_title" />
+            app:layout_constraintTop_toBottomOf="@+id/task_title_text_view" />
 
         <Button
             android:id="@+id/done_button"
@@ -123,8 +123,8 @@
             android:textColor="@color/custom_white"
             android:visibility="invisible"
             app:cornerRadius="@dimen/corner_radius"
-            app:layout_constraintEnd_toEndOf="@id/task_body"
-            app:layout_constraintTop_toBottomOf="@id/task_body_text" />
+            app:layout_constraintEnd_toEndOf="@id/task_body_card"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view" />
 
         <Button
             android:id="@+id/undo_button"
@@ -139,11 +139,11 @@
             android:textAppearance="@style/TextUnDoneButton"
             android:textColor="@color/custom_white"
             app:cornerRadius="@dimen/corner_radius"
-            app:layout_constraintRight_toLeftOf="@id/edit_image_view"
-            app:layout_constraintTop_toBottomOf="@id/task_body_text" />
+            app:layout_constraintRight_toLeftOf="@id/edit_button"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view" />
 
         <ImageButton
-            android:id="@+id/edit_image_view"
+            android:id="@+id/edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
@@ -152,11 +152,11 @@
             android:paddingHorizontal="3dp"
             android:paddingTop="12dp"
             android:src="@drawable/ic_edit_task"
-            app:layout_constraintRight_toLeftOf="@id/delete_image_view"
-            app:layout_constraintTop_toBottomOf="@id/task_body_text" />
+            app:layout_constraintRight_toLeftOf="@id/delete_button"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view" />
 
         <ImageButton
-            android:id="@+id/delete_image_view"
+            android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_delete_task"
@@ -164,8 +164,8 @@
             android:paddingTop="12dp"
             android:paddingEnd="12dp"
             android:src="@drawable/ic_delete_task"
-            app:layout_constraintRight_toRightOf="@id/task_body"
-            app:layout_constraintTop_toBottomOf="@id/task_body_text" />
+            app:layout_constraintRight_toRightOf="@id/task_body_card"
+            app:layout_constraintTop_toBottomOf="@id/task_body_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
