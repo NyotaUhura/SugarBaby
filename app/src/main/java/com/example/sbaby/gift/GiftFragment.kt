@@ -12,8 +12,10 @@ import com.example.sbaby.simpleController
 import com.example.sbaby.viewholders.gift.giftCardViewHolder
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
+    companion object {
+        private const val NUMBER_OF_COLUMNS = 2
+    }
 
-    private val NUMBER_OF_COLUMNS = 2
     private val viewModel: GiftViewModel by fragmentViewModel()
     private val binding: FragmentGiftBinding by viewBinding()
 
