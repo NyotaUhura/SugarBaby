@@ -5,6 +5,14 @@ data class UserModel(
     val name: String
 )
 
+data class GiftModel(
+    val id: String,
+    val title: String,
+    val description: String,
+    val price: Int,
+    val availableCount: Int,
+)
+
 data class TaskModel(
     val id: String,
     val title: String,

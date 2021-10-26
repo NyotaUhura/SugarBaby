@@ -37,6 +37,21 @@
         <item name="android:textColor">@color/custom_black</item>
     </style>
 
+    <style name="TextGiftBody">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/custom_black</item>
+    </style>
+    <style name="TextGiftPlusBody">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">200sp</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/custom_black</item>
+    </style>
+
     <style name="TextTaskMoney">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -44,6 +59,7 @@
         <item name="fontFamily">@font/roboto</item>
         <item name="android:textColor">@color/custom_black</item>
     </style>
+
 
     <style name="TextDoneButton">
         <item name="android:layout_width">match_parent</item>
@@ -57,6 +73,21 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="CancelButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
+        <item name="cardBackgroundColor">@color/yellow</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
     </style>
 
 </resources>
