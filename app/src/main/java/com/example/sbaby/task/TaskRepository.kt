@@ -4,12 +4,12 @@ import com.example.sbaby.*
 
 class TaskRepository {
 
-    fun getTaskList(): List<TaskModel> {
-        return listOf(
+    fun getTaskList(): MutableList<TaskModel> {
+        return mutableListOf(
             TaskModel(
                 "1", "Wash the dishes", 1343805819061L, "You need to wash all the dishes \n" +
                         "after diner. Use “Vanish” to clean \n" +
-                        "them better!", 10, TO_DO
+                        "them better!", 10, DONE(123L)
             ),
             TaskModel(
                 "2", "Do", 0L, "Do something", 5, TO_DO
@@ -29,15 +29,15 @@ class TaskRepository {
 
 
     fun getParent(): Parent {
-        return Parent("1", "Parent", "", getChildList() , true)
+        return Parent("1", "Parent", "", getChildList(), true, 0)
     }
 
     fun getChild(): Child {
         return Child("1", "Anton", 123, "", 70, 4, getTaskList())
     }
 
-    fun getChildList(): List<Child> {
-        return listOf(
+    fun getChildList(): MutableList<Child> {
+        return mutableListOf(
             Child("1", "Artem", 123, "", 70, 4, getTaskList()),
             Child("2", "Anton2", 1233, "", 79, 3, getTaskList())
         )

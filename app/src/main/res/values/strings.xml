@@ -7,4 +7,6 @@
     <string name="best_features_for_you">Best features for you!</string>
     <string name="add_task">Add task</string>
     <string name="in_progress">In progress</string>
+    <string name="helper">Helper: \u0020</string>
+    <string name="level">\u0020 level</string>
 </resources>

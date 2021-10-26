@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="43dp">
+            android:layout_marginEnd="43dp">
 
             <TextView
                 android:id="@+id/name_text_view"
@@ -34,7 +33,7 @@
                 android:id="@+id/photo_card"
                 android:layout_width="85dp"
                 android:layout_height="85dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 app:cardCornerRadius="50dp"
                 app:cardElevation="-1dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -61,8 +60,8 @@
                 android:id="@+id/money_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginTop="26dp"
+                android:textSize="18sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="1230" />
@@ -80,7 +79,7 @@
                 android:id="@+id/level_text_view"
                 style="@style/TextTaskMoney"
                 android:layout_marginTop="29dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintRight_toLeftOf="@id/share_button"
                 app:layout_constraintTop_toBottomOf="@id/money_text_view"
                 tools:text="Helper: 5 level" />
@@ -97,7 +96,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
-                android:layout_marginLeft="43dp"
+                android:layout_marginStart="43dp"
                 android:layout_marginTop="11dp"
                 android:layout_marginBottom="40dp"
                 app:cardBackgroundColor="@color/custom_white"
@@ -124,17 +123,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="6dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="-55dp"
         android:translationZ="90dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_info_material_card_view">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/premium_card"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
             app:cardBackgroundColor="@color/red"
             app:cardCornerRadius="@dimen/corner_radius"
             app:cardElevation="-1dp"
@@ -163,71 +162,74 @@
             style="@style/TextPremium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="40dp"
+            android:text="@string/buy_premium"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/buy_premium" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/description_text_view"
             style="@style/TextPremium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="5dp"
+            android:text="@string/best_features_for_you"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buy_premium_text_view"
-            android:text="@string/best_features_for_you" />
+            app:layout_constraintTop_toBottomOf="@id/buy_premium_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/add_task_button"
+        style="@style/TextLargeBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/item_premium"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/add_task"
-        style="@style/TextLargeBold"
-        android:textColor="@color/white"
-        android:paddingHorizontal="25dp"
         android:layout_marginHorizontal="35dp"
         android:layout_marginVertical="20dp"
+        android:backgroundTint="@color/dark_blue"
+        android:paddingHorizontal="25dp"
         android:paddingVertical="20dp"
+        android:text="@string/add_task"
+        android:textColor="@color/white"
         app:cornerRadius="@dimen/corner_radius"
-        android:backgroundTint="@color/dark_blue" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_premium" />
 
     <CheckBox
         android:id="@+id/done_checkbox"
+        style="@style/TextLargeBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/red"
-        app:layout_constraintLeft_toRightOf="@id/add_task_button"
-        app:layout_constraintTop_toTopOf="@id/add_task_button"
-        style="@style/TextLargeBold"
+        android:checked="true"
         android:text="@string/done"
-        android:textAllCaps="true"/>
+        android:textAllCaps="true"
+        app:layout_constraintLeft_toRightOf="@id/add_task_button"
+        app:layout_constraintTop_toTopOf="@id/add_task_button" />
 
     <CheckBox
         android:id="@+id/in_progress_checkbox"
-        android:layout_width="wrap_content"
-        android:buttonTint="@color/red"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/add_task_button"
-        app:layout_constraintBottom_toBottomOf="@id/add_task_button"
-        android:text="@string/in_progress"
         style="@style/TextLargeBold"
-        android:textAllCaps="true"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/red"
+        android:checked="true"
+        android:text="@string/in_progress"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="@id/add_task_button"
+        app:layout_constraintLeft_toRightOf="@id/add_task_button" />
 
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_task_button" />
 

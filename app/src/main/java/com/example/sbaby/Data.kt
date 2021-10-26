@@ -9,8 +9,9 @@ data class Parent(
     val id: String,
     val name: String,
     val photo: String,
-    val childList: List<Child>,
-    val isPremium: Boolean
+    var childList: MutableList<Child>,
+    val isPremium: Boolean,
+    val currChild: Int = 0
 ): User()
 
 data class Child(
@@ -20,7 +21,7 @@ data class Child(
     val photo: String,
     val process: Int,
     val level: Int,
-    val taskList: List<TaskModel>
+    val taskList: MutableList<TaskModel>
 ): User()
 
 data class TaskModel(
