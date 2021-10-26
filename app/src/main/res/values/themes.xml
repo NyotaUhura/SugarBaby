@@ -82,4 +82,12 @@
         <item name="fontFamily">@font/roboto</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
+        <item name="cardBackgroundColor">@color/yellow</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+    </style>
+
 </resources>
