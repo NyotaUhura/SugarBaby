@@ -65,4 +65,32 @@ class GiftViewModel(
             setState { copy(giftList = Success(newGiftList)) }
         }
     }
+
+    fun changeIsAgreeGiftStatus(id: String) {
+        withState { state: GiftState ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val newGiftList = giftList.filter { gift ->
+                gift.id != id
+            }
+            // TODO: DELETE FROM DB
+
+            setState { copy(giftList = Success(newGiftList)) }
+        }
+    }
+
+    fun changeDataGiftStatus(id: String) {
+        TODO("Not yet implemented")
+    }
+
+    fun deleteGift(id: String) {
+        withState { state: GiftState ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val newGiftList = giftList.filter { gift ->
+                gift.id != id
+            }
+            // TODO: DELETE FROM DB
+
+            setState { copy(giftList = Success(newGiftList)) }
+        }
+    }
 }
