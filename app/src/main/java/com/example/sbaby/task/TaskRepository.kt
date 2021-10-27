@@ -4,21 +4,33 @@ import com.example.sbaby.*
 
 class TaskRepository {
 
-    fun getTaskList(): MutableList<TaskModel> {
-        return mutableListOf(
+    fun getTaskList(): List<TaskModel> {
+        return listOf(
             TaskModel(
                 "1", "Wash the dishes", 1343805819061L, "You need to wash all the dishes \n" +
                         "after diner. Use “Vanish” to clean \n" +
                         "them better!", 10, DONE(123L)
             ),
             TaskModel(
-                "2", "Do", 0L, "Do something", 5, TO_DO
+                "2", "Wash the dishes", 0L, "You need to wash all the dishes \n" +
+            "after diner. Use “Vanish” to clean \n" +
+                    "them better!", 5, TO_DO
             ),
             TaskModel(
                 "3", "fff", 0L, "Do something", 10, TO_DO
             ),
             TaskModel(
                 "4", "ggg", 14L, "Do something", 17, DONE(123L)
+            ),
+            TaskModel(
+                "5", "Wash the dishes", 0L, "You need to wash all the dishes \n" +
+                        "after diner. Use “Vanish” to clean \n" +
+                        "them better!", 5, TO_DO
+            ),
+            TaskModel(
+                "6", "Wash the dishes", 0L, "You need to wash all the dishes \n" +
+                        "after diner. Use “Vanish” to clean \n" +
+                        "them better!", 5, TO_DO
             )
         )
     }

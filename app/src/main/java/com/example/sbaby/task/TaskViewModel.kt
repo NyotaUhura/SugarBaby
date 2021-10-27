@@ -1,5 +1,6 @@
 package com.example.sbaby.task
 
+import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import java.util.*
@@ -9,7 +10,7 @@ data class TaskState(
     val user: Async<User> = Uninitialized,
     val parent: Async<Parent> = Uninitialized,
     val child: Async<Child> = Uninitialized,
-    val taskList: Async<MutableList<TaskModel>> = Uninitialized
+    val taskList: Async<List<TaskModel>> = Uninitialized
 ) : MavericksState
 
 class TaskViewModel(
@@ -38,7 +39,7 @@ class TaskViewModel(
                     val newTaskList = mutableListOf<TaskModel>()
                     taskList.forEach {
                         if (it.id.equals(id)) {
-                            val newUser = childUser.copy(money = childUser.money + it.profit)
+                            val newUser = childUser.copy(money = childUser.money + it.profit, process = childUser.process + it.profit)
                             newTaskList.add(it.copy(status = DONE(Date().time)))
                             setState { copy(user = Success(newUser)) }
                         } else {
@@ -49,6 +50,31 @@ class TaskViewModel(
                 }
             }
         }
+    }
+
+    fun countlevel(user: Child) :String{
+        return (user.process/1000 + 1).toString()
+    }
+
+    fun countProcessPercent(user: Child) :Int{
+        return ((user.process%1000)/10)
+    }
+
+    fun filterGifts(isDone: Boolean, isProgress: Boolean){
+        val taskList = taskRepository.getTaskList()
+        val newList = taskList.filter { task ->
+            if (isDone || isProgress) {
+                task.status is DONE == isDone || task.status is TO_DO == isProgress
+            }
+            else{
+                false
+            }
+        }
+        Log.d("R", newList.count().toString())
+        setState {
+            copy(taskList = Success(newList))
+        }
+
     }
 
     fun changeName(newName: String) {

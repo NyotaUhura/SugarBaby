@@ -21,7 +21,7 @@ data class Child(
     val photo: String,
     val process: Int,
     val level: Int,
-    val taskList: MutableList<TaskModel>
+    val taskList: List<TaskModel>
 ): User()
 
 data class TaskModel(
@@ -31,6 +31,7 @@ data class TaskModel(
     val description: String,
     val profit: Int,
     var status: Status
+
 )
 sealed class Status
 

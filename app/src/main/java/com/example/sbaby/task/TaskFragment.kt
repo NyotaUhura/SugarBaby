@@ -2,6 +2,7 @@ package com.example.sbaby.task
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.mvrx.fragmentViewModel
 import com.example.sbaby.*
@@ -87,7 +88,15 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         binding.addTaskButton.visibility = View.VISIBLE
         binding.doneCheckbox.visibility = View.VISIBLE
         binding.inProgressCheckbox.visibility = View.VISIBLE
-        binding.changeButton.setBackgroundResource(R.drawable.ic_change);
+        binding.changeButton.setBackgroundResource(R.drawable.ic_change)
+        binding.doneCheckbox.setOnCheckedChangeListener { _, _ ->
+            viewModel.filterGifts(binding.doneCheckbox.isChecked,
+                binding.inProgressCheckbox.isChecked)
+        }
+        binding.inProgressCheckbox.setOnCheckedChangeListener { _, _ ->
+            viewModel.filterGifts(binding.doneCheckbox.isChecked,
+                binding.inProgressCheckbox.isChecked)
+        }
     }
 
     private fun buildChildUi(user: Child) {
@@ -102,8 +111,8 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
     private fun bindChild(child: Child){
         binding.nameTextView.text = child.name
         binding.moneyTextView.text = child.money.toString()
-        binding.levelProcessBar.progress = child.process
-        binding.levelTextView.text = getString(R.string.helper) + child.level + getString(R.string.level)
+        binding.levelProcessBar.progress = viewModel.countProcessPercent(child)
+        binding.levelTextView.text = getString(R.string.helper) + viewModel.countlevel(child) + getString(R.string.level)
     }
 
 }
