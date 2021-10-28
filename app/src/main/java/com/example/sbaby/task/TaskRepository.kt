@@ -13,11 +13,11 @@ class TaskRepository {
             ),
             TaskModel(
                 "2", "Wash the dishes", 0L, "You need to wash all the dishes \n" +
-            "after diner. Use “Vanish” to clean \n" +
-                    "them better!", 5, TO_DO
+                        "after diner. Use “Vanish” to clean \n" +
+                        "them better!", 5, TO_DO
             ),
             TaskModel(
-                "3", "fff", 0L, "Do something", 10, TO_DO
+                "3", "fff", 1343805819061L, "Do something", 10, TO_DO
             ),
             TaskModel(
                 "4", "ggg", 14L, "Do something", 17, DONE(123L)

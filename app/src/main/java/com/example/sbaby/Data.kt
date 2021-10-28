@@ -1,8 +1,5 @@
 package com.example.sbaby
 
-import android.graphics.drawable.Drawable
-import java.util.*
-
 sealed class User()
 
 data class Parent(
@@ -12,7 +9,7 @@ data class Parent(
     var childList: MutableList<Child>,
     val isPremium: Boolean,
     val currChild: Int = 0
-): User()
+) : User()
 
 data class Child(
     val id: String,
@@ -22,7 +19,7 @@ data class Child(
     val process: Int,
     val level: Int,
     val taskList: List<TaskModel>
-): User()
+) : User()
 
 data class TaskModel(
     val id: String,
@@ -33,8 +30,9 @@ data class TaskModel(
     var status: Status
 
 )
+
 sealed class Status
 
-object TO_DO: Status()
+object TO_DO : Status()
 
-class DONE(val doneTime: Long): Status()
+class DONE(val doneTime: Long) : Status()

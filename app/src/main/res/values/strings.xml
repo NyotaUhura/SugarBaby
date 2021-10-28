@@ -9,4 +9,9 @@
     <string name="in_progress">In progress</string>
     <string name="helper">Helper: \u0020</string>
     <string name="level">\u0020 level</string>
+    <string name="user_name">User name</string>
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 </resources>

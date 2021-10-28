@@ -39,7 +39,10 @@ class TaskViewModel(
                     val newTaskList = mutableListOf<TaskModel>()
                     taskList.forEach {
                         if (it.id.equals(id)) {
-                            val newUser = childUser.copy(money = childUser.money + it.profit, process = childUser.process + it.profit)
+                            val newUser = childUser.copy(
+                                money = childUser.money + it.profit,
+                                process = childUser.process + it.profit
+                            )
                             newTaskList.add(it.copy(status = DONE(Date().time)))
                             setState { copy(user = Success(newUser)) }
                         } else {
@@ -52,21 +55,20 @@ class TaskViewModel(
         }
     }
 
-    fun countlevel(user: Child) :String{
-        return (user.process/1000 + 1).toString()
+    fun countlevel(user: Child): String {
+        return (user.process / 1000 + 1).toString()
     }
 
-    fun countProcessPercent(user: Child) :Int{
-        return ((user.process%1000)/10)
+    fun countProcessPercent(user: Child): Int {
+        return ((user.process % 1000) / 10)
     }
 
-    fun filterGifts(isDone: Boolean, isProgress: Boolean){
+    fun filterGifts(isDone: Boolean, isProgress: Boolean) {
         val taskList = taskRepository.getTaskList()
         val newList = taskList.filter { task ->
             if (isDone || isProgress) {
                 task.status is DONE == isDone || task.status is TO_DO == isProgress
-            }
-            else{
+            } else {
                 false
             }
         }

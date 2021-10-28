@@ -14,6 +14,31 @@
         <item name="colorPrimary">@color/red</item>
     </style>
 
+    <style name="BottonBlueStyle">
+        <item name="backgroundTint">@color/light_blue</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/custom_white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="minHeight">0dp</item>
+        <item name="minWidth">0dp</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
+
+    <style name="BottonRedStyle">
+        <item name="android:layout_margin">7dp</item>
+        <item name="backgroundTint">@color/red</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/custom_white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="minHeight">0dp</item>
+        <item name="minWidth">0dp</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
+
     <style name="TextTaskTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -71,6 +96,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="TextLarge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto</item>
     </style>
 
 

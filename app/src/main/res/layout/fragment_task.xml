@@ -172,8 +172,6 @@
         <TextView
             android:id="@+id/description_text_view"
             style="@style/TextPremium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="5dp"
             android:text="@string/best_features_for_you"

@@ -80,8 +80,6 @@
         <TextView
             android:id="@+id/money_text_view"
             style="@style/TextTaskMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:layout_constraintLeft_toLeftOf="@id/task_body_card"
             app:layout_constraintTop_toBottomOf="@id/task_body_text_view"
@@ -94,19 +92,20 @@
             android:layout_margin="2dp"
             android:src="@drawable/ic_money"
             app:cornerRadius="@dimen/corner_radius"
+            app:layout_constraintBottom_toBottomOf="@id/money_text_view"
             app:layout_constraintLeft_toRightOf="@id/money_text_view"
-            app:layout_constraintTop_toTopOf="@id/money_text_view"
-            app:layout_constraintBottom_toBottomOf="@id/money_text_view" />
+            app:layout_constraintTop_toTopOf="@id/money_text_view" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/task_body_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/light_brown"
-            app:cardElevation="-1dp"
-            app:cardCornerRadius="@dimen/corner_radius"
             android:paddingBottom="5dp"
+            app:cardBackgroundColor="@color/light_brown"
+            app:cardCornerRadius="@dimen/corner_radius"
+            app:cardElevation="-1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/task_image_card"
