@@ -21,6 +21,14 @@ data class Child(
     val taskList: List<TaskModel>
 ) : User()
 
+data class GiftModel(
+    val id: String,
+    val title: String,
+    val description: String,
+    val price: Int,
+    val availableCount: Int,
+)
+
 data class TaskModel(
     val id: String,
     val title: String,

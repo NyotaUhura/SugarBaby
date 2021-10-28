@@ -38,6 +38,7 @@ abstract class MvRxBaseFragment(@LayoutRes layout: Int) : MavericksView, Fragmen
 
     override fun onDestroyView() {
         epoxyController.cancelPendingModelBuild()
+        recyclerView.adapter = null
         super.onDestroyView()
         recyclerView.adapter = null
     }
