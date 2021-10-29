@@ -11,7 +11,10 @@ import com.airbnb.mvrx.MavericksView
 
 abstract class MvRxBaseFragment(@LayoutRes layout: Int) : MavericksView, Fragment(layout) {
 
-    protected lateinit var recyclerView: EpoxyRecyclerView
+    protected val recyclerView: EpoxyRecyclerView
+     get()  {
+         return requireView().findViewById(R.id.recycler_view)
+     }
     protected val epoxyController: EpoxyController by lazy { epoxyController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +24,9 @@ abstract class MvRxBaseFragment(@LayoutRes layout: Int) : MavericksView, Fragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+
         recyclerView.setController(epoxyController)
+        recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
     abstract fun epoxyController(): EpoxyController
@@ -37,6 +40,7 @@ abstract class MvRxBaseFragment(@LayoutRes layout: Int) : MavericksView, Fragmen
         epoxyController.cancelPendingModelBuild()
         recyclerView.adapter = null
         super.onDestroyView()
+        recyclerView.adapter = null
     }
 
     override fun invalidate() {
