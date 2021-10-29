@@ -1,11 +1,25 @@
 package com.example.sbaby
 
+sealed class User()
 
-// TODO: Add references to children
-data class UserModel(
+data class Parent(
     val id: String,
-    val name: String
-)
+    val name: String,
+    val photo: String,
+    var childList: MutableList<Child>,
+    val isPremium: Boolean,
+    val currChild: Int = 0
+) : User()
+
+data class Child(
+    val id: String,
+    val name: String,
+    var money: Int,
+    val photo: String,
+    val process: Int,
+    val level: Int,
+    val taskList: List<TaskModel>
+) : User()
 
 data class GiftModel(
     val id: String,
@@ -13,7 +27,6 @@ data class GiftModel(
     val description: String,
     val price: Int,
     val availableCount: Int,
-    val IsAgree: Boolean,
 )
 
 data class TaskModel(
@@ -22,11 +35,12 @@ data class TaskModel(
     val deadline: Long,
     val description: String,
     val profit: Int,
-    val status: Status
+    var status: Status
+
 )
+
 sealed class Status
 
-object TO_DO: Status()
+object TO_DO : Status()
 
-class DONE(val doneTime: Long): Status()
-
+class DONE(val doneTime: Long) : Status()
