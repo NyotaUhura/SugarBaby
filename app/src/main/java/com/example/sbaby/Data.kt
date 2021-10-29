@@ -27,6 +27,7 @@ data class GiftModel(
     val description: String,
     val price: Int,
     val availableCount: Int,
+    val isAgree: Boolean,
 )
 
 data class TaskModel(
