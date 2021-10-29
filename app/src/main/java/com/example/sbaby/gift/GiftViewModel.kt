@@ -2,12 +2,14 @@ package com.example.sbaby.gift
 
 import android.util.Log
 import com.airbnb.mvrx.*
+import com.example.sbaby.Child
 import com.example.sbaby.GiftModel
-import com.example.sbaby.UserModel
+import com.example.sbaby.Parent
 
 
 data class GiftState(
-    val user: Async<UserModel> = Uninitialized,
+    val child: Async<Child> = Uninitialized,
+    val parent: Async<Parent> = Uninitialized,
     val giftList: Async<List<GiftModel>> = Uninitialized
 ) : MavericksState
 
@@ -18,13 +20,14 @@ class GiftViewModel(
 
     init{
         setState {
-            copy(user = Loading(), giftList = Loading())
+            copy(child = Loading(), parent = Loading(), giftList = Loading())
         }
 
-        val user = giftRepository.getUser()
+        val child = giftRepository.getChild()
+        val parent = giftRepository.getParent()
         val giftList = giftRepository.getGiftList()
         setState {
-            copy(user = Success(user), giftList = Success(giftList))
+            copy(child = Success(child), parent = Success(parent), giftList = Success(giftList))
         }
     }
 
@@ -40,7 +43,7 @@ class GiftViewModel(
         val giftList = giftRepository.getGiftList()
         val newList = giftList.filter { gift ->
             if (isNeedToBeDone || isNeedAgreement) {
-                gift.IsAgree == isNeedToBeDone || gift.IsAgree != isNeedAgreement
+                gift.isAgree == isNeedToBeDone || gift.isAgree != isNeedAgreement
             }
             else{
                 false

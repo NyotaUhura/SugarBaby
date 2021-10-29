@@ -48,12 +48,12 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val user = state.user.invoke()
+        val child = state.child.invoke()
         val giftList = state.giftList.invoke()
 
         // TODO: Add "plus" item
         giftList?.forEach { giftModel ->
-            when(giftModel.IsAgree){
+            when(giftModel.isAgree){
                 true -> giftCardViewHolder {
                     id(giftModel.id)
                     gift(giftModel)
@@ -72,8 +72,9 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onAsync(GiftState::user, onSuccess = { user ->
-            binding.userNameTextView.text = user.name
+        viewModel.onAsync(GiftState::child, onSuccess = { child ->
+            binding.userNameTextView.text = child.name
+            binding.moneyTextView.text = child.money.toString()
         })
 
 //        recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
