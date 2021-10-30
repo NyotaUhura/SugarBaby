@@ -3,6 +3,8 @@ package com.example.sbaby.task
 import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentTaskBinding
@@ -34,30 +36,16 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val taskList = state.taskList.invoke()
-        taskList?.forEach { taskModel ->
-            when (state.user.invoke()) {
+        val taskList = state.taskList
+        val user = state.user.invoke() ?: return@simpleController
+        if (taskList is Success) {
+            val tasks = taskList.invoke()
+            when (user) {
                 is Parent -> {
-                    taskCardViewHolder {
-                        id(taskModel.id)
-                        task(taskModel)
-                        isParent(true)
-                        onClickListeners(buttons)
-                        when (taskModel.status) {
-                            is DONE -> isDone(true)
-                            is TO_DO -> isDone(false)
-                        }
-                    }
+                    renderParentTasks(tasks)
                 }
                 is Child -> {
-                    if (taskModel.status is TO_DO) {
-                        taskCardViewHolder {
-                            id(taskModel.id)
-                            task(taskModel)
-                            isParent(false)
-                            onClickListeners(buttons)
-                        }
-                    }
+                    renderChildTasks(tasks)
                 }
             }
         }
@@ -75,6 +63,34 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                 }
             }
         })
+    }
+
+    private fun EpoxyController.renderChildTasks(tasks: List<TaskModel>) {
+        tasks.forEach { taskModel ->
+            if (taskModel.status is TO_DO) {
+                taskCardViewHolder {
+                    id(taskModel.id)
+                    task(taskModel)
+                    isParent(false)
+                    onClickListeners(buttons)
+                }
+            }
+        }
+    }
+
+    private fun EpoxyController.renderParentTasks(tasks: List<TaskModel>) {
+        tasks.forEach { taskModel ->
+            taskCardViewHolder {
+                id(taskModel.id)
+                task(taskModel)
+                isParent(true)
+                onClickListeners(buttons)
+                when (taskModel.status) {
+                    is DONE -> isDone(true)
+                    is TO_DO -> isDone(false)
+                }
+            }
+        }
     }
 
     private fun buildParentUi(user: Parent) {

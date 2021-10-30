@@ -1,6 +1,5 @@
 package com.example.sbaby
 
-import android.app.ActionBar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,32 +9,32 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val actionBar: androidx.appcompat.app.ActionBar? = getSupportActionBar()
         actionBar?.hide()
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bindNavigationBar()
+    }
 
-        val giftFragment = GiftFragment()
-        val calendarFragment = CalendarFragment()
-        val taskFragment = TaskFragment()
-        val settingsFragment = SettingsFragment()
-
-        setCurrentFragment(taskFragment)
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+    private fun bindNavigationBar() {
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.task -> setCurrentFragment(taskFragment)
-                R.id.gift -> setCurrentFragment(giftFragment)
-                R.id.calendar -> setCurrentFragment(calendarFragment)
-                R.id.settings -> setCurrentFragment(settingsFragment)
+                R.id.task -> setCurrentFragment(TaskFragment())
+                R.id.gift -> setCurrentFragment(GiftFragment())
+                R.id.calendar -> setCurrentFragment(CalendarFragment())
+                R.id.settings -> setCurrentFragment(SettingsFragment())
             }
             true
         }
+        bottomNavigationView.selectedItemId = R.id.task
     }
 
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, fragment).commit()
+            replace(R.id.fragment_container, fragment).commit()
         }
 }

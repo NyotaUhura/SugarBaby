@@ -34,6 +34,7 @@ class TaskViewModel(
         withState { state: TaskState ->
             val taskList = state.taskList.invoke() ?: return@withState
             val childUser = state.user.invoke() ?: return@withState
+
             when (childUser) {
                 is Child -> {
                     val newTaskList = mutableListOf<TaskModel>()
