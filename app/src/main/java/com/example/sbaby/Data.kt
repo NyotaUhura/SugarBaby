@@ -10,7 +10,8 @@ data class Family(
 
 sealed class User(
     open val id: String,
-    open val familyId: String
+    open val familyId: String,
+    open val photo: String
 )
 
 sealed class UserFirebase
@@ -19,9 +20,9 @@ data class Parent(
     override val id: String,
     override val familyId: String,
     val name: String,
-    val photo: String,
+    override val photo: String,
     var childList: List<Child>,
-) : User(id, familyId)
+) : User(id, familyId, photo)
 
 data class ParentFirebaseModel(
     val id: String,
@@ -70,11 +71,11 @@ data class Child(
     override val familyId: String,
     val name: String,
     var money: Int,
-    val photo: String,
+    override val photo: String,
     val process: Int,
     val level: Int,
     val taskList: List<TaskModel>
-) : User(id, familyId)
+) : User(id, familyId, photo)
 
 data class GiftModel(
     val id: String,

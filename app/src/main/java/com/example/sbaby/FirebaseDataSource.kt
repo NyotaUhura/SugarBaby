@@ -16,7 +16,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     private lateinit var family: Family
 
     suspend fun getUser(): User? {
-        if (user != null) {
+        if (user == null) {
             loadUser(userId)
         }
         return user
