@@ -1,4 +1,4 @@
-package com.example.sbaby.viewholders.task
+package com.example.sbaby.epoxy.viewholders.task
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyAttribute

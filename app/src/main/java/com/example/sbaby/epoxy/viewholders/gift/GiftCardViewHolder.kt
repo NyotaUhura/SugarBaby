@@ -1,4 +1,4 @@
-package com.example.sbaby.viewholders.gift
+package com.example.sbaby.epoxy.viewholders.gift
 
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass

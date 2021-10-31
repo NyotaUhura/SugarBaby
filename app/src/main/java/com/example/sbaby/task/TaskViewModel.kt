@@ -1,33 +1,25 @@
 package com.example.sbaby.task
 
-import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.util.*
-
 
 data class TaskState(
     val user: Async<User> = Uninitialized,
-    val parent: Async<Parent> = Uninitialized,
-    val child: Async<Child> = Uninitialized,
+    val selectedChild: Async<Child> = Uninitialized,
+    val family: Async<Family> = Uninitialized,
     val taskList: Async<List<TaskModel>> = Uninitialized
 ) : MavericksState
 
 class TaskViewModel(
     initialState: TaskState,
-    private val taskRepository: TaskRepository,
+    private val taskRepository: FirebaseDataSource,
 ) : MavericksViewModel<TaskState>(initialState) {
 
     init {
-        setState {
-            copy(user = Loading(), taskList = Loading())
-        }
-        val parent = taskRepository.getParent()
-        val child = taskRepository.getChild()
-        val taskList = taskRepository.getTaskList()
-        setState {
-            copy(user = Success(child), taskList = Success(taskList))
-        }
+        loadData()
     }
 
     fun changeUndoneTaskStatus(id: String) {
@@ -65,19 +57,24 @@ class TaskViewModel(
     }
 
     fun filterGifts(isDone: Boolean, isProgress: Boolean) {
-        val taskList = taskRepository.getTaskList()
-        val newList = taskList.filter { task ->
-            if (isDone || isProgress) {
-                task.status is DONE == isDone || task.status is TO_DO == isProgress
-            } else {
-                false
+        withState { state ->
+            val user = state.user.invoke()
+
+            val taskList = when (user) {
+                is Child -> user.taskList
+                else -> throw NullPointerException()
+            }
+            val newList = taskList.filter { task ->
+                if (isDone || isProgress) {
+                    task.status is DONE == isDone || task.status is TO_DO == isProgress
+                } else {
+                    false
+                }
+            }
+            setState {
+                copy(taskList = Success(newList))
             }
         }
-        Log.d("R", newList.count().toString())
-        setState {
-            copy(taskList = Success(newList))
-        }
-
     }
 
     fun changeName(newName: String) {
@@ -104,6 +101,37 @@ class TaskViewModel(
                     val newUser = user.copy(photo = newPhoto)
                     setState { copy(user = Success(newUser)) }
                 }
+            }
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            setState {
+                copy(user = Loading(), taskList = Loading(), family = Loading())
+            }
+            val user = taskRepository.getUser()
+            if (user != null) {
+                val family = taskRepository.getFamily(user.familyId)
+                setState {
+                    copy(user = Success(user), family = Success(family))
+                }
+                if (user is Child) {
+                    setState { copy(taskList = Success(user.taskList)) }
+                } else {
+                    withState { state ->
+                        var selectedChild = state.selectedChild.invoke()
+                        if (selectedChild == null) {
+                            if ((user as Parent).childList.isNotEmpty()) {
+                                setState { copy(selectedChild = Success(user.childList[0])) }
+                            }
+                        }
+                        selectedChild = state.selectedChild.invoke() ?: return@withState
+                        setState { copy(taskList = Success(selectedChild.taskList)) }
+                    }
+                }
+            } else {
+                setState { copy(user = Fail(NullPointerException())) }
             }
         }
     }
@@ -151,7 +179,7 @@ class TaskViewModel(
     companion object : MavericksViewModelFactory<TaskViewModel, TaskState> {
 
         override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel {
-            val rep = TaskRepository()
+            val rep: FirebaseDataSource by viewModelContext.activity.inject<FirebaseDataSource>()
             return TaskViewModel(state, rep)
         }
     }

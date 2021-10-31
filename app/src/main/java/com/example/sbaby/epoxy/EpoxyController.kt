@@ -1,10 +1,11 @@
-package com.example.sbaby
+package com.example.sbaby.epoxy
 
 import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.MavericksState
 import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.withState
+import com.example.sbaby.MvRxBaseFragment
 
 internal open class MavericksEpoxyController(
     val buildModelsCallback: EpoxyController.() -> Unit = {}

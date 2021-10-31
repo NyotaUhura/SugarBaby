@@ -1,20 +1,18 @@
 package com.example.sbaby.gift
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.CheckBox
-import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.mvrx.fragmentViewModel
+import com.example.sbaby.Child
 import com.example.sbaby.MvRxBaseFragment
 import com.example.sbaby.R
 import com.example.sbaby.databinding.FragmentGiftBinding
-import com.example.sbaby.simpleController
-import com.example.sbaby.viewholders.gift.GiftCardUnagreeViewHolder
-import com.example.sbaby.viewholders.gift.GiftCardViewHolder
-import com.example.sbaby.viewholders.gift.giftCardUnagreeViewHolder
-import com.example.sbaby.viewholders.gift.giftCardViewHolder
+import com.example.sbaby.epoxy.simpleController
+import com.example.sbaby.epoxy.viewholders.gift.GiftCardUnagreeViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.GiftCardViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.giftCardUnagreeViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.giftCardViewHolder
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
@@ -48,12 +46,12 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val child = state.child.invoke()
+        val user = state.user.invoke()
         val giftList = state.giftList.invoke()
 
         // TODO: Add "plus" item
         giftList?.forEach { giftModel ->
-            when(giftModel.isAgree){
+            when (giftModel.isAgree) {
                 true -> giftCardViewHolder {
                     id(giftModel.id)
                     gift(giftModel)
@@ -72,19 +70,28 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onAsync(GiftState::child, onSuccess = { child ->
-            binding.userNameTextView.text = child.name
-            binding.moneyTextView.text = child.money.toString()
+        viewModel.onAsync(GiftState::user, onSuccess = { user ->
+            if (user is Child) {
+
+                binding.userNameTextView.text = user.name
+                binding.moneyTextView.text = user.money.toString()
+            }
         })
 
 //        recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
 
         binding.needToBeDoneCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(binding.needToBeDoneCheckbox.isChecked, binding.needAgreementCheckbox.isChecked)
+            viewModel.filterGifts(
+                binding.needToBeDoneCheckbox.isChecked,
+                binding.needAgreementCheckbox.isChecked
+            )
         }
 
         binding.needAgreementCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(binding.needToBeDoneCheckbox.isChecked, binding.needAgreementCheckbox.isChecked)
+            viewModel.filterGifts(
+                binding.needToBeDoneCheckbox.isChecked,
+                binding.needAgreementCheckbox.isChecked
+            )
         }
 
     }

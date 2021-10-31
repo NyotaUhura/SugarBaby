@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "393073092963",
+    "project_id": "sbaby-a53b6",
+    "storage_bucket": "sbaby-a53b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393073092963:android:36ff7211fe0a819afb0b56",
+        "android_client_info": {
+          "package_name": "com.example.sbaby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393073092963-5e03qi3tgkoc9i1o2g7hv6fhcg7epdcb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFq8Iw5joxAjbY2mbGGyXukZDNjB6Vdbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393073092963-5e03qi3tgkoc9i1o2g7hv6fhcg7epdcb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

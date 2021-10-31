@@ -3,13 +3,15 @@ package com.example.sbaby.task
 import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.load
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentTaskBinding
-import com.example.sbaby.viewholders.task.TaskCardViewHolder
-import com.example.sbaby.viewholders.task.taskCardViewHolder
+import com.example.sbaby.epoxy.simpleController
+import com.example.sbaby.epoxy.viewholders.task.TaskCardViewHolder
+import com.example.sbaby.epoxy.viewholders.task.taskCardViewHolder
 
 class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
@@ -53,16 +55,20 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.onAsync(TaskState::user, onSuccess = { user ->
+        viewModel.onEach { state ->
+            val family = state.family.invoke() ?: return@onEach
+            val user = state.user.invoke() ?: return@onEach
+            binding.photoImageView.load(user.photo)
             when (user) {
                 is Parent -> {
-                    buildParentUi(user)
+                    val currentChild = state.selectedChild.invoke()
+                    bindParentUi(family.isPremium, currentChild)
                 }
                 is Child -> {
-                    buildChildUi(user)
+                    bindChildUi(user)
                 }
             }
-        })
+        }
     }
 
     private fun EpoxyController.renderChildTasks(tasks: List<TaskModel>) {
@@ -93,46 +99,50 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         }
     }
 
-    private fun buildParentUi(user: Parent) {
-        if (user.isPremium) binding.itemPremium.visibility = View.GONE
+    private fun bindParentUi(isPremium: Boolean, currentChild: Child?) {
+        if (isPremium) binding.itemPremium.visibility = View.GONE
         else binding.premiumCard.visibility = View.VISIBLE
-        val child = user.childList[user.currChild]
-        bindChild(child)
 
-        binding.shareButton.visibility = View.GONE
-        binding.addTaskButton.visibility = View.VISIBLE
-        binding.doneCheckbox.visibility = View.VISIBLE
-        binding.inProgressCheckbox.visibility = View.VISIBLE
-        binding.changeButton.setBackgroundResource(R.drawable.ic_change)
-        binding.doneCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(
-                binding.doneCheckbox.isChecked,
-                binding.inProgressCheckbox.isChecked
-            )
-        }
-        binding.inProgressCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(
-                binding.doneCheckbox.isChecked,
-                binding.inProgressCheckbox.isChecked
-            )
+        if (currentChild != null) bindChild(currentChild)
+        with(binding) {
+            shareButton.visibility = View.GONE
+            addTaskButton.visibility = View.VISIBLE
+            doneCheckbox.visibility = View.VISIBLE
+            inProgressCheckbox.visibility = View.VISIBLE
+            changeButton.setBackgroundResource(R.drawable.ic_change)
+            doneCheckbox.setOnCheckedChangeListener { _, _ ->
+                viewModel.filterGifts(
+                    doneCheckbox.isChecked,
+                    inProgressCheckbox.isChecked
+                )
+            }
+            inProgressCheckbox.setOnCheckedChangeListener { _, _ ->
+                viewModel.filterGifts(
+                    doneCheckbox.isChecked,
+                    inProgressCheckbox.isChecked
+                )
+            }
         }
     }
 
-    private fun buildChildUi(user: Child) {
+    private fun bindChildUi(user: Child) {
         bindChild(user)
-        binding.shareButton.visibility = View.VISIBLE
-        binding.addTaskButton.visibility = View.GONE
-        binding.doneCheckbox.visibility = View.GONE
-        binding.inProgressCheckbox.visibility = View.GONE
-        binding.changeButton.setBackgroundResource(R.drawable.ic_edit_photo);
+        with(binding) {
+            shareButton.visibility = View.VISIBLE
+            addTaskButton.visibility = View.GONE
+            doneCheckbox.visibility = View.GONE
+            inProgressCheckbox.visibility = View.GONE
+            changeButton.setBackgroundResource(R.drawable.ic_edit_photo)
+        }
     }
 
     private fun bindChild(child: Child) {
-        binding.nameTextView.text = child.name
-        binding.moneyTextView.text = child.money.toString()
-        binding.levelProcessBar.progress = viewModel.countProcessPercent(child)
-        binding.levelTextView.text =
-            getString(R.string.helper) + viewModel.countlevel(child) + getString(R.string.level)
+        with(binding) {
+            nameTextView.text = child.name
+            moneyTextView.text = child.money.toString()
+            levelProcessBar.progress = viewModel.countProcessPercent(child)
+            levelTextView.text =
+                getString(R.string.helper) + viewModel.countlevel(child) + getString(R.string.level)
+        }
     }
-
 }
