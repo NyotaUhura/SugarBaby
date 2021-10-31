@@ -53,16 +53,19 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.onAsync(TaskState::user, onSuccess = { user ->
+        viewModel.onEach { state ->
+            val family = state.family.invoke() ?: return@onEach
+            val user = state.user.invoke() ?: return@onEach
             when (user) {
                 is Parent -> {
-                    buildParentUi(user)
+                    val currentChild = state.selectedChild.invoke()
+                    bindParentUi(family.isPremium, currentChild)
                 }
                 is Child -> {
-                    buildChildUi(user)
+                    bindChildUi(user)
                 }
             }
-        })
+        }
     }
 
     private fun EpoxyController.renderChildTasks(tasks: List<TaskModel>) {
@@ -93,11 +96,11 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         }
     }
 
-    private fun buildParentUi(user: Parent) {
-        if (user.isPremium) binding.itemPremium.visibility = View.GONE
+    private fun bindParentUi(isPremium: Boolean, currentChild: Child?) {
+        if (isPremium) binding.itemPremium.visibility = View.GONE
         else binding.premiumCard.visibility = View.VISIBLE
-        val child = user.childList[user.currChild]
-        bindChild(child)
+
+        if (currentChild != null) bindChild(currentChild)
 
         binding.shareButton.visibility = View.GONE
         binding.addTaskButton.visibility = View.VISIBLE
@@ -118,7 +121,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         }
     }
 
-    private fun buildChildUi(user: Child) {
+    private fun bindChildUi(user: Child) {
         bindChild(user)
         binding.shareButton.visibility = View.VISIBLE
         binding.addTaskButton.visibility = View.GONE
