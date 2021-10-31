@@ -9,8 +9,9 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentTaskBinding
-import com.example.sbaby.viewholders.task.TaskCardViewHolder
-import com.example.sbaby.viewholders.task.taskCardViewHolder
+import com.example.sbaby.epoxy.simpleController
+import com.example.sbaby.epoxy.viewholders.task.TaskCardViewHolder
+import com.example.sbaby.epoxy.viewholders.task.taskCardViewHolder
 
 class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 

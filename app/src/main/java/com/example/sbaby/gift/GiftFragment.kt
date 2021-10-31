@@ -8,11 +8,11 @@ import com.example.sbaby.Child
 import com.example.sbaby.MvRxBaseFragment
 import com.example.sbaby.R
 import com.example.sbaby.databinding.FragmentGiftBinding
-import com.example.sbaby.simpleController
-import com.example.sbaby.viewholders.gift.GiftCardUnagreeViewHolder
-import com.example.sbaby.viewholders.gift.GiftCardViewHolder
-import com.example.sbaby.viewholders.gift.giftCardUnagreeViewHolder
-import com.example.sbaby.viewholders.gift.giftCardViewHolder
+import com.example.sbaby.epoxy.simpleController
+import com.example.sbaby.epoxy.viewholders.gift.GiftCardUnagreeViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.GiftCardViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.giftCardUnagreeViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.giftCardViewHolder
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
