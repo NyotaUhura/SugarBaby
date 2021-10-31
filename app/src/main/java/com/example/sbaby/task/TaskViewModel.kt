@@ -6,10 +6,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.*
 
-val familyId = "H0l8gT7eovB0GtYlInVC"
-val userId = "ZOnCcabgU3PlVTRcWxrM"
-val isParent = false
-
 data class TaskState(
     val user: Async<User> = Uninitialized,
     val selectedChild: Async<Child> = Uninitialized,
@@ -119,6 +115,20 @@ class TaskViewModel(
                 val family = taskRepository.getFamily(user.familyId)
                 setState {
                     copy(user = Success(user), family = Success(family))
+                }
+                if (user is Child) {
+                    setState { copy(taskList = Success(user.taskList)) }
+                } else {
+                    withState { state ->
+                        var selectedChild = state.selectedChild.invoke()
+                        if (selectedChild == null) {
+                            if ((user as Parent).childList.isNotEmpty()) {
+                                setState { copy(selectedChild = Success(user.childList[0])) }
+                            }
+                        }
+                        selectedChild = state.selectedChild.invoke() ?: return@withState
+                        setState { copy(taskList = Success(selectedChild.taskList)) }
+                    }
                 }
             } else {
                 setState { copy(user = Fail(NullPointerException())) }

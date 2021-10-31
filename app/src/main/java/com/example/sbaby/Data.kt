@@ -25,11 +25,11 @@ data class Parent(
 ) : User(id, familyId, photo)
 
 data class ParentFirebaseModel(
-    val id: String,
-    val name: String,
-    val familyId: String,
-    val photo: String,
-    var childList: List<DocumentReference>
+    val id: String = "",
+    val name: String = "",
+    val familyId: String = "",
+    val photo: String = "",
+    var childList: List<DocumentReference> = listOf()
 ) : UserFirebase() {
     fun toParentModel(children: List<Child>): Parent {
         return Parent(
@@ -50,7 +50,8 @@ data class ChildFirebaseModel(
     val photo: String = "",
     val process: Int = 0,
     val level: Int = 0,
-    val taskList: List<TaskFirebaseModel> = listOf()
+    val taskList: List<TaskFirebaseModel> = listOf(),
+    val gifts: List<String> = listOf()
 ) : UserFirebase() {
     fun toChildModel(): Child {
         return Child(
@@ -61,7 +62,8 @@ data class ChildFirebaseModel(
             photo = photo,
             process = process,
             level = level,
-            taskList = taskList.map { it.toTaskModel() }
+            taskList = taskList.map { it.toTaskModel() },
+            gifts = gifts
         )
     }
 }
@@ -74,16 +76,17 @@ data class Child(
     override val photo: String,
     val process: Int,
     val level: Int,
-    val taskList: List<TaskModel>
+    val taskList: List<TaskModel>,
+    val gifts: List<String>
 ) : User(id, familyId, photo)
 
 data class GiftModel(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Int,
-    val availableCount: Int,
-    val isAgree: Boolean,
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val price: Int = 0,
+    val availableCount: Int = 0,
+    val isAgree: Boolean = false,
 )
 
 data class TaskModel(
@@ -104,7 +107,11 @@ data class TaskFirebaseModel(
     var status: String = ""
 ) {
     fun toTaskModel(): TaskModel {
-        val statusString = status.substring(0, status.indexOf('='))
+        val statusString = if (status.contains('=')) {
+            status.substring(0, status.indexOf('='))
+        } else {
+            status
+        }
         val sealedStatus = if (statusString == "DONE") {
             DONE(status.substring(status.indexOf('=') + 1).toLong())
         } else {
@@ -120,7 +127,6 @@ data class TaskFirebaseModel(
         )
     }
 }
-
 
 sealed class Status
 

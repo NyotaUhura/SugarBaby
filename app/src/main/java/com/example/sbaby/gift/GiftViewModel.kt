@@ -1,11 +1,9 @@
 package com.example.sbaby.gift
 
-import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-
 
 data class GiftState(
     val user: Async<User> = Uninitialized,
@@ -35,20 +33,21 @@ class GiftViewModel(
     }
 
     fun filterGifts(isNeedToBeDone: Boolean, isNeedAgreement: Boolean) {
-        val giftList = repository.getGiftList()
-        val newList = giftList.filter { gift ->
-            if (isNeedToBeDone || isNeedAgreement) {
-                gift.isAgree == isNeedToBeDone || gift.isAgree != isNeedAgreement
-            } else {
-                false
+        withState { state ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val newList = giftList.filter { gift ->
+                if (isNeedToBeDone || isNeedAgreement) {
+                    gift.isAgree == isNeedToBeDone || gift.isAgree != isNeedAgreement
+                } else {
+                    false
+                }
+            }
+            setState {
+                copy(giftList = Success(newList))
             }
         }
-        Log.d("R", newList.count().toString())
-        setState {
-            copy(giftList = Success(newList))
-        }
-
     }
+
 
     fun changeCheckGiftStatus(id: String) {
         withState { state: GiftState ->

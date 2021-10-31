@@ -1,19 +1,25 @@
 package com.example.sbaby
 
-import com.example.sbaby.task.userId
+import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
+val familyId = "H0l8gT7eovB0GtYlInVC"
+val userId = "jvJztwD5bN7K5Xbmq9I6"
+val isParent = false
+
 class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val FAMILIES_COLLECTION = "families"
+        private const val GIFTS_COLLECTION = "gifts"
     }
 
     private var user: User? = null
     private lateinit var family: Family
+    private var gifts: List<GiftModel> = listOf()
 
     suspend fun getUser(): User? {
         if (user == null) {
@@ -22,8 +28,10 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         return user
     }
 
-    fun getGiftList(): List<GiftModel> {
-        return listOf(
+    suspend fun getGiftList(): List<GiftModel> {
+        if (gifts.isEmpty()) loadGiftList()
+        return gifts.toList()
+        /*return listOf(
             GiftModel(
                 "1", "Watch a film", "Free film", 20, 1, true
             ),
@@ -60,7 +68,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
             GiftModel(
                 "12", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
             ),
-        )
+        )*/
     }
 
     suspend fun getFamily(id: String): Family {
@@ -69,6 +77,39 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         }
         return family
     }
+
+    private suspend fun loadGiftList() {
+        if (user == null) return
+        val ids = mutableListOf<String>()
+        when (user) {
+            is Child -> ids.addAll((user as Child).gifts)
+            is Parent -> (user as Parent).childList.forEach { child ->
+                ids.addAll(child.gifts)
+            }
+        }
+        val giftsRes = loadGiftResult(ids)
+        if (giftsRes is Result.Success) {
+            gifts = giftsRes.data
+        }
+    }
+
+    private suspend fun loadGiftResult(ids: List<String>) =
+        suspendCancellableCoroutine<Result<List<GiftModel>>> { con ->
+            fireStore.collection(GIFTS_COLLECTION).get()
+                .addOnSuccessListener { snapShot ->
+                    snapShot.documents.forEach { doc ->
+                        val gifts = mutableListOf<GiftModel>()
+                        if (ids.contains(doc.id)) {
+                            val gift = doc.toObject(GiftModel::class.java)
+                            if (gift != null) gifts.add(gift)
+                        }
+                        con.resume(Result.Success(gifts))
+                    }
+                }
+                .addOnFailureListener {
+                    con.resume(Result.Error(it))
+                }
+        }
 
     private suspend fun loadFamily(id: String) {
         val familyRes = loadFamilyResult(id)
@@ -115,6 +156,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
                     firebaseUserRes.data.toParentModel(children)
                 }
             }
+            Log.d("FirebaseInt", "$userModel")
             user = userModel
         }
     }
@@ -144,7 +186,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
                     snapShot.documents.forEach { doc ->
                         if (doc.id == userId) {
                             val isParent = doc.getBoolean("isParent") ?: false
-                            val user = if (isParent) {
+                            val user = if (!isParent) {
                                 doc.toObject(ChildFirebaseModel::class.java)?.copy(id = doc.id)
                             } else {
                                 doc.toObject(ParentFirebaseModel::class.java)?.copy(id = doc.id)
