@@ -6,9 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-val familyId = "H0l8gT7eovB0GtYlInVC"
+//id for current user coz dont have authentication
 val userId = "jvJztwD5bN7K5Xbmq9I6"
-val isParent = false
 
 class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     companion object {
@@ -31,44 +30,6 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     suspend fun getGiftList(): List<GiftModel> {
         if (gifts.isEmpty()) loadGiftList()
         return gifts.toList()
-        /*return listOf(
-            GiftModel(
-                "1", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "2", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-            GiftModel(
-                "3", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "4", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-            GiftModel(
-                "5", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "6", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-            GiftModel(
-                "7", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "8", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-            GiftModel(
-                "9", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "10", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-            GiftModel(
-                "11", "Watch a film", "Free film", 20, 1, true
-            ),
-            GiftModel(
-                "12", "Play on PC for 10 minutes", "10 minutes for some game", 5, 5, false
-            ),
-        )*/
     }
 
     suspend fun getFamily(id: String): Family {
