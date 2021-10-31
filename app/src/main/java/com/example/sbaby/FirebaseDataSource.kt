@@ -12,11 +12,11 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         private const val FAMILIES_COLLECTION = "families"
     }
 
-    private lateinit var user: User
+    private var user: User? = null
     private lateinit var family: Family
 
-    suspend fun getUser(): User {
-        if (!this::user.isInitialized) {
+    suspend fun getUser(): User? {
+        if (user != null) {
             loadUser(userId)
         }
         return user
@@ -68,13 +68,6 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
             loadFamily(id)
         }
         return family
-    }
-
-    fun getChildList(): MutableList<Child> {
-        return mutableListOf(
-            Child("1", "Artem", "", 123, "", 70, 4, listOf()),
-            Child("2", "Anton2", "", 1233, "", 79, 3, listOf())
-        )
     }
 
     private suspend fun loadFamily(id: String) {

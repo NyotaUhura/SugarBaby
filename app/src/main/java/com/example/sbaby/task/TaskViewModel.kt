@@ -115,9 +115,13 @@ class TaskViewModel(
                 copy(user = Loading(), taskList = Loading(), family = Loading())
             }
             val user = taskRepository.getUser()
-            val family = taskRepository.getFamily(user.familyId)
-            setState {
-                copy(user = Success(user), family = Success(family))
+            if (user != null) {
+                val family = taskRepository.getFamily(user.familyId)
+                setState {
+                    copy(user = Success(user), family = Success(family))
+                }
+            } else {
+                setState { copy(user = Fail(NullPointerException())) }
             }
         }
     }

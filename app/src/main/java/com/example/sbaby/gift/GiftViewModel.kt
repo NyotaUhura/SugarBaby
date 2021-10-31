@@ -24,11 +24,14 @@ class GiftViewModel(
         viewModelScope.launch {
             val user = repository.getUser()
             val giftList = repository.getGiftList()
-            setState {
-                copy(user = Success(user), giftList = Success(giftList))
+            if (user != null) {
+                setState {
+                    copy(user = Success(user), giftList = Success(giftList))
+                }
+            } else {
+                setState { copy(user = Fail(NullPointerException())) }
             }
         }
-
     }
 
     fun filterGifts(isNeedToBeDone: Boolean, isNeedAgreement: Boolean) {
