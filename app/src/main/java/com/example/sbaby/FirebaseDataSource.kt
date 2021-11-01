@@ -64,8 +64,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
                             val gift = doc.toObject(GiftModel::class.java)
                             if (gift != null) gifts.add(gift)
                         }
-                        con.resume(Result.Success(gifts))
                     }
+                    con.resume(Result.Success(gifts))
                 }
                 .addOnFailureListener {
                     con.resume(Result.Error(it))
@@ -117,7 +117,6 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
                     firebaseUserRes.data.toParentModel(children)
                 }
             }
-            Log.d("FirebaseInt", "$userModel")
             user = userModel
         }
     }
