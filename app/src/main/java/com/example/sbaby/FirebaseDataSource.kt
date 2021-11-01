@@ -1,6 +1,5 @@
 package com.example.sbaby
 
-import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -58,8 +57,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         suspendCancellableCoroutine<Result<List<GiftModel>>> { con ->
             fireStore.collection(GIFTS_COLLECTION).get()
                 .addOnSuccessListener { snapShot ->
+                    val gifts = mutableListOf<GiftModel>()
                     snapShot.documents.forEach { doc ->
-                        val gifts = mutableListOf<GiftModel>()
                         if (ids.contains(doc.id)) {
                             val gift = doc.toObject(GiftModel::class.java)
                             if (gift != null) gifts.add(gift)
