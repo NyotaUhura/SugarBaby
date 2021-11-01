@@ -115,6 +115,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
                     }
                     firebaseUserRes.data.toParentModel(children)
                 }
+                else -> throw IllegalAccessException()
             }
             user = userModel
         }
