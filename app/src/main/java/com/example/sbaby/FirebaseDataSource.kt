@@ -105,7 +105,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         }
         val giftsRes = loadGiftResult(ids)
         if (giftsRes is Result.Success) {
-            gifts = giftsRes.data
+            gifts = giftsRes.data.toMutableList()
         }
     }
 
