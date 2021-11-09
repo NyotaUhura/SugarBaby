@@ -53,7 +53,7 @@ data class ChildFirebaseModel(
     val taskList: List<TaskFirebaseModel> = listOf(),
     val gifts: List<String> = listOf()
 ) : UserFirebase() {
-    fun toChildModel(): Child {
+    fun mapToChildModel(): Child {
         return Child(
             id = id,
             familyId = familyId,
@@ -62,7 +62,7 @@ data class ChildFirebaseModel(
             photo = photo,
             process = process,
             level = level,
-            taskList = taskList.map { it.toTaskModel() },
+            taskList = taskList.map { it.mapToTaskModel() },
             gifts = gifts
         )
     }
@@ -96,7 +96,22 @@ data class TaskModel(
     val description: String,
     val profit: Int,
     var status: Status
-)
+) {
+    fun mapToFirebaseModel(): TaskFirebaseModel {
+        return TaskFirebaseModel(
+            id = id,
+            title = title,
+            deadline = deadline,
+            description = description,
+            profit = profit,
+            status = when (status) {
+                is DONE -> "DONE=${(status as DONE).doneTime}"
+                is TO_DO -> "TO_DO"
+                else -> throw IllegalAccessException()
+            }
+        )
+    }
+}
 
 data class TaskFirebaseModel(
     val id: String = "",
@@ -106,7 +121,7 @@ data class TaskFirebaseModel(
     val profit: Int = 0,
     var status: String = ""
 ) {
-    fun toTaskModel(): TaskModel {
+    fun mapToTaskModel(): TaskModel {
         val statusString = if (status.contains('=')) {
             status.substring(0, status.indexOf('='))
         } else {

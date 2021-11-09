@@ -38,6 +38,40 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         return family
     }
 
+    suspend fun saveUser(user: User): Boolean {
+        val data = when (user) {
+            is Child -> {
+                mapOf(
+                    "level" to user.level,
+                    "gifts" to user.gifts,
+                    "photo" to user.photo,
+                    "money" to user.money,
+                    "process" to user.process,
+                    "taskList" to user.taskList.map { it.mapToFirebaseModel() }
+                )
+            }
+            is Parent -> {
+                mapOf(
+                    "photo" to user.photo
+                )
+            }
+            else -> {
+                throw IllegalAccessException()
+            }
+        }
+        val res = saveTaskToDB(user.id, data)
+        return if (res is Result.Success) res.data
+        else false
+    }
+
+    private suspend fun saveTaskToDB(id: String, data: Map<String, Any>) =
+        suspendCancellableCoroutine<Result<Boolean>> { con ->
+            fireStore.collection(USERS_COLLECTION).document(id).update(data)
+                .addOnSuccessListener { con.resume(Result.Success(true)) }
+                .addOnFailureListener { con.resume(Result.Error(it)) }
+
+        }
+
     private suspend fun loadGiftList() {
         if (user == null) return
         val ids = mutableListOf<String>()
@@ -102,14 +136,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         val firebaseUserRes = loadUserDoc(userId)
         if (firebaseUserRes is Result.Success) {
             val userModel = when (firebaseUserRes.data) {
-                is ChildFirebaseModel -> firebaseUserRes.data.toChildModel()
+                is ChildFirebaseModel -> firebaseUserRes.data.mapToChildModel()
                 is ParentFirebaseModel -> {
                     val children = mutableListOf<Child>()
                     firebaseUserRes.data.childList.forEach { ref ->
                         val childRes = loadUserByRef(ref)
                         if (childRes is Result.Success) {
                             if (childRes.data is ChildFirebaseModel) {
-                                children.add(childRes.data.toChildModel())
+                                children.add(childRes.data.mapToChildModel())
                             }
                         }
                     }
