@@ -2,17 +2,19 @@ package com.example.sbaby.gift
 
 import android.os.Bundle
 import android.view.View
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.EpoxyRecyclerView
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
-import com.example.sbaby.Child
-import com.example.sbaby.MvRxBaseFragment
-import com.example.sbaby.R
+import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.epoxy.simpleController
-import com.example.sbaby.epoxy.viewholders.gift.GiftCardUnagreeViewHolder
-import com.example.sbaby.epoxy.viewholders.gift.GiftCardViewHolder
-import com.example.sbaby.epoxy.viewholders.gift.giftCardUnagreeViewHolder
-import com.example.sbaby.epoxy.viewholders.gift.giftCardViewHolder
+import com.example.sbaby.epoxy.viewholders.gift.*
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
@@ -45,12 +47,82 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
             }
         }
 
+    private val buttonsOpen: GiftCardChildViewHolder.buttonsOnclick =
+        object : GiftCardChildViewHolder.buttonsOnclick {
+            override fun openButtonOnclick(id: String) {
+                //TODO: Open dialog window to edit
+            }
+        }
+
+    private val buttonsCreate: GiftCardChildAddViewHolder.buttonsOnclick =
+        object : GiftCardChildAddViewHolder.buttonsOnclick {
+            override fun createButtonOnclick(id: String) {
+                //TODO: Open dialog window to add
+            }
+        }
+
     override fun epoxyController() = simpleController(viewModel) { state ->
         val user = state.user.invoke()
-        val giftList = state.giftList.invoke()
-
+        val giftList = state.giftList
         // TODO: Add "plus" item
-        giftList?.forEach { giftModel ->
+
+        if (giftList is Success) {
+            val gifts = giftList.invoke()
+            when (user) {
+                is Parent -> {
+                    renderParentTasks(gifts)
+                }
+                is Child -> {
+//                    giftCardChildAddViewHolder {
+//                        onClickListeners(buttonsCreate) }
+                    renderChildTasks(gifts)
+                }
+            }
+        }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.onAsync(GiftState::user, onSuccess = { user ->
+            when (user) {
+                is Parent -> {
+                    binding.needToBeDoneCheckbox.isVisible = true;
+                    binding.needToBeDoneCheckbox.setOnCheckedChangeListener { _, _ ->
+                        viewModel.filterGifts(
+                            binding.needToBeDoneCheckbox.isChecked,
+                            binding.needAgreementCheckbox.isChecked
+                        )
+                    }
+
+                    binding.needAgreementCheckbox.isVisible = true;
+                    binding.needAgreementCheckbox.setOnCheckedChangeListener { _, _ ->
+                        viewModel.filterGifts(
+                            binding.needToBeDoneCheckbox.isChecked,
+                            binding.needAgreementCheckbox.isChecked
+                        )
+                    }
+                }
+                is Child -> {
+
+                    val params = binding.recyclerView.layoutParams as ConstraintLayout.LayoutParams
+                    params.topToBottom = binding.topInfoMaterialCardView.id
+                    binding.recyclerView.requestLayout()
+
+                    recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
+
+
+                    binding.userNameTextView.text = user.name
+                    binding.moneyTextView.text = user.money.toString()
+                }
+            }
+        })
+    }
+
+    private fun EpoxyController.renderParentTasks(gifts: List<GiftModel>) {
+
+        gifts.forEach { giftModel ->
             when (giftModel.isAgree) {
                 true -> giftCardViewHolder {
                     id(giftModel.id)
@@ -63,36 +135,17 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                     onClickListeners(buttonsUnagree)
                 }
             }
-
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.onAsync(GiftState::user, onSuccess = { user ->
-            if (user is Child) {
-
-                binding.userNameTextView.text = user.name
-                binding.moneyTextView.text = user.money.toString()
+    private fun EpoxyController.renderChildTasks(gifts: List<GiftModel>) {
+        gifts.forEach { giftModel ->
+            giftCardChildViewHolder {
+                id(giftModel.id)
+                gift(giftModel)
+                onClickListeners(buttonsOpen)
             }
-        })
-
-//        recyclerView.layoutManager = GridLayoutManager(context, NUMBER_OF_COLUMNS)
-
-        binding.needToBeDoneCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(
-                binding.needToBeDoneCheckbox.isChecked,
-                binding.needAgreementCheckbox.isChecked
-            )
         }
-
-        binding.needAgreementCheckbox.setOnCheckedChangeListener { _, _ ->
-            viewModel.filterGifts(
-                binding.needToBeDoneCheckbox.isChecked,
-                binding.needAgreementCheckbox.isChecked
-            )
-        }
-
     }
 }
+

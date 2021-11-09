@@ -5,6 +5,8 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.example.sbaby.GiftModel
 import com.example.sbaby.R
 import com.example.sbaby.ViewBindingEpoxyModelWithHolder
+import com.example.sbaby.databinding.ChildGiftAddItemBinding
+import com.example.sbaby.databinding.ChildGiftItemBinding
 import com.example.sbaby.databinding.ParentGiftItemBinding
 import com.example.sbaby.databinding.ParentGiftUnagreeItemBinding
 
@@ -58,5 +60,44 @@ abstract class GiftCardUnagreeViewHolder : ViewBindingEpoxyModelWithHolder<Paren
         fun agreeButtonOnclick(id: String)
         fun editButtonOnclick(id: String)
         fun disagreeButtonOnclick(id: String)
+    }
+}
+
+@EpoxyModelClass(layout = R.layout.child_gift_item)
+abstract class GiftCardChildViewHolder : ViewBindingEpoxyModelWithHolder<ChildGiftItemBinding>() {
+
+    @EpoxyAttribute
+    lateinit var gift: GiftModel
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    open lateinit var onClickListeners: buttonsOnclick
+
+    override fun ChildGiftItemBinding.bind() {
+        giftTitleText.text = gift.title
+        moneyText.text = "${gift.price}$"
+        giftInfoCard.setOnClickListener{
+            onClickListeners.openButtonOnclick(gift.id)
+        }
+    }
+
+    interface buttonsOnclick {
+        fun openButtonOnclick(id: String)
+    }
+}
+
+@EpoxyModelClass(layout = R.layout.child_gift_add_item)
+abstract class GiftCardChildAddViewHolder : ViewBindingEpoxyModelWithHolder<ChildGiftAddItemBinding>() {
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    open lateinit var onClickListeners: buttonsOnclick
+
+    override fun ChildGiftAddItemBinding.bind() {
+        giftInfoCard.setOnClickListener{
+            onClickListeners.createButtonOnclick("CREATE NEW GIFT")
+        }
+    }
+
+    interface buttonsOnclick {
+        fun createButtonOnclick(id: String)
     }
 }

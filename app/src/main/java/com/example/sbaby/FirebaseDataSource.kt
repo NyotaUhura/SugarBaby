@@ -7,6 +7,7 @@ import kotlin.coroutines.resume
 
 //id for current user coz dont have authentication
 val userId = "jvJztwD5bN7K5Xbmq9I6"
+//val userId = "ZOnCcabgU3PlVTRcWxrM"
 
 class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     companion object {
