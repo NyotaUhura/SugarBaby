@@ -17,7 +17,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
 
     private var user: User? = null
     private lateinit var family: Family
-    private var gifts: List<GiftModel> = listOf()
+    private var gifts: MutableList<GiftModel> = mutableListOf()
 
     suspend fun getUser(): User? {
         if (user == null) {
@@ -63,6 +63,28 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         return if (res is Result.Success) res.data
         else false
     }
+
+    suspend fun updateGift(gift: GiftModel): List<GiftModel> {
+        val oldGift = gifts.firstOrNull { it.id == gift.id }
+        if (oldGift != null) {
+            val newList = gifts.map {
+                if (it.id == gift.id) gift
+                else it
+            }
+            gifts = newList.toMutableList()
+        } else {
+            gifts.add(gift)
+        }
+        addGiftDoc(gift)
+        return gifts.toList()
+    }
+
+    private suspend fun addGiftDoc(gift: GiftModel) =
+        suspendCancellableCoroutine<Result<Boolean>> { con ->
+            fireStore.collection(GIFTS_COLLECTION).document(gift.id).set(gift)
+                .addOnSuccessListener { con.resume(Result.Success(true)) }
+                .addOnFailureListener { con.resume(Result.Error(it)) }
+        }
 
     private suspend fun saveTaskToDB(id: String, data: Map<String, Any>) =
         suspendCancellableCoroutine<Result<Boolean>> { con ->
