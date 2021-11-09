@@ -72,7 +72,6 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
 
         }
 
-
     private suspend fun loadGiftList() {
         if (user == null) return
         val ids = mutableListOf<String>()
