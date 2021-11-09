@@ -38,6 +38,33 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         return family
     }
 
+    suspend fun saveUser(user: User): Boolean {
+        val res = saveTaskToDB(user)
+        return if (res is Result.Success) res.data
+        else false
+    }
+
+    private suspend fun saveTaskToDB(user: User) =
+        suspendCancellableCoroutine<Result<Boolean>> { con ->
+            val map = when (user) {
+                is Child -> {
+                    mapOf(
+                        "money" to user.money,
+                        "process" to user.process,
+                        "taskList" to user.taskList.map { it.mapToFirebaseModel() }
+                    )
+                }
+                else -> {
+                    mapOf<String, Any>()
+                }
+            }
+
+            fireStore.collection(USERS_COLLECTION).document(user.id).update(map)
+                .addOnSuccessListener { con.resume(Result.Success(true)) }
+                .addOnFailureListener { con.resume(Result.Error(it)) }
+
+        }
+
     private suspend fun loadGiftList() {
         if (user == null) return
         val ids = mutableListOf<String>()
@@ -102,14 +129,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
         val firebaseUserRes = loadUserDoc(userId)
         if (firebaseUserRes is Result.Success) {
             val userModel = when (firebaseUserRes.data) {
-                is ChildFirebaseModel -> firebaseUserRes.data.toChildModel()
+                is ChildFirebaseModel -> firebaseUserRes.data.mapToChildModel()
                 is ParentFirebaseModel -> {
                     val children = mutableListOf<Child>()
                     firebaseUserRes.data.childList.forEach { ref ->
                         val childRes = loadUserByRef(ref)
                         if (childRes is Result.Success) {
                             if (childRes.data is ChildFirebaseModel) {
-                                children.add(childRes.data.toChildModel())
+                                children.add(childRes.data.mapToChildModel())
                             }
                         }
                     }

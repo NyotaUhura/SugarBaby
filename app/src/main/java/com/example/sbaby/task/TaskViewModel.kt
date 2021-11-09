@@ -15,7 +15,7 @@ data class TaskState(
 
 class TaskViewModel(
     initialState: TaskState,
-    private val taskRepository: FirebaseDataSource,
+    private val firebaseDataSource: FirebaseDataSource,
 ) : MavericksViewModel<TaskState>(initialState) {
 
     init {
@@ -25,25 +25,41 @@ class TaskViewModel(
     fun changeUndoneTaskStatus(id: String) {
         withState { state: TaskState ->
             val taskList = state.taskList.invoke() ?: return@withState
-            val childUser = state.user.invoke() ?: return@withState
-
-            when (childUser) {
+            val user = state.user.invoke() ?: return@withState
+            val newTask = taskList.first { it.id == id }.copy(
+                status = DONE(Date().time)
+            )
+            when (user) {
                 is Child -> {
-                    val newTaskList = mutableListOf<TaskModel>()
-                    taskList.forEach {
-                        if (it.id.equals(id)) {
-                            val newUser = childUser.copy(
-                                money = childUser.money + it.profit,
-                                process = childUser.process + it.profit
-                            )
-                            newTaskList.add(it.copy(status = DONE(Date().time)))
-                            setState { copy(user = Success(newUser)) }
+                    val newTaskList = taskList.map {
+                        if (it.id == id) {
+                            newTask
                         } else {
-                            newTaskList.add(it)
+                            it
                         }
                     }
-                    setState { copy(taskList = Success(newTaskList)) }
+                    val newUser = user.copy(
+                        taskList = newTaskList,
+                        money = user.money + newTask.profit,
+                        process = user.process + newTask.profit
+                    )
+                    updateUser(newUser)
                 }
+            }
+        }
+    }
+
+    private fun updateUser(user: User) {
+        viewModelScope.launch {
+            val res = firebaseDataSource.saveUser(user)
+            if (res) {
+                val taskList = when (user) {
+                    is Child -> user.taskList
+                    // TODO: 09.11.2021 Rebase logic
+                    is Parent -> user.childList[0].taskList
+                    else -> throw IllegalAccessError()
+                }
+                setState { copy(user = Success(user), taskList = Success(taskList)) }
             }
         }
     }
@@ -110,9 +126,9 @@ class TaskViewModel(
             setState {
                 copy(user = Loading(), taskList = Loading(), family = Loading())
             }
-            val user = taskRepository.getUser()
+            val user = firebaseDataSource.getUser()
             if (user != null) {
-                val family = taskRepository.getFamily(user.familyId)
+                val family = firebaseDataSource.getFamily(user.familyId)
                 setState {
                     copy(user = Success(user), family = Success(family))
                 }
