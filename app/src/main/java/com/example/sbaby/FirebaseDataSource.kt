@@ -39,21 +39,25 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
     }
 
     suspend fun saveUser(user: User): Boolean {
-        val data = if (user is Child) {
-            mapOf(
-                "level" to user.level,
-                "gifts" to user.gifts,
-                "photo" to user.photo,
-                "money" to user.money,
-                "process" to user.process,
-                "taskList" to user.taskList.map { it.mapToFirebaseModel() }
-            )
-        } else if (user is Parent) {
-            mapOf(
-                "photo" to user.photo
-            )
-        } else {
-            throw IllegalAccessException()
+        val data = when (user) {
+            is Child -> {
+                mapOf(
+                    "level" to user.level,
+                    "gifts" to user.gifts,
+                    "photo" to user.photo,
+                    "money" to user.money,
+                    "process" to user.process,
+                    "taskList" to user.taskList.map { it.mapToFirebaseModel() }
+                )
+            }
+            is Parent -> {
+                mapOf(
+                    "photo" to user.photo
+                )
+            }
+            else -> {
+                throw IllegalAccessException()
+            }
         }
         val res = saveTaskToDB(user.id, data)
         return if (res is Result.Success) res.data
