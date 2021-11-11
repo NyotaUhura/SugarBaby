@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/child"
+            android:id="@+id/child_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
@@ -72,8 +72,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:paddingStart="10dp"
             android:background="@color/white"
-            android:hint="Code:"
+            android:hint="@string/code"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,7 +92,7 @@
         android:layout_marginTop="375dp"
         android:backgroundTint="@color/red"
         android:textColor="@color/custom_white"
-        tools:text="Log In"
+        tools:text="@string/login_in"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

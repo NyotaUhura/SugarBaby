@@ -1,8 +1,10 @@
 package com.example.sbaby
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.sbaby.auth.AuthActivity
 import com.example.sbaby.gift.GiftFragment
 import com.example.sbaby.task.TaskFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         actionBar?.hide()
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bindNavigationBar()
+        startActivity(Intent(applicationContext, AuthActivity::class.java))
+
     }
 
     private fun bindNavigationBar() {
