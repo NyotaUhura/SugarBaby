@@ -1,5 +1,6 @@
 package com.example.sbaby.epoxy.viewholders.gift
 
+import android.graphics.Color
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.example.sbaby.GiftModel
@@ -73,11 +74,25 @@ abstract class GiftCardChildViewHolder : ViewBindingEpoxyModelWithHolder<ChildGi
     open lateinit var onClickListeners: buttonsOnclick
 
     override fun ChildGiftItemBinding.bind() {
+        val colors = arrayOf(Color.GREEN, Color.GRAY, Color.BLUE,Color.MAGENTA)
+        giftInfoCard.setCardBackgroundColor(colors[getHashOfString(gift.title) % colors.size])
+
+
         giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
         giftInfoCard.setOnClickListener{
             onClickListeners.openButtonOnclick(gift.id)
         }
+    }
+
+    fun getHashOfString(string: String): Int {
+        var res = 0
+
+        string.forEach { char ->
+            res += char.code
+        }
+
+        return res
     }
 
     interface buttonsOnclick {
@@ -92,6 +107,8 @@ abstract class GiftCardChildAddViewHolder : ViewBindingEpoxyModelWithHolder<Chil
     open lateinit var onClickListeners: buttonsOnclick
 
     override fun ChildGiftAddItemBinding.bind() {
+        plusTextView.text = "+"
+        moneyText.text = "New idea"
         giftInfoCard.setOnClickListener{
             onClickListeners.createButtonOnclick("CREATE NEW GIFT")
         }

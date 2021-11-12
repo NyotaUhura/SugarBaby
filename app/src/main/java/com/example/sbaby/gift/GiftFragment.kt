@@ -75,8 +75,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                 is Child -> {
                     giftCardChildAddViewHolder {
                         id("plus")
-                        onClickListeners(buttonsCreate)
-                    }
+                        onClickListeners(buttonsCreate) }
                     renderChildTasks(gifts)
                 }
             }
