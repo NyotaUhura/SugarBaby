@@ -5,13 +5,16 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.sbaby.auth.AuthActivity
+import com.example.sbaby.auth.FirebaseAuthManager
 import com.example.sbaby.gift.GiftFragment
 import com.example.sbaby.task.TaskFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.android.ext.android.getKoin
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
+    private val authManager: FirebaseAuthManager by getKoin().inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +23,7 @@ class MainActivity : AppCompatActivity() {
         actionBar?.hide()
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bindNavigationBar()
-        startActivity(Intent(applicationContext, AuthActivity::class.java))
-
+        if (!authManager.isLoginIn()) startActivity(Intent(applicationContext, AuthActivity::class.java))
     }
 
     private fun bindNavigationBar() {

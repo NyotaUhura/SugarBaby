@@ -20,4 +20,7 @@
     <string name="i_m_a_parent">I`m a parent</string>
     <string name="code">Code:</string>
     <string name="login_in">Log In</string>
+    <string name="sing_up">Sing up</string>
+    <string name="sing_in_succ_mes">You are in!</string>
+    <string name="passwords_not_match">Password doest not match</string>
 </resources>
