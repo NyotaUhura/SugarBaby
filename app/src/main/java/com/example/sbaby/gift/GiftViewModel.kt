@@ -1,5 +1,7 @@
 package com.example.sbaby.gift
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import kotlinx.coroutines.launch
@@ -48,6 +50,19 @@ class GiftViewModel(
         }
     }
 
+
+    fun getTitle(id: String){
+        withState { state: GiftState ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val newGiftList = giftList.filter { gift ->
+                gift.id != id
+            }
+            // TODO: DELETE FROM DB
+            // TODO: MINUS COINS FROM CHILD
+
+            setState { copy(giftList = Success(newGiftList)) }
+        }
+    }
 
     fun changeCheckGiftStatus(id: String) {
         withState { state: GiftState ->

@@ -5,16 +5,20 @@ import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.gift.*
+import org.koin.android.ext.android.get
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
@@ -57,7 +61,9 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private val buttonsCreate: GiftCardChildAddViewHolder.buttonsOnclick =
         object : GiftCardChildAddViewHolder.buttonsOnclick {
             override fun createButtonOnclick(id: String) {
-                //TODO: Open dialog window to add
+                val createGiftFragment = CreateGiftDialogFragment()
+                val manager = childFragmentManager
+                createGiftFragment.show(manager, "")
             }
         }
 
@@ -85,7 +91,6 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.onAsync(GiftState::user, onSuccess = { user ->
             when (user) {
                 is Parent -> {
