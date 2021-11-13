@@ -1,7 +1,6 @@
 package com.example.sbaby.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
@@ -58,8 +57,7 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
             when (result) {
                 is Result.Success -> {
                     Snackbar.make(requireView(), getString(R.string.sing_in_succ_mes), 2000).show()
-                    Log.d("FailAuth", authManager.getUserID().toString())
-                    activity?.finish()
+                    (activity as AuthActivity).finishAuth()
                 }
                 is Result.Error -> {
                     val error = result.exception.localizedMessage ?: "Something is wrong"

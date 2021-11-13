@@ -1,7 +1,9 @@
 package com.example.sbaby
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.sbaby.auth.AuthActivity
@@ -22,8 +24,16 @@ class MainActivity : AppCompatActivity() {
         val actionBar: androidx.appcompat.app.ActionBar? = getSupportActionBar()
         actionBar?.hide()
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        bindNavigationBar()
-        if (!authManager.isLoginIn()) startActivity(Intent(applicationContext, AuthActivity::class.java))
+        if (!authManager.isLoginIn()) {
+            val content = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    bindNavigationBar()
+                }
+            }
+            content.launch(Intent(applicationContext, AuthActivity::class.java))
+        } else {
+            bindNavigationBar()
+        }
     }
 
     private fun bindNavigationBar() {

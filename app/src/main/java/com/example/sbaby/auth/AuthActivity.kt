@@ -1,5 +1,6 @@
 package com.example.sbaby.auth
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
@@ -26,5 +27,10 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
             setReorderingAllowed(true)
             add<AuthRoleSelectionFragment>(R.id.fragment_container)
         }
+    }
+
+    fun finishAuth() {
+        this.setResult(Activity.RESULT_OK)
+        this.finish()
     }
 }

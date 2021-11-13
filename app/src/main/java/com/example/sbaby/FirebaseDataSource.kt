@@ -1,14 +1,15 @@
 package com.example.sbaby
 
+import com.example.sbaby.auth.FirebaseAuthManager
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 //id for current user coz dont have authentication
-val userId = "jvJztwD5bN7K5Xbmq9I6"
+//val userId = "jvJztwD5bN7K5Xbmq9I6"
 
-class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
+class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val authManager: FirebaseAuthManager) {
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val FAMILIES_COLLECTION = "families"
@@ -21,6 +22,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore) {
 
     suspend fun getUser(): User? {
         if (user == null) {
+            val userId = authManager.getUserID() ?: return null
             loadUser(userId)
         }
         return user

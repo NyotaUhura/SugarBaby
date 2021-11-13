@@ -2,6 +2,9 @@ package com.example.sbaby
 
 import com.google.firebase.firestore.DocumentReference
 
+private const val defaultPhoto =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Orange_question_mark.svg/1200px-Orange_question_mark.svg.png"
+
 data class Family(
     val id: String = "",
     val surname: String = "",
@@ -26,9 +29,9 @@ data class Parent(
 
 data class ParentFirebaseModel(
     val id: String = "",
-    val name: String = "",
+    val name: String = "No name",
     val familyId: String = "",
-    val photo: String = "",
+    val photo: String = defaultPhoto,
     var childList: List<DocumentReference> = listOf()
 ) : UserFirebase() {
     fun toParentModel(children: List<Child>): Parent {
@@ -45,9 +48,9 @@ data class ParentFirebaseModel(
 data class ChildFirebaseModel(
     val id: String = "",
     val familyId: String = "",
-    val name: String = "",
+    val name: String = "No name",
     var money: Int = 0,
-    val photo: String = "",
+    val photo: String = defaultPhoto,
     val process: Int = 0,
     val level: Int = 0,
     val taskList: List<TaskFirebaseModel> = listOf(),

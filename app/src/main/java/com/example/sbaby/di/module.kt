@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val module = module {
     val db = Firebase.firestore
-    single { FirebaseDataSource(db) }
+    single { FirebaseDataSource(db, get()) }
     single { Firebase.auth }
     single { FirebaseAuthManager(get()) }
 }
