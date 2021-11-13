@@ -21,19 +21,25 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val actionBar: androidx.appcompat.app.ActionBar? = getSupportActionBar()
+        val actionBar: androidx.appcompat.app.ActionBar? = supportActionBar
         actionBar?.hide()
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+
         if (!authManager.isLoginIn()) {
-            val content = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    bindNavigationBar()
-                }
-            }
-            content.launch(Intent(applicationContext, AuthActivity::class.java))
+            startAuthActivity()
         } else {
             bindNavigationBar()
         }
+    }
+
+    private fun startAuthActivity() {
+        val content = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                bindNavigationBar()
+            }
+        }
+        content.launch(Intent(applicationContext, AuthActivity::class.java))
     }
 
     private fun bindNavigationBar() {
