@@ -57,7 +57,7 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
             when (result) {
                 is Result.Success -> {
                     Snackbar.make(requireView(), getString(R.string.sing_in_succ_mes), 2000).show()
-                    (activity as AuthActivity).finishAuth()
+                    (activity as AuthActivity).finishAuth(true)
                 }
                 is Result.Error -> {
                     val error = result.exception.localizedMessage ?: "Something is wrong"

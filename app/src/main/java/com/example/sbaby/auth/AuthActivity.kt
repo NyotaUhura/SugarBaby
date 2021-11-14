@@ -1,6 +1,8 @@
 package com.example.sbaby.auth
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
@@ -29,8 +31,11 @@ class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
         }
     }
 
-    fun finishAuth() {
-        this.setResult(Activity.RESULT_OK)
+    fun finishAuth(isParent: Boolean) {
+        val data = Intent().apply {
+            data = Uri.parse(isParent.toString())
+        }
+        this.setResult(Activity.RESULT_OK, data)
         this.finish()
     }
 }

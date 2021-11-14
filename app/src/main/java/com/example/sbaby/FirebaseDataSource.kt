@@ -1,9 +1,11 @@
 package com.example.sbaby
 
+import android.util.Log
 import com.example.sbaby.auth.FirebaseAuthManager
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.*
 import kotlin.coroutines.resume
 
 //id for current user coz dont have authentication
@@ -38,6 +40,46 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             loadFamily(id)
         }
         return family
+    }
+
+    suspend fun saveMockUser(userId: String, isParent: Boolean, familyId: String?): Boolean {
+        val data = when (isParent) {
+            true -> {
+                val user = ParentFirebaseModel()
+                var familyIdSafe = familyId
+                if (familyIdSafe == null) {
+                    val id = UUID.randomUUID()
+                    val familyRes = createFamily(id.toString())
+                    when (familyRes) {
+                        is Result.Success -> {
+                            familyIdSafe = id.toString()
+                        }
+                        is Result.Error -> {
+                            return false
+                        }
+                    }
+                }
+                mapOf(
+                    "name" to user.name,
+                    "photo" to user.photo,
+                    "familyId" to familyIdSafe!!
+                )
+            }
+            false -> {
+                val user = ChildFirebaseModel()
+                mapOf(
+                    "level" to user.level,
+                    "gifts" to user.gifts,
+                    "photo" to user.photo,
+                    "money" to user.money,
+                    "process" to user.process,
+                    "familyId" to user.familyId
+                )
+            }
+        }
+        val res = createUser(userId, data)
+        return if (res is Result.Success) res.data
+        else false
     }
 
     suspend fun saveUser(user: User): Boolean {
@@ -79,6 +121,28 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         }
         addGiftDoc(gift)
         return gifts.toList()
+    }
+
+    private suspend fun createUser(id: String, data: Map<String, Any>) =
+        suspendCancellableCoroutine<Result<Boolean>> { con ->
+            fireStore.collection(USERS_COLLECTION).document(id).set(data)
+                .addOnSuccessListener { con.resume(Result.Success(true)) }
+                .addOnFailureListener { con.resume(Result.Error(it)) }
+        }
+
+    suspend fun createFamily(id: String) = suspendCancellableCoroutine<Result<Boolean>> { con ->
+        val mockData = mapOf<String, Any>(
+            "isPremium" to false,
+            "childs" to listOf<DocumentReference>(),
+            "surname" to "undefined"
+        )
+        fireStore.collection(FAMILIES_COLLECTION).document(id).set(mockData)
+            .addOnSuccessListener {
+                con.resume(Result.Success(true))
+            }
+            .addOnFailureListener {
+                con.resume(Result.Error(it))
+            }
     }
 
     private suspend fun addGiftDoc(gift: GiftModel) =
@@ -199,7 +263,29 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
 
     private suspend fun loadUserDoc(userId: String) =
         suspendCancellableCoroutine<Result<UserFirebase>> { con ->
-            fireStore.collection(USERS_COLLECTION).get()
+            fireStore.collection(USERS_COLLECTION).document(userId).get()
+                .addOnSuccessListener { doc ->
+                    if (doc.data != null) {
+                        val isParent = doc.getBoolean("isParent") ?: false
+                        val user = if (!isParent) {
+                            doc.toObject(ChildFirebaseModel::class.java)?.copy(id = doc.id)
+                        } else {
+                            doc.toObject(ParentFirebaseModel::class.java)?.copy(id = doc.id)
+                        }
+                        if (user != null) {
+                            con.resume(Result.Success(user))
+                        } else {
+                            con.resume(Result.Error(NullPointerException()))
+                        }
+                    } else {
+                        //saveUserMock()
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("FailAuth", it.message.toString())
+                    con.resume(Result.Error(it))
+                }
+            /*fireStore.collection(USERS_COLLECTION).get()
                 .addOnSuccessListener { snapShot ->
                     snapShot.documents.forEach { doc ->
                         if (doc.id == userId) {
@@ -218,7 +304,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                     }
                 }
                 .addOnFailureListener {
-                    con.resume(Result.Error(NullPointerException()))
-                }
+                    Log.d("FailAuth", it.message.toString())
+                    con.resume(Result.Error(it))
+                }*/
         }
 }
