@@ -43,6 +43,7 @@ class AuthParentSingUpFragment : Fragment(R.layout.fragment_sign_up) {
                                 val res = saveUser(result.data, familyId)
                                 if (res) {
                                     Snackbar.make(requireView(), "Done", 2000).show()
+                                    // TODO: 14.11.2021 Provide next screens
                                 } else {
                                     Snackbar.make(requireView(), "Something is wrong", 2000).show()
                                 }
