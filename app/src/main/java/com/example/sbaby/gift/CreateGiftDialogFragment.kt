@@ -15,7 +15,6 @@ import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.example.sbaby.Child
-import com.example.sbaby.MvRxDialogFragment
 import com.example.sbaby.Parent
 import com.example.sbaby.R
 import com.example.sbaby.databinding.FragmentGiftBinding
