@@ -66,6 +66,8 @@
                 android:id="@+id/need_to_be_done_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+
+                android:visibility="invisible"
                 android:checked="true"
                 android:text="Need to be done"
                 app:layout_constraintEnd_toStartOf="@+id/need_agreement_checkbox"
@@ -76,6 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
+                android:visibility="invisible"
                 android:checked="true"
                 android:text="Need Agreement"
                 app:layout_constraintEnd_toEndOf="parent"
