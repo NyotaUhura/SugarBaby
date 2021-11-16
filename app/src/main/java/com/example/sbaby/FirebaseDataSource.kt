@@ -63,12 +63,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 mapOf(
                     "name" to user.name,
                     "photo" to user.photo,
+                    "isParent" to true,
                     "familyId" to familyIdSafe!!
                 )
             }
             false -> {
                 val user = ChildFirebaseModel()
                 mapOf(
+                    "isParent" to false,
                     "level" to user.level,
                     "gifts" to user.gifts,
                     "photo" to user.photo,
