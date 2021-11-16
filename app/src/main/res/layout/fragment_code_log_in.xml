@@ -1,128 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_brown">
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/top"
-        android:layout_width="411dp"
-        android:layout_height="215dp"
-        android:layout_marginTop="-15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/yellow"
-        app:cardCornerRadius="@dimen/corner_radius"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media">
 
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/ic_share"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/child_button"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="60dp"
-            android:textColor="@color/black"
-            style="@style/TextTaskTitle"
-            tools:text="Child"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/top_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
-            android:layout_marginHorizontal="30dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            tools:text="Welcome to SBaby!"
-            style="@style/TextTaskTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/parent_text_view"
+                style="@style/LargeTitle"
+                android:layout_marginLeft="20dp"
+                android:text="@string/child"
+                app:layout_constraintBottom_toBottomOf="@id/back"
+                app:layout_constraintStart_toEndOf="@id/back"
+                app:layout_constraintTop_toTopOf="@id/back" />
+
+            <TextView
+                android:id="@+id/top_info"
+                style="@style/LargeTitle"
+                android:layout_marginRight="30dp"
+                android:paddingVertical="27dp"
+                android:text="@string/weclome_to_sbaby"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/parent_text_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/code"
-        android:layout_width="313dp"
-        android:layout_height="49dp"
-        android:layout_marginLeft="49dp"
-        android:layout_marginTop="292dp"
-        app:cardBackgroundColor="@color/yellow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="75dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toEndOf="@id/top"
+        app:layout_constraintTop_toBottomOf="@id/top">
 
         <EditText
             android:id="@+id/code_enter_field"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="15dp"
+            android:background="@android:color/transparent"
+            android:hint="Code:"
+            android:imeOptions="actionDone"
             android:paddingStart="10dp"
-            android:background="@color/white"
-            android:hint="@string/code"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:singleLine="true" />
 
     </androidx.cardview.widget.CardView>
 
 
     <Button
         android:id="@+id/log_in"
+        style="@style/RedHugeButtonStyle"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="50dp"
+        android:minHeight="70dp"
+        android:text="@string/login_in"
         app:cornerRadius="@dimen/corner_radius"
-        android:layout_width="272dp"
-        android:layout_height="63dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="375dp"
-        android:backgroundTint="@color/red"
-        android:textColor="@color/custom_white"
-        tools:text="@string/login_in"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/code"
+        app:layout_constraintTop_toBottomOf="@id/code" />
 
 
     <TextView
         android:id="@+id/task_body_text"
-        style="@style/TextTaskBody"
-        android:layout_width="196dp"
-        android:layout_height="21dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="108dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="560dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Your parents do not have this app?" />
+        style="@style/TextDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/parents_invitation"
+        app:layout_constraintBottom_toTopOf="@id/sign_up"
+        app:layout_constraintLeft_toLeftOf="@id/sign_up"
+        app:layout_constraintRight_toRightOf="@id/sign_up" />
 
     <Button
         android:id="@+id/sign_up"
-        app:cornerRadius="@dimen/corner_radius"
-        android:layout_width="308dp"
-        android:layout_height="58dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="49dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="599dp"
+        style="@style/RedHugeButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/light_blue"
+        android:text="Send invitation"
         android:textColor="@color/custom_white"
-        tools:text="Add one more"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

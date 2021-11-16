@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.SBaby" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.SBaby" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow</item>
         <item name="colorPrimaryVariant">@color/yellow</item>
@@ -39,6 +39,16 @@
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
+    <style name="RedHugeButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">@color/red</item>
+        <item name="android:textColor">@color/custom_white</item>
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="textAllCaps">false</item>
+    </style>
     <style name="TextTaskTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -121,6 +131,22 @@
         <item name="fontFamily">@font/roboto</item>
     </style>
 
+    <style name="LargeTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/custom_black</item>
+        <item name="fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="MediumTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">28sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/custom_black</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
     <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
         <item name="cardBackgroundColor">@color/yellow</item>
         <item name="cornerSizeBottomLeft">20dp</item>
