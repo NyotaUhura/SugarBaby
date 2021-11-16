@@ -1,135 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/light_brown">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/top"
-        android:layout_marginTop="-15dp"
-        android:layout_width="411dp"
-        android:layout_height="353dp"
-        app:cardBackgroundColor="@color/yellow"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+       android:id="@+id/top"
+       android:layout_width="match_parent"
+       android:layout_height="200dp"
+       android:layout_marginTop="-20dp"
+       android:backgroundTint="@color/yellow"
+       app:cardElevation="-1dp"
+       app:cardCornerRadius="@dimen/corner_radius"
+       app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/welcome"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="60dp"
-            android:textColor="@color/black"
-            style="@style/TextTaskTitle"
-            tools:text="Welcome to SBaby!"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="200dp"
-            android:layout_marginHorizontal="30dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            tools:text="This app is ideal for kids and parents who want to interact and complete tasks in a playful way" />
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/child"
-        android:layout_width="332dp"
-        android:layout_height="78dp"
-        android:layout_marginLeft="38dp"
-        android:layout_marginTop="412dp"
-        app:cardBackgroundColor="@color/brown"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/child_button"
+            <TextView
+                android:id="@+id/welcome"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginTop="12dp">
+                android:layout_height="40dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="50dp"
+                android:textColor="@color/black"
+                android:textSize="34sp"
+                tools:text="@string/welcome" />
 
-                <Button
-                    android:id="@+id/child_text"
-                    android:layout_width="191dp"
-                    android:layout_height="63dp"
-                    android:layout_marginLeft="108dp"
-                    android:layout_marginTop="571dp"
-                    android:textColor="@color/custom_white"
-                    tools:text="I'm a child"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/child_done_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="100dp"
-                    android:layout_marginStart="250dp"
-                    android:background="@drawable/ic_edit_task"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginStart="68dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="24dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                tools:text="@string/role_selection_info" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/parent"
-        android:layout_width="332dp"
-        android:layout_height="78dp"
-        android:layout_marginLeft="38dp"
-        android:layout_marginTop="547dp"
-        app:cardBackgroundColor="@color/brown"
-        app:cardCornerRadius="@dimen/corner_radius"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/child_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="#D5C7AA"
+        android:drawableEnd="@drawable/ic_blue_arrow"
+        android:text="@string/i_m_a_child"
+        android:textAllCaps="false"
+        android:textSize="26sp"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/top" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/parent_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="12dp">
-
-            <Button
-                android:id="@+id/parent_text"
-                android:layout_width="191dp"
-                android:layout_height="63dp"
-                android:layout_marginLeft="108dp"
-                android:layout_marginTop="571dp"
-                android:textColor="@color/custom_white"
-                tools:text="I'm a child"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/parent_done_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="100dp"
-                android:layout_marginStart="250dp"
-                android:background="@drawable/ic_edit_task"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/parent_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="#D5C7AA"
+        android:drawableEnd="@drawable/ic_blue_arrow"
+        android:text="@string/i_m_a_parent"
+        android:textAllCaps="false"
+        android:textSize="26sp"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/child_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

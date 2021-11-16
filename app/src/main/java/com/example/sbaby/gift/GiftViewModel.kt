@@ -48,7 +48,6 @@ class GiftViewModel(
         }
     }
 
-
     fun changeCheckGiftStatus(id: String) {
         withState { state: GiftState ->
             val giftList = state.giftList.invoke() ?: return@withState
