@@ -90,6 +90,12 @@ class TaskViewModel(
             setState {
                 copy(taskList = Success(newList))
             }
+            viewModelScope.launch {
+                val newUser = user.copy(level = 10)
+                val res = firebaseDataSource.saveUser(user)
+                if (res) setState { copy(user = Success(newUser)) }
+            }
+
         }
     }
 

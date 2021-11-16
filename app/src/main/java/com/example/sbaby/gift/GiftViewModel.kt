@@ -50,7 +50,6 @@ class GiftViewModel(
         }
     }
 
-
     fun getTitle(id: String){
         withState { state: GiftState ->
             val giftList = state.giftList.invoke() ?: return@withState
