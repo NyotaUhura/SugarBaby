@@ -12,6 +12,11 @@ import com.example.sbaby.databinding.FragmentTaskBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.task.TaskCardViewHolder
 import com.example.sbaby.epoxy.viewholders.task.taskCardViewHolder
+import com.example.sbaby.gift.CreateGiftDialogFragment
+import com.example.sbaby.R
+
+
+
 
 class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
@@ -133,6 +138,11 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             doneCheckbox.visibility = View.GONE
             inProgressCheckbox.visibility = View.GONE
             changeButton.setBackgroundResource(R.drawable.ic_edit_photo)
+            changeButton.setOnClickListener {
+                val editProfileFragment = EditChildInfoDialogFragment()
+                val manager = childFragmentManager
+                editProfileFragment.show(manager, "")
+            }
         }
     }
 
