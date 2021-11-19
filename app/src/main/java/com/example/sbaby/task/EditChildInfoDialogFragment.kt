@@ -4,6 +4,8 @@ import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -25,7 +27,7 @@ class EditChildInfoDialogFragment : DialogFragment() {
     private var photo: String? = null
 
     companion object {
-        const val TAG = "CreateGiftFragment"
+        const val TAG = "EditChildInfoDialogFragment"
     }
 
     override fun onCreateView(
@@ -33,6 +35,7 @@ class EditChildInfoDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        getDialog()?.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return inflater.inflate(R.layout.card_edit_profile, container)
     }
 

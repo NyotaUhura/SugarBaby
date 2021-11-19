@@ -36,6 +36,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="minHeight">0dp</item>
         <item name="minWidth">0dp</item>
+        <item name="textAllCaps">false</item>
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
@@ -137,6 +138,13 @@
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/custom_black</item>
         <item name="fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="BuyPremiumText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">@font/roboto_light</item>
     </style>
 
     <style name="MediumTitle">

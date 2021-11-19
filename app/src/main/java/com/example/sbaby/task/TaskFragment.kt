@@ -56,10 +56,17 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
         viewModel.onEach { state ->
             val family = state.family.invoke() ?: return@onEach
             val user = state.user.invoke() ?: return@onEach
             binding.photoImageView.load(user.photo)
+            binding.premiumButton.setOnClickListener {
+                val dialog = PremiumDialogFragment()
+                val bundle = Bundle()
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+            }
             when (user) {
                 is Parent -> {
                     val currentChild = state.selectedChild.invoke()
@@ -162,7 +169,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             moneyTextView.text = child.money.toString()
             levelProcessBar.progress = viewModel.countProcessPercent(child)
             levelTextView.text =
-                getString(R.string.helper) + viewModel.countlevel(child) + getString(R.string.level)
+                getString(R.string.helper) + child.level + getString(R.string.level)
         }
     }
 }
