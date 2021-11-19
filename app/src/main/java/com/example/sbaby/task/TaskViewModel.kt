@@ -41,6 +41,7 @@ class TaskViewModel(
                     val newUser = user.copy(
                         taskList = newTaskList,
                         money = user.money + newTask.profit,
+                        level = ((user.process + newTask.profit) / 1000) + 1,
                         process = user.process + newTask.profit
                     )
                     updateUser(newUser)
@@ -62,10 +63,6 @@ class TaskViewModel(
                 setState { copy(user = Success(user), taskList = Success(taskList)) }
             }
         }
-    }
-
-    fun countlevel(user: Child): String {
-        return (user.process / 1000 + 1).toString()
     }
 
     fun countProcessPercent(user: Child): Int {

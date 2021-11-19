@@ -66,6 +66,7 @@
                 android:textSize="18sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:paddingLeft="5dp"
                 tools:text="1230" />
 
             <ImageView
@@ -145,6 +146,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:id="@+id/premium_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/red" />

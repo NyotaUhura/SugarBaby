@@ -28,4 +28,6 @@
     <string name="i_do_not_have_an_account">I do not have an account</string>
     <string name="child">Child</string>
     <string name="parents_invitation">Your parents do not have this app?</string>
+    <string name="premium">Premium</string>
+    <string name="add_free">add-free</string>
 </resources>
