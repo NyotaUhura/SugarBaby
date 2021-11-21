@@ -28,10 +28,10 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    updateUser()
                     val id = auth.currentUser?.uid
                     if (id != null) con.resume(Result.Success(id))
                     else con.resume(Result.Error(NullPointerException()))
+                    updateUser()
                 } else {
                     val error = task.exception ?: java.lang.NullPointerException()
                     con.resume(Result.Error(error))
