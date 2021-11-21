@@ -2,7 +2,9 @@ package com.example.sbaby
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -15,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -25,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val actionBar: androidx.appcompat.app.ActionBar? = supportActionBar
         actionBar?.hide()
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bindNavigationBar()
 
@@ -65,4 +67,20 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, fragment).commit()
         }
+
+    override fun onResume() {
+        super.onResume()
+        FullScreencall()
+    }
+
+    fun FullScreencall() {
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) {
+            val v = this.window.decorView
+            v.systemUiVisibility = View.GONE
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            val decorView = window.decorView
+            val uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            decorView.systemUiVisibility = uiOptions
+        }
+    }
 }

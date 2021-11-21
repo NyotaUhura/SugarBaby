@@ -1,5 +1,6 @@
 package com.example.sbaby.task
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -55,10 +56,17 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
         viewModel.onEach { state ->
             val family = state.family.invoke() ?: return@onEach
             val user = state.user.invoke() ?: return@onEach
             binding.photoImageView.load(user.photo)
+            binding.premiumButton.setOnClickListener {
+                val dialog = PremiumDialogFragment()
+                val bundle = Bundle()
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+            }
             when (user) {
                 is Parent -> {
                     val currentChild = state.selectedChild.invoke()
@@ -133,6 +141,25 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             doneCheckbox.visibility = View.GONE
             inProgressCheckbox.visibility = View.GONE
             changeButton.setBackgroundResource(R.drawable.ic_edit_photo)
+            changeButton.setOnClickListener {
+                val dialog = EditChildInfoDialogFragment()
+                val bundle = Bundle()
+                bundle.putString("name", user.name)
+                bundle.putString("photo", user.photo)
+                dialog.arguments = bundle
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+            }
+            shareButton.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    val textInfo =
+                        "Wow! I am " + user.process / 1000 + 1 + " level Helper. Download and check out how much fun it is! Help your parents to get gifts and make your dreams come true! \n https://github.com/NyotaUhura/SugarBaby/tree/develop"
+                    putExtra(Intent.EXTRA_TEXT, textInfo)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
         }
     }
 
@@ -142,7 +169,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             moneyTextView.text = child.money.toString()
             levelProcessBar.progress = viewModel.countProcessPercent(child)
             levelTextView.text =
-                getString(R.string.helper) + viewModel.countlevel(child) + getString(R.string.level)
+                getString(R.string.helper) + child.level + getString(R.string.level)
         }
     }
 }
