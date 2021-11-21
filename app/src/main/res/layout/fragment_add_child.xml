@@ -1,152 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible"
     android:background="@color/light_brown">
 
-    <androidx.cardview.widget.CardView
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fox_add_child"
+        app:layout_constraintRight_toRightOf="@id/message_card"
+        app:layout_constraintTop_toTopOf="@id/message_card"
+        android:layout_marginTop="-50dp"
+        android:layout_marginRight="-20dp"/>
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/top"
-        android:layout_marginTop="-15dp"
-        android:layout_width="411dp"
-        android:layout_height="215dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/yellow"
-        app:cardCornerRadius="@dimen/corner_radius"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="-1dp"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media">
 
-
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/ic_share"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/parent_button"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="60dp"
-            android:textColor="@color/black"
-            style="@style/TextTaskTitle"
-            tools:text="Parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/top_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
-            android:layout_marginHorizontal="30dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            tools:text="Congratulations, you’ve created your account. Now create an account for your family!"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/parent_text_view"
+                style="@style/LargeTitle"
+                android:layout_marginLeft="20dp"
+                android:text="@string/parent"
+                app:layout_constraintBottom_toBottomOf="@id/back_button"
+                app:layout_constraintStart_toEndOf="@id/back_button"
+                app:layout_constraintTop_toTopOf="@id/back_button" />
+
+            <TextView
+                android:id="@+id/top_info_text_view"
+                style="@style/TextLarge"
+                android:textColor="@color/custom_black"
+                android:text="Congratulations, you’ve created your account. Now create an account for your family!"
+                android:layout_marginTop="11dp"
+                android:paddingBottom="37dp"
+                android:paddingRight="25dp"
+                android:paddingLeft="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/parent_text_view" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/message"
-        android:layout_width="368dp"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="22dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="173dp"
+        app:cardElevation="-1dp"
+        android:id="@+id/message_card"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="22dp"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/red"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top"
+        android:layout_marginTop="-25dp"
+        app:cardCornerRadius="@dimen/corner_radius">
 
         <TextView
             android:id="@+id/message_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="173dp"
-            tools:textColor="@color/white"
-            tools:text="It's time to add children!"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginVertical="15dp"
+            android:layout_marginLeft="47dp"
+            android:layout_marginRight="130dp"
+            style="@style/MediumTitle"
+            android:textColor="@color/white"
+            android:text="@string/it_s_time_to_add_children" />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/first_child"
-        android:layout_width="122dp"
-        android:layout_height="33dp"
-        android:layout_marginLeft="145dp"
-        android:layout_marginTop="341dp"
-        android:textAlignment="center"
-        tools:text="First child"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/child_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="child"
+        android:textSize="26sp"
+        android:textColor="@color/custom_black"
+        android:fontFamily="@font/roboto"
+        app:layout_constraintTop_toBottomOf="@id/message_card"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/enter_field"
-        android:layout_width="313dp"
-        android:layout_height="49dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="56dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="389dp"
-        app:cardBackgroundColor="@color/yellow"
+        android:id="@+id/name_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="15dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/corner_radius"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/child_text_view">
 
         <EditText
-            android:id="@+id/name_enter_field"
+            android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="15dp"
+            android:background="@android:color/transparent"
             android:hint="Name:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:imeOptions="actionDone"
+            android:paddingStart="10dp"
+            android:singleLine="true" />
 
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/finish_button"
-        app:cornerRadius="@dimen/corner_radius"
-        android:layout_width="189dp"
-        android:layout_height="63dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="117dp"
-        android:layout_marginTop="463dp"
-        android:backgroundTint="@color/red"
-        android:textColor="@color/custom_white"
-        tools:text="Finish"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/RedHugeButtonStyle"
+        android:layout_marginHorizontal="110dp"
+        android:layout_marginTop="25dp"
+        android:minHeight="70dp"
+        app:layout_constraintTop_toBottomOf="@id/name_card"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/finish"/>
 
     <Button
-        android:id="@+id/add_more_children_button"
-        app:cornerRadius="@dimen/corner_radius"
-        android:layout_width="261dp"
-        android:layout_height="63dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="82dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="614dp"
+        android:id="@+id/add_more_button"
+        style="@style/LargeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="@color/brown"
-        android:textColor="@color/custom_white"
-        tools:text="Add one more"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:minHeight="70dp"
+        android:text="@string/add_one_more"
+        android:textColor="@color/white"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

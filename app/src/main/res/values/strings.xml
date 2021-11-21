@@ -30,4 +30,7 @@
     <string name="parents_invitation">Your parents do not have this app?</string>
     <string name="premium">Premium</string>
     <string name="add_free">add-free</string>
+    <string name="it_s_time_to_add_children">It\'s time to add children!</string>
+    <string name="add_one_more">Add one more</string>
+    <string name="finish">Finish</string>
 </resources>
