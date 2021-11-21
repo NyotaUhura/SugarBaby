@@ -2,6 +2,7 @@ package com.example.sbaby.task
 
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
+import com.example.sbaby.auth.FirebaseAuthManager
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -16,6 +17,7 @@ data class TaskState(
 class TaskViewModel(
     initialState: TaskState,
     private val firebaseDataSource: FirebaseDataSource,
+    private val authManager: FirebaseAuthManager
 ) : MavericksViewModel<TaskState>(initialState) {
 
     init {
@@ -202,7 +204,8 @@ class TaskViewModel(
 
         override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel {
             val rep: FirebaseDataSource by viewModelContext.activity.inject<FirebaseDataSource>()
-            return TaskViewModel(state, rep)
+            val authManager: FirebaseAuthManager by viewModelContext.activity.inject()
+            return TaskViewModel(state, rep, authManager)
         }
     }
 }

@@ -6,11 +6,13 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.sbaby.auth.AuthActivity
 import com.example.sbaby.auth.FirebaseAuthManager
 import com.example.sbaby.gift.GiftFragment
 import com.example.sbaby.task.TaskFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.getKoin
 
 class MainActivity : AppCompatActivity() {
@@ -25,11 +27,15 @@ class MainActivity : AppCompatActivity() {
         actionBar?.hide()
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bindNavigationBar()
 
-        if (!authManager.isLoginIn()) {
-            startAuthActivity()
-        } else {
-            bindNavigationBar()
+        lifecycleScope.launchWhenCreated {
+            authManager.firebaseUser.collect { user ->
+                if (user == null) {
+                    startActivity(Intent(this@MainActivity, AuthActivity::class.java))
+                    finish()
+                }
+            }
         }
     }
 
