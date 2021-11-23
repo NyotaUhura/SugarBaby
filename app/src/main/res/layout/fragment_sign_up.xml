@@ -103,11 +103,20 @@
                 android:singleLine="true"
                 android:inputType="textPassword"/>
             <ImageView
+                android:id="@+id/visible_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_visible"/>
+                android:src="@drawable/ic_visible"
+                android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/invisible_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_invisible"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -132,11 +141,21 @@
                 android:singleLine="true"
                 android:inputType="textPassword"/>
             <ImageView
+                android:id="@+id/visible_button1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_visible"/>
+                android:src="@drawable/ic_visible"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/invisible_button1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_invisible"/>
 
         </androidx.cardview.widget.CardView>
 

@@ -1,6 +1,8 @@
 package com.example.sbaby.auth
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
@@ -29,6 +31,20 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
             signUp.setOnClickListener {
                 parentFragmentManager.commit {
                     replace(R.id.fragment_container, AuthParentSingUpFragment())
+                }
+            }
+            invisibleButton.setOnClickListener {
+                if (invisibleButton.visibility == View.VISIBLE) {
+                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    invisibleButton.visibility = View.INVISIBLE
+                    visibleButton.visibility = View.VISIBLE
+                }
+            }
+            visibleButton.setOnClickListener {
+                if (visibleButton.visibility == View.VISIBLE) {
+                    passwordEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
+                    invisibleButton.visibility = View.VISIBLE
+                    visibleButton.visibility = View.INVISIBLE
                 }
             }
         }

@@ -142,7 +142,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             inProgressCheckbox.visibility = View.GONE
             changeButton.setBackgroundResource(R.drawable.ic_edit_photo)
             changeButton.setOnClickListener {
-                val dialog = EditChildInfoDialogFragment()
+                val dialog = EditChildInfoDialogFragment(edit)
                 val bundle = Bundle()
                 bundle.putString("name", user.name)
                 bundle.putString("photo", user.photo)
@@ -172,4 +172,15 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                 getString(R.string.helper) + child.level + getString(R.string.level)
         }
     }
+
+    interface editProfile {
+        fun editName(name: String)
+    }
+
+    private val edit: editProfile =
+        object : editProfile {
+            override fun editName(name: String) {
+                viewModel.changeName(name)
+            }
+        }
 }

@@ -8,9 +8,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.*
 import kotlin.coroutines.resume
 
-//id for current user coz dont have authentication
-val userId = "jvJztwD5bN7K5Xbmq9I6"
-//val userId = "ZOnCcabgU3PlVTRcWxrM"
+private const val defaultPhoto =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Orange_question_mark.svg/1200px-Orange_question_mark.svg.png"
+
 
 class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val authManager: FirebaseAuthManager) {
     companion object {
@@ -23,8 +23,9 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
     private lateinit var family: Family
     private var gifts: MutableList<GiftModel> = mutableListOf()
 
-    suspend fun getUser(): User? {
-        if (user == null) {
+    suspend fun getUser(isForced: Boolean = false): User? {
+        if (user == null || isForced) {
+            Log.e("isForcessssssssss", isForced.toString())
             val userId = authManager.getUserID() ?: return null
             loadUser(userId)
         }
@@ -41,6 +42,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             loadFamily(id)
         }
         return family
+    }
+
+    fun getRefChild(list: List<Child>): List<DocumentReference> {
+        val refList: MutableList<DocumentReference> = mutableListOf()
+        list.forEach {
+            refList.add(fireStore.collection(USERS_COLLECTION).document(it.id))
+        }
+        return refList
     }
 
     suspend fun saveMockUser(userId: String, isParent: Boolean, familyId: String?): Boolean {
@@ -91,6 +100,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 mapOf(
                     "level" to user.level,
                     "gifts" to user.gifts,
+                    "name" to user.name,
                     "photo" to user.photo,
                     "money" to user.money,
                     "process" to user.process,
@@ -99,7 +109,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             }
             is Parent -> {
                 mapOf(
-                    "photo" to user.photo
+                    "photo" to user.photo,
+                    "childList" to fireStore.collection(USERS_COLLECTION).document(user.id)
                 )
             }
             else -> {
@@ -146,6 +157,39 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             .addOnFailureListener {
                 con.resume(Result.Error(it))
             }
+    }
+
+    suspend fun createChild(name: String, idFamily: String) = suspendCancellableCoroutine<Result<String>> { con ->
+        val id = UUID.randomUUID().toString()
+        val mockData = mapOf<String, Any>(
+            "id" to id,
+            "familyId" to idFamily,
+            "name" to name,
+            "money" to 0,
+            "photo" to defaultPhoto,
+            "process" to 0,
+            "level" to 0,
+            "taskList" to listOf<TaskFirebaseModel>(),
+            "gifts" to listOf<String>()
+        )
+        fireStore.collection(USERS_COLLECTION).document(id).set(mockData)
+            .addOnSuccessListener {
+                con.resume(Result.Success(id))
+            }
+            .addOnFailureListener {
+                con.resume(Result.Error(it))
+            }
+    }
+
+    suspend fun addChildToParent(child: Child, parent: Parent) {
+        val newChildList = parent.childList as MutableList
+        newChildList.add(child)
+        Log.e("childListNew", newChildList.toString())
+        val data = mapOf<String, Any>(
+            "photo" to parent.photo,
+            "childList" to getRefChild(newChildList)
+        )
+        saveTaskToDB(parent.id, data)
     }
 
     private suspend fun addGiftDoc(gift: GiftModel) =
@@ -246,7 +290,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         }
     }
 
-    private suspend fun loadUserByRef(ref: DocumentReference) =
+    suspend fun loadUserByRef(ref: DocumentReference) =
         suspendCancellableCoroutine<Result<UserFirebase>> { con ->
             ref.get()
                 .addOnSuccessListener { snapShot ->
@@ -264,7 +308,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 }
         }
 
-    private suspend fun loadUserDoc(userId: String) =
+    suspend fun loadUserDoc(userId: String) =
         suspendCancellableCoroutine<Result<UserFirebase>> { con ->
             fireStore.collection(USERS_COLLECTION).document(userId).get()
                 .addOnSuccessListener { doc ->

@@ -21,7 +21,7 @@ import com.example.sbaby.R
 import com.example.sbaby.databinding.CardEditProfileBinding
 
 
-class EditChildInfoDialogFragment : DialogFragment() {
+class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFragment() {
     private val binding: CardEditProfileBinding by viewBinding()
     private var name: String? = null
     private var photo: String? = null
@@ -59,7 +59,8 @@ class EditChildInfoDialogFragment : DialogFragment() {
             takePhoto()
         }
         binding.okButton.setOnClickListener { _ ->
-
+            name = binding.nameEditText.text.toString()
+            edit.editName(name.toString())
             this.dismiss()
         }
         binding.cancelButton.setOnClickListener { _ ->

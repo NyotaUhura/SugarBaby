@@ -1,6 +1,8 @@
 package com.example.sbaby.auth
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -22,8 +24,38 @@ class AuthParentSingUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.signUp.setOnClickListener {
-            singUp()
+        with(binding) {
+            signUp.setOnClickListener {
+                singUp()
+            }
+            invisibleButton.setOnClickListener {
+                if (invisibleButton.visibility == View.VISIBLE) {
+                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    invisibleButton.visibility = View.INVISIBLE
+                    visibleButton.visibility = View.VISIBLE
+                }
+            }
+            visibleButton.setOnClickListener {
+                if (visibleButton.visibility == View.VISIBLE) {
+                    passwordEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
+                    invisibleButton.visibility = View.VISIBLE
+                    visibleButton.visibility = View.INVISIBLE
+                }
+            }
+            invisibleButton1.setOnClickListener {
+                if (invisibleButton1.visibility == View.VISIBLE) {
+                    passwordAgainEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    invisibleButton1.visibility = View.INVISIBLE
+                    visibleButton1.visibility = View.VISIBLE
+                }
+            }
+            visibleButton1.setOnClickListener {
+                if (visibleButton1.visibility == View.VISIBLE) {
+                    passwordAgainEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
+                    invisibleButton1.visibility = View.VISIBLE
+                    visibleButton1.visibility = View.INVISIBLE
+                }
+            }
         }
     }
 
@@ -36,14 +68,13 @@ class AuthParentSingUpFragment : Fragment(R.layout.fragment_sign_up) {
                     val result = authManager.singUp(email, password)
                     when (result) {
                         is Result.Success -> {
-                            Snackbar.make(requireView(), getString(R.string.login_in), 2000).show()
                             lifecycleScope.launchWhenCreated {
                                 var familyId: String? = familyEnterField.text.toString()
                                 if (familyId!!.isEmpty()) familyId = null
                                 val res = saveUser(result.data, familyId)
                                 if (res) {
                                     Snackbar.make(requireView(), "Done", 2000).show()
-                                    // TODO: 14.11.2021 Provide next screens
+                                    bindAddChildFragment()
                                 } else {
                                     Snackbar.make(requireView(), "Something is wrong", 2000).show()
                                 }

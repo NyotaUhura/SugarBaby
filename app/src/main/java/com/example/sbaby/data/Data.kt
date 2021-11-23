@@ -25,7 +25,17 @@ data class Parent(
     val name: String,
     override val photo: String,
     var childList: List<Child>,
-) : User(id, familyId, photo)
+) : User(id, familyId, photo) {
+    fun mapToFirebaseModel(firebase: FirebaseDataSource): ParentFirebaseModel {
+        return ParentFirebaseModel(
+            id = id,
+            name = name,
+            familyId = familyId,
+            photo = photo,
+            childList = firebase.getRefChild(childList)
+        )
+    }
+}
 
 data class ParentFirebaseModel(
     val id: String = "",

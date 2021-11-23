@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:text="child"
+        android:text="Child's name:"
         android:textSize="26sp"
         android:textColor="@color/custom_black"
         android:fontFamily="@font/roboto"
@@ -138,20 +138,5 @@
         app:layout_constraintTop_toBottomOf="@id/name_card"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="@string/finish"/>
-
-    <Button
-        android:id="@+id/add_more_button"
-        style="@style/LargeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="70dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/brown"
-        android:minHeight="70dp"
-        android:text="@string/add_one_more"
-        android:textColor="@color/white"
-        app:cornerRadius="@dimen/corner_radius"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
