@@ -177,7 +177,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         fun editName(name: String)
     }
 
-    private val edit: editProfile =
+    private val edit =
         object : editProfile {
             override fun editName(name: String) {
                 viewModel.changeName(name)

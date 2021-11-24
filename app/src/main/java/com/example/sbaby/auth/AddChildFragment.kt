@@ -33,29 +33,17 @@ class AddChildFragment : Fragment(R.layout.fragment_add_child) {
             lifecycleScope.launchWhenCreated {
                 val currUser = firebaseDataSource.getUser(true) as Parent
                 val res = firebaseDataSource.createChild(name, currUser.familyId)
-                Log.e("currFamilyId", currUser.familyId)
                 when (res) {
                     is Result.Success -> {
                         id = res.data
-                        val user = firebaseDataSource.loadUserDoc(id)
-                        when (user) {
-                            is Result.Success -> {
-                                val child = user.data
-                                when (child) {
-                                    is ChildFirebaseModel -> {
-                                        Log.e("child", child.toString())
-                                        Log.e("parent", currUser.toString())
-                                        firebaseDataSource.addChildToParent(child.mapToChildModel(), currUser)
-                                        Snackbar.make(requireView(), getString(R.string.login_in), 2000).show()
-                                        (activity as AuthActivity).finishAuth(true)
-                                    }
-                                }
+                        val child = firebaseDataSource.getUserDoc(id)
+                        when (child) {
+                            is ChildFirebaseModel -> {
+                                firebaseDataSource.addChildToParent(child.mapToChildModel(), currUser)
+                                Snackbar.make(requireView(), getString(R.string.login_in), 2000).show()
+                                (activity as AuthActivity).finishAuth(true)
                             }
                         }
-                    }
-                    is Result.Error -> {
-                        val error = res.exception.localizedMessage ?: getString(R.string.helper)
-                        Snackbar.make(requireView(), error, 2000).show()
                     }
                 }
             }

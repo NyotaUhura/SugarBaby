@@ -19,6 +19,7 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
 
     private val authManager: FirebaseAuthManager by getKoin().inject()
     private val binding: FragmentLogInBinding by viewBinding()
+    private var isPasswordVisible = false;
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,18 +34,16 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
                     replace(R.id.fragment_container, AuthParentSingUpFragment())
                 }
             }
-            invisibleButton.setOnClickListener {
-                if (invisibleButton.visibility == View.VISIBLE) {
-                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                    invisibleButton.visibility = View.INVISIBLE
-                    visibleButton.visibility = View.VISIBLE
-                }
-            }
             visibleButton.setOnClickListener {
-                if (visibleButton.visibility == View.VISIBLE) {
+                if (isPasswordVisible) {
+                    isPasswordVisible = false
+                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    visibleButton.setImageResource(R.drawable.ic_visible)
+                }
+                else{
+                    isPasswordVisible = true
                     passwordEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
-                    invisibleButton.visibility = View.VISIBLE
-                    visibleButton.visibility = View.INVISIBLE
+                    visibleButton.setImageResource(R.drawable.ic_invisible)
                 }
             }
         }

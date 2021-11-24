@@ -21,6 +21,8 @@ class AuthParentSingUpFragment : Fragment(R.layout.fragment_sign_up) {
     private val binding: FragmentSignUpBinding by viewBinding()
     private val authManager: FirebaseAuthManager by getKoin().inject()
     private val firebaseDataSource: FirebaseDataSource by getKoin().inject()
+    private var isPasswordVisible = false
+    private var isPasswordVisible1 = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,32 +30,26 @@ class AuthParentSingUpFragment : Fragment(R.layout.fragment_sign_up) {
             signUp.setOnClickListener {
                 singUp()
             }
-            invisibleButton.setOnClickListener {
-                if (invisibleButton.visibility == View.VISIBLE) {
-                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                    invisibleButton.visibility = View.INVISIBLE
-                    visibleButton.visibility = View.VISIBLE
-                }
-            }
             visibleButton.setOnClickListener {
-                if (visibleButton.visibility == View.VISIBLE) {
+                if (isPasswordVisible) {
+                    isPasswordVisible = false
+                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    visibleButton.setImageResource(R.drawable.ic_visible)
+                } else {
+                    isPasswordVisible = true
                     passwordEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
-                    invisibleButton.visibility = View.VISIBLE
-                    visibleButton.visibility = View.INVISIBLE
-                }
-            }
-            invisibleButton1.setOnClickListener {
-                if (invisibleButton1.visibility == View.VISIBLE) {
-                    passwordAgainEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                    invisibleButton1.visibility = View.INVISIBLE
-                    visibleButton1.visibility = View.VISIBLE
+                    visibleButton.setImageResource(R.drawable.ic_invisible)
                 }
             }
             visibleButton1.setOnClickListener {
-                if (visibleButton1.visibility == View.VISIBLE) {
+                if (isPasswordVisible1) {
+                    isPasswordVisible1 = false
+                    passwordAgainEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    visibleButton1.setImageResource(R.drawable.ic_visible)
+                } else {
+                    isPasswordVisible1 = true
                     passwordAgainEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
-                    invisibleButton1.visibility = View.VISIBLE
-                    visibleButton1.visibility = View.INVISIBLE
+                    visibleButton1.setImageResource(R.drawable.ic_invisible)
                 }
             }
         }

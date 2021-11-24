@@ -99,21 +99,12 @@
                 android:background="@android:color/transparent"
                 android:hint="Password:"
                 android:imeOptions="actionDone"
+                android:inputType="textPassword"
                 android:paddingStart="10dp"
-                android:singleLine="true"
-                android:inputType="textPassword"/>
+                android:singleLine="true" />
 
             <ImageView
                 android:id="@+id/visible_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_visible"
-                android:visibility="invisible"/>
-
-            <ImageView
-                android:id="@+id/invisible_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
@@ -128,7 +119,7 @@
             android:layout_marginHorizontal="70dp"
             android:layout_marginTop="50dp"
             android:minHeight="70dp"
-            android:text="@string/login_in"/>
+            android:text="@string/login_in" />
 
         <TextView
             android:id="@+id/task_body_text"

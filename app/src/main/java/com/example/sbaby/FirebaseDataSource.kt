@@ -25,7 +25,6 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
 
     suspend fun getUser(isForced: Boolean = false): User? {
         if (user == null || isForced) {
-            Log.e("isForcessssssssss", isForced.toString())
             val userId = authManager.getUserID() ?: return null
             loadUser(userId)
         }
@@ -117,7 +116,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 throw IllegalAccessException()
             }
         }
-        val res = saveTaskToDB(user.id, data)
+        val res = saveUserToDB(user.id, data)
         return if (res is Result.Success) res.data
         else false
     }
@@ -184,12 +183,11 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
     suspend fun addChildToParent(child: Child, parent: Parent) {
         val newChildList = parent.childList as MutableList
         newChildList.add(child)
-        Log.e("childListNew", newChildList.toString())
         val data = mapOf<String, Any>(
             "photo" to parent.photo,
             "childList" to getRefChild(newChildList)
         )
-        saveTaskToDB(parent.id, data)
+        saveUserToDB(parent.id, data)
     }
 
     private suspend fun addGiftDoc(gift: GiftModel) =
@@ -199,7 +197,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 .addOnFailureListener { con.resume(Result.Error(it)) }
         }
 
-    private suspend fun saveTaskToDB(id: String, data: Map<String, Any>) =
+    private suspend fun saveUserToDB(id: String, data: Map<String, Any>) =
         suspendCancellableCoroutine<Result<Boolean>> { con ->
             fireStore.collection(USERS_COLLECTION).document(id).update(data)
                 .addOnSuccessListener { con.resume(Result.Success(true)) }
@@ -290,7 +288,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         }
     }
 
-    suspend fun loadUserByRef(ref: DocumentReference) =
+    private suspend fun loadUserByRef(ref: DocumentReference) =
         suspendCancellableCoroutine<Result<UserFirebase>> { con ->
             ref.get()
                 .addOnSuccessListener { snapShot ->
@@ -308,7 +306,18 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 }
         }
 
-    suspend fun loadUserDoc(userId: String) =
+    suspend fun getUserDoc(userId: String): UserFirebase? {
+        val res = loadUserDoc(userId)
+        when (res) {
+            is Result.Success -> {
+                return res.data
+            }
+            else ->
+                return null
+        }
+    }
+
+    private suspend fun loadUserDoc(userId: String) =
         suspendCancellableCoroutine<Result<UserFirebase>> { con ->
             fireStore.collection(USERS_COLLECTION).document(userId).get()
                 .addOnSuccessListener { doc ->
@@ -324,35 +333,11 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                         } else {
                             con.resume(Result.Error(NullPointerException()))
                         }
-                    } else {
-                        //saveUserMock()
                     }
                 }
                 .addOnFailureListener {
                     Log.d("FailAuth", it.message.toString())
                     con.resume(Result.Error(it))
                 }
-            /*fireStore.collection(USERS_COLLECTION).get()
-                .addOnSuccessListener { snapShot ->
-                    snapShot.documents.forEach { doc ->
-                        if (doc.id == userId) {
-                            val isParent = doc.getBoolean("isParent") ?: false
-                            val user = if (!isParent) {
-                                doc.toObject(ChildFirebaseModel::class.java)?.copy(id = doc.id)
-                            } else {
-                                doc.toObject(ParentFirebaseModel::class.java)?.copy(id = doc.id)
-                            }
-                            if (user != null) {
-                                con.resume(Result.Success(user))
-                            } else {
-                                con.resume(Result.Error(NullPointerException()))
-                            }
-                        }
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("FailAuth", it.message.toString())
-                    con.resume(Result.Error(it))
-                }*/
         }
 }
