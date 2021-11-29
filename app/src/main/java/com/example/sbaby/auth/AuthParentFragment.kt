@@ -1,6 +1,8 @@
 package com.example.sbaby.auth
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
 
     private val authManager: FirebaseAuthManager by getKoin().inject()
     private val binding: FragmentLogInBinding by viewBinding()
+    private var isPasswordVisible = false;
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,6 +32,18 @@ class AuthParentFragment : Fragment(R.layout.fragment_log_in) {
             signUp.setOnClickListener {
                 parentFragmentManager.commit {
                     replace(R.id.fragment_container, AuthParentSingUpFragment())
+                }
+            }
+            visibleButton.setOnClickListener {
+                if (isPasswordVisible) {
+                    isPasswordVisible = false
+                    passwordEnterField.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    visibleButton.setImageResource(R.drawable.ic_visible)
+                }
+                else{
+                    isPasswordVisible = true
+                    passwordEnterField.transformationMethod = PasswordTransformationMethod.getInstance()
+                    visibleButton.setImageResource(R.drawable.ic_invisible)
                 }
             }
         }

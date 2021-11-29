@@ -57,7 +57,9 @@ class TaskViewModel(
             val res = firebaseDataSource.saveUser(user)
             if (res) {
                 val taskList = when (user) {
-                    is Child -> user.taskList
+                    is Child -> {
+                        user.taskList
+                    }
                     // TODO: 09.11.2021 Rebase logic
                     is Parent -> user.childList[0].taskList
                     else -> throw IllegalAccessError()
@@ -104,7 +106,7 @@ class TaskViewModel(
             when (userChild) {
                 is Child -> {
                     val newUser = userChild.copy(name = newName)
-                    setState { copy(user = Success(newUser)) }
+                    updateUser(newUser)
                 }
             }
         }
@@ -206,13 +208,4 @@ class TaskViewModel(
         }
     }
 }
-/*
-fun changeUserName() {
-    withState { state ->
-        val user = state.user.invoke() ?: return@withState
-        val newUser = user.copy(name = Random.nextInt().toString())
-        setState { copy(user = Success(newUser)) }
-    }
-}
- */
 
