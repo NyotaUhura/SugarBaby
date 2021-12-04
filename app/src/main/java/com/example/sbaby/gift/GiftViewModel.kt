@@ -12,7 +12,7 @@ data class GiftState(
 
 class GiftViewModel(
     initialState: GiftState,
-    private val repository: FirebaseDataSource,
+    private val firebaseDataSource: FirebaseDataSource,
 ) : MavericksViewModel<GiftState>(initialState) {
 
     init {
@@ -20,8 +20,8 @@ class GiftViewModel(
             copy(user = Loading(), giftList = Loading())
         }
         viewModelScope.launch {
-            val user = repository.getUser()
-            val giftList = repository.getGiftList()
+            val user = firebaseDataSource.getUser()
+            val giftList = firebaseDataSource.getGiftList()
             if (user != null) {
                 setState {
                     copy(user = Success(user), giftList = Success(giftList))
@@ -48,18 +48,6 @@ class GiftViewModel(
         }
     }
 
-    fun getTitle(id: String) {
-        withState { state: GiftState ->
-            val giftList = state.giftList.invoke() ?: return@withState
-            val newGiftList = giftList.filter { gift ->
-                gift.id != id
-            }
-            // TODO: DELETE FROM DB
-            // TODO: MINUS COINS FROM CHILD
-
-            setState { copy(giftList = Success(newGiftList)) }
-        }
-    }
 
     fun changeCheckGiftStatus(id: String) {
         withState { state: GiftState ->
@@ -90,6 +78,7 @@ class GiftViewModel(
         TODO("Not yet implemented")
     }
 
+
     fun deleteGift(id: String) {
         withState { state: GiftState ->
             val giftList = state.giftList.invoke() ?: return@withState
@@ -99,6 +88,12 @@ class GiftViewModel(
             // TODO: DELETE FROM DB
 
             setState { copy(giftList = Success(newGiftList)) }
+        }
+    }
+
+    fun updateGift(gift: GiftModel){
+        viewModelScope.launch {
+            firebaseDataSource.updateGift(gift)
         }
     }
 

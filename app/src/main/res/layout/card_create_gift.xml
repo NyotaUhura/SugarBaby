@@ -24,20 +24,40 @@
 
             <TextView
                 android:id="@+id/titleTextView"
+                style="@style/TextLarge"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/titleEditText"
+                app:layout_constraintBottom_toTopOf="@+id/prizeCardView"
+                android:layout_marginBottom="15dp"
                 android:text="What do you want to get?"
                 />
-            <EditText
-                android:id="@+id/titleEditText"
-                android:layout_width="match_parent"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/prizeCardView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:hint="Prize" />
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cardBackgroundColor="@color/custom_white"
+                android:layout_marginBottom="30dp"
+                app:cardCornerRadius="@dimen/corner_radius">
+
+                <EditText
+                    android:id="@+id/titleEditText"
+                    android:layout_width="134dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="15dp"
+                    android:singleLine="true"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:hint="Prize:" />
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -51,6 +71,7 @@
 
 
             <TextView
+                style="@style/TextLarge"
                 android:gravity="center"
                 android:id="@+id/priceTextView"
                 android:layout_width="match_parent"
@@ -91,9 +112,22 @@
                 />
 
             <Button
+                android:id="@+id/cancelButton"
+                style="@style/BottonBlueStyle"
+                android:text="@string/cancel"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonTextView"
+                />
+
+            <Button
                 android:id="@+id/OKButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/BottonBlueStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonTextView"

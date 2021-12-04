@@ -18,6 +18,7 @@ import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.gift.*
+import com.example.sbaby.task.TaskFragment
 import org.koin.android.ext.android.get
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
@@ -61,16 +62,20 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private val buttonsCreate: GiftCardChildAddViewHolder.buttonsOnclick =
         object : GiftCardChildAddViewHolder.buttonsOnclick {
             override fun createButtonOnclick(id: String) {
-                val createGiftFragment = CreateGiftDialogFragment()
-                val manager = childFragmentManager
-                createGiftFragment.show(manager, "")
+
+                val dialog = CreateGiftDialogFragment(edit)
+                val bundle = Bundle()
+                //TODO: PASS DATA
+//                bundle.putString("title", viewModel.)
+//                bundle.putString("price", user.photo)
+                dialog.arguments = bundle
+//                dialog.show(giftFragmentManager, "DialogFragmentWithSetter")
             }
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
         val user = state.user.invoke()
         val giftList = state.giftList
-        // TODO: Add "plus" item
 
         if (giftList is Success) {
             val gifts = giftList.invoke()
@@ -153,5 +158,17 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
             }
         }
     }
+
+
+    interface editGift {
+        fun updateGift(gift: GiftModel)
+    }
+
+    private val edit =
+        object : editGift {
+            override fun updateGift(gift: GiftModel){
+                viewModel.updateGift(gift)
+            }
+        }
 }
 
