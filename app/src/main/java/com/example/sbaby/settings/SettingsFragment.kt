@@ -1,5 +1,7 @@
 package com.example.sbaby
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -8,7 +10,9 @@ import com.example.sbaby.databinding.FragmentSettingsBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.settings.SettingsCardViewHolder
 import com.example.sbaby.epoxy.viewholders.settings.settingsCardViewHolder
+import com.example.sbaby.settings.LanguageDialogFragment
 import org.koin.android.ext.android.getKoin
+
 
 data class Setting(
     val id: Int,
@@ -22,16 +26,13 @@ class SettingsFragment : MvRxBaseFragment(R.layout.fragment_settings) {
 
     private val buttons: SettingsCardViewHolder.buttonsOnclick =
         object : SettingsCardViewHolder.buttonsOnclick {
-            override fun editProfileOnClick() {
-                TODO("Not yet implemented")
-            }
-
             override fun viewFamilyOnClick() {
                 TODO("Not yet implemented")
             }
 
             override fun changeLanguageOnClick() {
-                TODO("Not yet implemented")
+                val dialog = LanguageDialogFragment()
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
 
             override fun changePasswordOnClick() {
@@ -39,11 +40,15 @@ class SettingsFragment : MvRxBaseFragment(R.layout.fragment_settings) {
             }
 
             override fun privatePolicyOnClick() {
-                TODO("Not yet implemented")
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://github.com/NyotaUhura/SugarBaby")
+                startActivity(i)
             }
 
             override fun rateOnClick() {
-                TODO("Not yet implemented")
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://github.com/NyotaUhura/SugarBaby")
+                startActivity(i)
             }
 
             override fun logOutOnClick() {
@@ -55,7 +60,6 @@ class SettingsFragment : MvRxBaseFragment(R.layout.fragment_settings) {
     private val settingsList = mutableListOf<Setting>()
 
     override fun epoxyController() = simpleController() {
-        settingsList.add(Setting(1, R.drawable.ic_edit, "Edit profile photo"))
         settingsList.add(Setting(2, R.drawable.ic_family, "Family"))
         settingsList.add(Setting(3, R.drawable.ic_language, "Language"))
         settingsList.add(Setting(4, R.drawable.ic_password, "Change password"))

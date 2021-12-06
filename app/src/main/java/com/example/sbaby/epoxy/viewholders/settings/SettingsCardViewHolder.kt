@@ -20,7 +20,6 @@ abstract class SettingsCardViewHolder : ViewBindingEpoxyModelWithHolder<ItemSett
         textView.text = setting.name
         settingsCard.setOnClickListener {
             when (setting.id) {
-                1 -> onClickListeners.editProfileOnClick()
                 2 -> onClickListeners.viewFamilyOnClick()
                 3 -> onClickListeners.changeLanguageOnClick()
                 4 -> onClickListeners.changePasswordOnClick()
@@ -32,7 +31,6 @@ abstract class SettingsCardViewHolder : ViewBindingEpoxyModelWithHolder<ItemSett
     }
 
     interface buttonsOnclick {
-        fun editProfileOnClick()
         fun viewFamilyOnClick()
         fun changeLanguageOnClick()
         fun changePasswordOnClick()
