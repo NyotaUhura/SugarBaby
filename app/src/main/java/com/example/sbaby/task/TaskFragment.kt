@@ -56,7 +56,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         viewModel.onEach { state ->
             val family = state.family.invoke() ?: return@onEach
             val user = state.user.invoke() ?: return@onEach

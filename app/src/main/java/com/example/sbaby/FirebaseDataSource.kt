@@ -127,7 +127,10 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             }
         }
         val res = saveUserToDB(user.id, data)
-        return if (res is Result.Success) res.data
+        return if (res is Result.Success) {
+            this.user = user
+            res.data
+        }
         else false
     }
 

@@ -26,10 +26,6 @@ class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFr
     private var name: String? = null
     private var photo: String? = null
 
-    companion object {
-        const val TAG = "EditChildInfoDialogFragment"
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
