@@ -145,6 +145,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         } else {
             gifts.add(gift)
         }
+        Log.d("gift:::::", gift.toString())
         addGiftDoc(gift)
         return gifts.toList()
     }

@@ -110,7 +110,7 @@ abstract class GiftCardChildAddViewHolder : ViewBindingEpoxyModelWithHolder<Chil
         plusTextView.text = "+"
         moneyText.text = "New idea"
         giftInfoCard.setOnClickListener{
-            onClickListeners.createButtonOnclick("CREATE NEW GIFT")
+            onClickListeners.createButtonOnclick("-1")
         }
     }
 

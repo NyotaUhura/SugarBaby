@@ -99,7 +99,7 @@ data class GiftModel(
     val description: String = "",
     val price: Int = 0,
     val availableCount: Int = 0,
-    val isAgree: Boolean = false,
+    val agree: Boolean = false,
 )
 
 data class TaskModel(

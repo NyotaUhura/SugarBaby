@@ -4,6 +4,7 @@ import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.*
 
 data class GiftState(
     val user: Async<User> = Uninitialized,
@@ -37,7 +38,7 @@ class GiftViewModel(
             val giftList = state.giftList.invoke() ?: return@withState
             val newList = giftList.filter { gift ->
                 if (isNeedToBeDone || isNeedAgreement) {
-                    gift.isAgree == isNeedToBeDone || gift.isAgree != isNeedAgreement
+                    gift.agree == isNeedToBeDone || gift.agree != isNeedAgreement
                 } else {
                     false
                 }
@@ -46,6 +47,19 @@ class GiftViewModel(
                 copy(giftList = Success(newList))
             }
         }
+    }
+
+    fun getTitleGift(id: String): String {
+        var title = "";
+        withState { state ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val gift = giftList.find {
+                it.id == id
+            }
+
+            title = gift!!.title;
+        }
+        return title;
     }
 
 
@@ -91,10 +105,36 @@ class GiftViewModel(
         }
     }
 
-    fun updateGift(gift: GiftModel){
-        viewModelScope.launch {
-            firebaseDataSource.updateGift(gift)
+    fun updateGift(id: String, title: String, price: Int){
+        withState { state ->
+            val giftList = state.giftList.invoke()
+            val giftt = giftList?.firstOrNull {
+                it.id == id
+            }
+            val gift: GiftModel = if(giftt != null) {
+                giftt.copy(title = title, price = price)
+            } else{
+                GiftModel(UUID.randomUUID().toString(), title, title, price, 1, false)
+            }
+
+            viewModelScope.launch {
+                val newGiftList = firebaseDataSource.updateGift(gift)
+                setState { copy(giftList = Success(newGiftList)) }
+            }
         }
+    }
+
+    fun getPriceGift(id: String): Int {
+        var price = -1;
+        withState { state ->
+            val giftList = state.giftList.invoke() ?: return@withState
+            val gift = giftList.find {
+                it.id == id
+            }
+
+            price = gift!!.price;
+        }
+        return price;
     }
 
     companion object : MavericksViewModelFactory<GiftViewModel, GiftState> {

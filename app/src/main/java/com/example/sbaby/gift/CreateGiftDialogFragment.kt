@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +15,14 @@ import com.example.sbaby.R
 import com.example.sbaby.databinding.CardCreateGiftBinding
 import com.example.sbaby.databinding.CardEditProfileBinding
 import com.example.sbaby.task.TaskFragment
+import java.util.*
 
 
 class CreateGiftDialogFragment(val edit : GiftFragment.editGift): DialogFragment(){
     private val binding: CardCreateGiftBinding by viewBinding()
     private var title: String? = null
-    private var price: Int? = null
-    private var id: String? = null
-
-    companion object {
-        const val TAG = "CreateGiftFragment"
-    }
+    private var price: Int = 5
+    private lateinit var id: String
 
 
     override fun onCreateView(
@@ -40,9 +38,19 @@ class CreateGiftDialogFragment(val edit : GiftFragment.editGift): DialogFragment
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             val mArgs = arguments
-            title = mArgs?.getString("title")
-            price = mArgs?.getInt("price")
-            id = mArgs?.getString("id")
+            //TODO: fields from id
+            Log.d("args", mArgs.toString())
+            if(mArgs?.containsKey("title") == true && mArgs.containsKey("price")  && mArgs.containsKey("id")){
+                title = mArgs.getString("title")
+                price = mArgs.getInt("price")
+                id = mArgs.getString("id").toString()
+            }
+            else{
+                id = UUID.randomUUID().toString()
+            }
+        }
+        else{
+            id = UUID.randomUUID().toString()
         }
     }
 
@@ -50,13 +58,17 @@ class CreateGiftDialogFragment(val edit : GiftFragment.editGift): DialogFragment
         super.onViewCreated(view, savedInstanceState)
         binding.priceNumberPicker.minValue = 1
         binding.priceNumberPicker.maxValue = 999
-        binding.titleEditText.text = SpannableStringBuilder(title)
+        binding.priceNumberPicker.value = price
+        binding.titleEditText.text = SpannableStringBuilder(title ?: "")
         binding.OKButton.setOnClickListener { _ ->
             title = binding.titleEditText.text.toString()
             price = binding.priceNumberPicker.value
-            //TODO: HOW TO PASS DATA?
-//            edit.updateGift(title.toString())
-            this.dismiss()
+
+            if(title != "") {
+                Log.d("id: ", id)
+                edit.updateGift(id, title!!, price)
+                this.dismiss()
+            }
         }
         binding.cancelButton.setOnClickListener { _ ->
             this.dismiss()

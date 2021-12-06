@@ -1,25 +1,19 @@
 package com.example.sbaby.gift
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
-import com.airbnb.mvrx.withState
 import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.gift.*
-import com.example.sbaby.task.TaskFragment
-import org.koin.android.ext.android.get
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
@@ -62,14 +56,16 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private val buttonsCreate: GiftCardChildAddViewHolder.buttonsOnclick =
         object : GiftCardChildAddViewHolder.buttonsOnclick {
             override fun createButtonOnclick(id: String) {
-
                 val dialog = CreateGiftDialogFragment(edit)
                 val bundle = Bundle()
                 //TODO: PASS DATA
-//                bundle.putString("title", viewModel.)
-//                bundle.putString("price", user.photo)
-                dialog.arguments = bundle
-//                dialog.show(giftFragmentManager, "DialogFragmentWithSetter")
+
+                if(id != "-1") {
+                    bundle.putString("title", viewModel.getTitleGift(id))
+                    bundle.putString("price", viewModel.getPriceGift(id).toString())
+                    dialog.arguments = bundle
+                }
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
         }
 
@@ -79,6 +75,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
         if (giftList is Success) {
             val gifts = giftList.invoke()
+            Log.d("list", gifts.toString())
             when (user) {
                 is Parent -> {
                     renderParentTasks(gifts)
@@ -134,7 +131,8 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private fun EpoxyController.renderParentTasks(gifts: List<GiftModel>) {
 
         gifts.forEach { giftModel ->
-            when (giftModel.isAgree) {
+            print(giftModel)
+            when (giftModel.agree) {
                 true -> giftCardViewHolder {
                     id(giftModel.id)
                     gift(giftModel)
@@ -150,7 +148,8 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     }
 
     private fun EpoxyController.renderChildTasks(gifts: List<GiftModel>) {
-        gifts.forEach { giftModel ->
+        Log.d("list", gifts.toString())
+        gifts.filter { it.agree }.forEach { giftModel ->
             giftCardChildViewHolder {
                 id(giftModel.id)
                 gift(giftModel)
@@ -161,13 +160,14 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
 
     interface editGift {
-        fun updateGift(gift: GiftModel)
+        fun updateGift(id: String, title: String, price: Int)
     }
 
     private val edit =
         object : editGift {
-            override fun updateGift(gift: GiftModel){
-                viewModel.updateGift(gift)
+            override fun updateGift(id: String, title: String, price: Int){
+                viewModel.updateGift(id, title, price)
+
             }
         }
 }
