@@ -31,6 +31,16 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         return user
     }
 
+    suspend fun isChildExist(id: String) = suspendCancellableCoroutine<Boolean> { con ->
+        fireStore.collection(USERS_COLLECTION).document(id).get()
+            .addOnSuccessListener { doc ->
+                val isParent = doc.getBoolean("isParent")
+                if (isParent == null) con.resume(false)
+                else con.resume(!isParent)
+            }
+            .addOnFailureListener { con.resume(false) }
+    }
+
     suspend fun getGiftList(): List<GiftModel> {
         if (gifts.isEmpty()) loadGiftList()
         return gifts.toList()

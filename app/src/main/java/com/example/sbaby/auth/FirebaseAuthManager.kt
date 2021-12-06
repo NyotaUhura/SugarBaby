@@ -16,11 +16,13 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) {
 
     fun getUserID() = firebaseUserId.value
 
-    fun isLoginIn() = firebaseUserId.value == null
-
     fun logOut() {
         auth.signOut()
         updateUser()
+    }
+
+    fun saveChildId(id: String) {
+        _firebaseUserId.value = id
     }
 
     suspend fun singUp(email: String, password: String) = suspendCancellableCoroutine<Result<String>> { con ->
