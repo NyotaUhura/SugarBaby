@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SBaby</string>
+    <string name="title">Привіт</string>
+    <string name="done">Готово</string>
+    <string name="undo">Скасувати</string>
+    <string name="buy_premium">Придбати Преміум-версію</string>
+    <string name="best_features_for_you">Кращі можливості для вас!</string>
+    <string name="add_task">Додати завдання</string>
+    <string name="in_progress">В процесі</string>
+    <string name="helper">Допомога: \\u0020</string>
+    <string name="level">\\u0020 рівень</string>
+    <string name="user_name">Ім\'я користувача</string>
+    <string name="change_profile_photo">Змінити фото профілю</string>
+    <string name="choose_from_gallery">Обрати з галереї</string>
+    <string name="cancel">Відміна</string>
+    <string name="ok">Застосувати</string>
+    <string name="role_selection_info">Ця програма ідеально підходить для дітей та батьків, які хочуть взаємодіяти та виконувати завдання в ігровій формі</string>
+    <string name="welcome">Вітаємо у SBaby!</string>
+    <string name="i_m_a_child">Я дитина</string>
+    <string name="i_m_a_parent">Я батько/мати</string>
+    <string name="code">Код:</string>
+    <string name="login_in">Увійти</string>
+    <string name="sing_up">Зареєструватися</string>
+    <string name="sing_in_succ_mes">Ви успішно увійшли!</string>
+    <string name="passwords_not_match">Пароль введено невірно</string>
+    <string name="parent">Батько/мати</string>
+    <string name="weclome_to_sbaby">Вітаємо у SBaby!</string>
+    <string name="i_do_not_have_an_account">У мене немає акаунту</string>
+    <string name="child">Дитина</string>
+    <string name="parents_invitation">Батьки ще не зареєстровані в SBaby?</string>
+    <string name="premium">Преміум-версія</string>
+    <string name="add_free">без реклами</string>
+    <string name="it_s_time_to_add_children">Час додати дітей!</string>
+    <string name="add_one_more">Додати ще одну дитину</string>
+    <string name="finish">Закінчити</string>
+</resources>
