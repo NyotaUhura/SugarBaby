@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_card"
+    android:layout_width="match_parent"
+    android:layout_marginTop="28dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:paddingHorizontal="20dp"
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/ic_edit"/>
+    <TextView
+        android:id="@+id/text_view"
+        style="@style/TextLargeBold"
+        android:textColor="@color/custom_black"
+        app:layout_constraintTop_toTopOf="@id/image_view"
+        app:layout_constraintBottom_toBottomOf="@id/image_view"
+        app:layout_constraintLeft_toRightOf="@id/image_view"
+        tools:text="Edit profile photo"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
