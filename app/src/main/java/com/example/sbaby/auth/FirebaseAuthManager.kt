@@ -3,7 +3,6 @@ package com.example.sbaby.auth
 import android.util.Log
 import com.example.sbaby.Result
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,12 +11,12 @@ import kotlin.coroutines.resume
 
 
 class FirebaseAuthManager(private val auth: FirebaseAuth) {
-    private val _firebaseUser = MutableStateFlow(auth.currentUser)
-    val firebaseUser: StateFlow<FirebaseUser?> = _firebaseUser.asStateFlow()
+    private val _firebaseUserId = MutableStateFlow(auth.currentUser?.uid)
+    val firebaseUserId: StateFlow<String?> = _firebaseUserId.asStateFlow()
 
-    fun getUserID() = firebaseUser.value?.uid
+    fun getUserID() = firebaseUserId.value
 
-    fun isLoginIn() = firebaseUser.value == null
+    fun isLoginIn() = firebaseUserId.value == null
 
     fun logOut() {
         auth.signOut()
@@ -55,6 +54,6 @@ class FirebaseAuthManager(private val auth: FirebaseAuth) {
     }
 
     private fun updateUser() {
-        _firebaseUser.value = auth.currentUser
+        _firebaseUserId.value = auth.currentUser?.uid
     }
 }
