@@ -130,8 +130,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         return if (res is Result.Success) {
             this.user = user
             res.data
-        }
-        else false
+        } else false
     }
 
     suspend fun updateGift(gift: GiftModel): List<GiftModel> {

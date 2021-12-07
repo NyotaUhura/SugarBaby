@@ -87,8 +87,8 @@ data class Child(
     val name: String,
     var money: Int,
     override val photo: String,
-    val process: Int,
-    val level: Int,
+    var process: Int,
+    var level: Int,
     val taskList: List<TaskModel>,
     val gifts: List<String>
 ) : User(id, familyId, photo)

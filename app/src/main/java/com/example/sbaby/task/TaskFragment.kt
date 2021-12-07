@@ -26,7 +26,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             }
 
             override fun deleteButtonOnclick(id: String) {
-                TODO("Not yet implemented")
+                viewModel.deleteTask(id)
             }
 
             override fun editButtonOnClick(id: String) {
@@ -34,7 +34,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             }
 
             override fun undoneButtonOnclick(id: String) {
-                // viewModel.changeDoneTaskStatus(id)
+                viewModel.changeDoneTaskStatus(id)
             }
         }
 
@@ -63,8 +63,6 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             binding.photoImageView.load(user.photo)
             binding.premiumButton.setOnClickListener {
                 val dialog = PremiumDialogFragment()
-                val bundle = Bundle()
-                dialog.arguments = bundle
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
             when (user) {
@@ -118,6 +116,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             doneCheckbox.visibility = View.VISIBLE
             inProgressCheckbox.visibility = View.VISIBLE
             changeButton.setBackgroundResource(R.drawable.ic_change)
+            /*
             doneCheckbox.setOnCheckedChangeListener { _, _ ->
                 viewModel.filterGifts(
                     doneCheckbox.isChecked,
@@ -129,6 +128,11 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                     doneCheckbox.isChecked,
                     inProgressCheckbox.isChecked
                 )
+            }
+             */
+            addTaskButton.setOnClickListener {
+                val dialog = AddTaskDialogFragment(add)
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
         }
     }
@@ -181,6 +185,17 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         object : editProfile {
             override fun editName(name: String) {
                 viewModel.changeName(name)
+            }
+        }
+
+    interface addTask {
+        fun save(task: TaskModel)
+    }
+
+    private val add =
+        object : addTask {
+            override fun save(task: TaskModel) {
+                viewModel.addTask(task)
             }
         }
 }
