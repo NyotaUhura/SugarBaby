@@ -21,14 +21,10 @@ import com.example.sbaby.R
 import com.example.sbaby.databinding.CardEditProfileBinding
 
 
-class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFragment() {
+class EditChildInfoDialogFragment(val edit: TaskFragment.editProfile) : DialogFragment() {
     private val binding: CardEditProfileBinding by viewBinding()
     private var name: String? = null
     private var photo: String? = null
-
-    companion object {
-        const val TAG = "EditChildInfoDialogFragment"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

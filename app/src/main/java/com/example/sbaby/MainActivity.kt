@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         bindNavigationBar()
 
         lifecycleScope.launchWhenCreated {
-            authManager.firebaseUser.collect { user ->
+            authManager.firebaseUserId.collect { user ->
                 if (user == null) {
                     startActivity(Intent(this@MainActivity, AuthActivity::class.java))
                     finish()

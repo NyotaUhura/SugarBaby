@@ -3,18 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SettingsFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/top_info_material_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/yellow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media">
+        <TextView
+            android:id="@+id/user_name_text_view"
+            style="@style/TextTaskMoney"
+            android:paddingBottom="20dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/settings" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log out"
-        android:id="@+id/log_out_button"/>
-
 </LinearLayout>

@@ -31,8 +31,18 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         return user
     }
 
+    suspend fun isChildExist(id: String) = suspendCancellableCoroutine<Boolean> { con ->
+        fireStore.collection(USERS_COLLECTION).document(id).get()
+            .addOnSuccessListener { doc ->
+                val isParent = doc.getBoolean("isParent")
+                if (isParent == null) con.resume(false)
+                else con.resume(!isParent)
+            }
+            .addOnFailureListener { con.resume(false) }
+    }
+
     suspend fun getGiftList(): List<GiftModel> {
-        if (gifts.isEmpty()) loadGiftList()
+        loadGiftList()
         return gifts.toList()
     }
 
@@ -93,7 +103,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         else false
     }
 
-    suspend fun saveUser(user: User): Boolean {
+    suspend fun saveUser(user: User, update: Boolean = true): Boolean {
         val data = when (user) {
             is Child -> {
                 mapOf(
@@ -109,7 +119,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             is Parent -> {
                 mapOf(
                     "photo" to user.photo,
-                    "childList" to fireStore.collection(USERS_COLLECTION).document(user.id)
+                    "childList" to user.childList.map { fireStore.collection("users").document(it.id) }
+//                    "childList" to fireStore.collection(USERS_COLLECTION).document(user.id)
                 )
             }
             else -> {
@@ -117,8 +128,12 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             }
         }
         val res = saveUserToDB(user.id, data)
-        return if (res is Result.Success) res.data
-        else false
+        return if (res is Result.Success) {
+            if (update) {
+                this.user = user
+            }
+            res.data
+        } else false
     }
 
     suspend fun updateGift(gift: GiftModel): List<GiftModel> {
@@ -129,10 +144,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 else it
             }
             gifts = newList.toMutableList()
+            saveUser(user!!)
         } else {
             gifts.add(gift)
         }
+
         addGiftDoc(gift)
+        Log.d("gift:::::", gift.toString())
+
         return gifts.toList()
     }
 
@@ -207,6 +226,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
 
     private suspend fun loadGiftList() {
         if (user == null) return
+        getUser(isForced = true)
         val ids = mutableListOf<String>()
         when (user) {
             is Child -> ids.addAll((user as Child).gifts)
@@ -276,7 +296,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                         val childRes = loadUserByRef(ref)
                         if (childRes is Result.Success) {
                             if (childRes.data is ChildFirebaseModel) {
-                                children.add(childRes.data.mapToChildModel())
+                                val newChildRes = childRes.data.copy(id = ref.id)
+                                children.add(newChildRes.mapToChildModel())
                             }
                         }
                     }
@@ -294,9 +315,9 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 .addOnSuccessListener { snapShot ->
                     val isParent = snapShot.getBoolean("isParent") ?: false
                     val user = if (isParent) {
-                        snapShot.toObject(ParentFirebaseModel::class.java)
+                        snapShot.toObject(ParentFirebaseModel::class.java)?.copy(id = snapShot.id)
                     } else {
-                        snapShot.toObject(ChildFirebaseModel::class.java)
+                        snapShot.toObject(ChildFirebaseModel::class.java)?.copy(id = snapShot.id)
                     }
                     if (user != null) con.resume(Result.Success(user))
                     else con.resume(Result.Error(NullPointerException()))
