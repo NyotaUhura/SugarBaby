@@ -24,12 +24,12 @@ abstract class GiftCardViewHolder : ViewBindingEpoxyModelWithHolder<ParentGiftIt
         giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
         completeCheckbox.setOnCheckedChangeListener { compoundButton, _ ->
-                onClickListeners.checkButtonOnclick(gift.id)
+            onClickListeners.checkButtonOnclick(gift.id, gift.price)
         }
     }
 
     interface buttonsOnclick {
-        fun checkButtonOnclick(id: String)
+        fun checkButtonOnclick(id: String, money: Int)
     }
 }
 
@@ -50,7 +50,7 @@ abstract class GiftCardUnagreeViewHolder : ViewBindingEpoxyModelWithHolder<Paren
             onClickListeners.agreeButtonOnclick(gift.id)
         }
         editButton.setOnClickListener {
-            onClickListeners.editButtonOnclick(gift.id)
+            onClickListeners.editButtonOnclick(gift.id, gift.title, gift.price)
         }
         disagreeButton.setOnClickListener {
             onClickListeners.disagreeButtonOnclick(gift.id)
@@ -59,7 +59,7 @@ abstract class GiftCardUnagreeViewHolder : ViewBindingEpoxyModelWithHolder<Paren
 
     interface buttonsOnclick {
         fun agreeButtonOnclick(id: String)
-        fun editButtonOnclick(id: String)
+        fun editButtonOnclick(id: String, title: String, price: Int)
         fun disagreeButtonOnclick(id: String)
     }
 }
@@ -74,13 +74,13 @@ abstract class GiftCardChildViewHolder : ViewBindingEpoxyModelWithHolder<ChildGi
     open lateinit var onClickListeners: buttonsOnclick
 
     override fun ChildGiftItemBinding.bind() {
-        val colors = arrayOf(Color.GREEN, Color.GRAY, Color.BLUE,Color.MAGENTA)
+        val colors = arrayOf(Color.GREEN, Color.GRAY, Color.BLUE, Color.MAGENTA)
         giftInfoCard.setCardBackgroundColor(colors[getHashOfString(gift.title) % colors.size])
 
 
         giftTitleText.text = gift.title
         moneyText.text = "${gift.price}$"
-        giftInfoCard.setOnClickListener{
+        giftInfoCard.setOnClickListener {
             onClickListeners.openButtonOnclick(gift.id)
         }
     }
@@ -109,12 +109,12 @@ abstract class GiftCardChildAddViewHolder : ViewBindingEpoxyModelWithHolder<Chil
     override fun ChildGiftAddItemBinding.bind() {
         plusTextView.text = "+"
         moneyText.text = "New idea"
-        giftInfoCard.setOnClickListener{
-            onClickListeners.createButtonOnclick("-1")
+        giftInfoCard.setOnClickListener {
+            onClickListeners.createButtonOnclick("-1", "", 5)
         }
     }
 
     interface buttonsOnclick {
-        fun createButtonOnclick(id: String)
+        fun createButtonOnclick(id: String, title: String, price: Int)
     }
 }
