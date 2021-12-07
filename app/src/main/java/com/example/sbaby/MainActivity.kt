@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.sbaby.auth.AuthActivity
 import com.example.sbaby.auth.FirebaseAuthManager
+import com.example.sbaby.calendar.CalendarFragment
 import com.example.sbaby.gift.GiftFragment
 import com.example.sbaby.task.TaskFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
