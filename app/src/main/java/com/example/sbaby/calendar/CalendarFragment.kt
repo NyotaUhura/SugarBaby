@@ -2,7 +2,6 @@ package com.example.sbaby.calendar
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.fragmentViewModel
@@ -25,11 +24,11 @@ class CalendarFragment : MvRxBaseFragment(R.layout.fragment_calendar) {
     }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val events = state.events.invoke()
-        bindEvents(events!!)
-        if (events != null) {
-            bindEvents(events)
-        }
+        /* val events = state.events.invoke()
+         bindEvents(events!!)
+         if (events != null) {
+             bindEvents(events)
+         }*/
     }
 
     private fun EpoxyController.bindEvents(events: List<EventDay>) {
