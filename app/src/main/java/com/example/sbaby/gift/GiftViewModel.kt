@@ -1,5 +1,7 @@
 package com.example.sbaby.gift
 
+import android.os.Bundle
+import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import kotlinx.coroutines.launch
@@ -35,93 +37,35 @@ class GiftViewModel(
 
     fun filterGifts(isNeedToBeDone: Boolean, isNeedAgreement: Boolean) {
         withState { state ->
-            val giftList = state.giftList.invoke() ?: return@withState
-            val newList = giftList.filter { gift ->
-                if (isNeedToBeDone || isNeedAgreement) {
-                    gift.agree == isNeedToBeDone || gift.agree != isNeedAgreement
-                } else {
-                    false
+            viewModelScope.launch {
+                val giftList = firebaseDataSource.getGiftList()
+                val newList = giftList.filter { gift ->
+                    if (isNeedToBeDone || isNeedAgreement) {
+                        gift.isAgree == isNeedToBeDone || gift.isAgree != isNeedAgreement
+                    } else {
+                        false
+                    }
+                }
+                setState {
+                    copy(giftList = Success(newList))
                 }
             }
-            setState {
-                copy(giftList = Success(newList))
-            }
+
         }
     }
 
     fun getTitleGift(id: String): String {
         var title = "";
-        withState { state ->
-            val giftList = state.giftList.invoke() ?: return@withState
+        viewModelScope.launch {
+            val giftList = firebaseDataSource.getGiftList()
             val gift = giftList.find {
                 it.id == id
             }
 
             title = gift!!.title;
         }
-        return title;
-    }
-
-
-    fun changeCheckGiftStatus(id: String) {
-        withState { state: GiftState ->
-            val giftList = state.giftList.invoke() ?: return@withState
-            val newGiftList = giftList.filter { gift ->
-                gift.id != id
-            }
-            // TODO: DELETE FROM DB
-            // TODO: MINUS COINS FROM CHILD
-
-            setState { copy(giftList = Success(newGiftList)) }
-        }
-    }
-
-    fun changeIsAgreeGiftStatus(id: String) {
-        withState { state: GiftState ->
-            val giftList = state.giftList.invoke() ?: return@withState
-            val newGiftList = giftList.filter { gift ->
-                gift.id != id
-            }
-            // TODO: DELETE FROM DB
-
-            setState { copy(giftList = Success(newGiftList)) }
-        }
-    }
-
-    fun changeDataGiftStatus(id: String) {
-        TODO("Not yet implemented")
-    }
-
-
-    fun deleteGift(id: String) {
-        withState { state: GiftState ->
-            val giftList = state.giftList.invoke() ?: return@withState
-            val newGiftList = giftList.filter { gift ->
-                gift.id != id
-            }
-            // TODO: DELETE FROM DB
-
-            setState { copy(giftList = Success(newGiftList)) }
-        }
-    }
-
-    fun updateGift(id: String, title: String, price: Int){
-        withState { state ->
-            val giftList = state.giftList.invoke()
-            val giftt = giftList?.firstOrNull {
-                it.id == id
-            }
-            val gift: GiftModel = if(giftt != null) {
-                giftt.copy(title = title, price = price)
-            } else{
-                GiftModel(UUID.randomUUID().toString(), title, title, price, 1, false)
-            }
-
-            viewModelScope.launch {
-                val newGiftList = firebaseDataSource.updateGift(gift)
-                setState { copy(giftList = Success(newGiftList)) }
-            }
-        }
+        Log.d("", title)
+        return title
     }
 
     fun getPriceGift(id: String): Int {
@@ -132,10 +76,97 @@ class GiftViewModel(
                 it.id == id
             }
 
+
             price = gift!!.price;
         }
         return price;
     }
+
+
+    fun changeCheckGiftStatus(id: String, money: Int) {
+        withState { state ->
+            viewModelScope.launch {
+                val parent = (state.user.invoke()!! as Parent)
+                val children = parent.childList.toMutableList()
+                val child = children[0]
+                val gifts_inx = child.gifts - id
+                val newChild = child.copy(gifts = gifts_inx, money = child.money - money)
+                firebaseDataSource.saveUser(newChild, update = false)
+
+                val newGiftList = firebaseDataSource.getGiftList()
+
+                setState { copy(giftList = Success(newGiftList)) }
+            }
+        }
+    }
+
+
+    fun changeDataGiftStatus(id: String) {
+        TODO("Not yet implemented")
+    }
+
+
+    fun deleteGift(id: String) {
+        withState { state ->
+            viewModelScope.launch {
+                val parent = (state.user.invoke()!! as Parent)
+                val children = parent.childList.toMutableList()
+                val child = children[0]
+                val gifts_inx = child.gifts - id
+                val newChild = child.copy(gifts = gifts_inx)
+                firebaseDataSource.saveUser(newChild, update = false)
+
+                val newGiftList = firebaseDataSource.getGiftList()
+
+                setState { copy(giftList = Success(newGiftList)) }
+            }
+        }
+    }
+
+    fun changeIsAgreeGiftStatus(id: String) {
+        withState { state ->
+            val giftList = state.giftList.invoke()
+            val giftt = giftList?.firstOrNull {
+                it.id == id
+            }
+            val gift: GiftModel = giftt!!.copy(isAgree = true)
+
+
+            viewModelScope.launch {
+                val newGiftList = firebaseDataSource.updateGift(gift)
+                setState { copy(giftList = Success(newGiftList)) }
+            }
+        }
+    }
+
+    fun updateGift(id: String, title: String, price: Int){
+        withState { state ->
+            val giftList = state.giftList.invoke()
+            val giftt = giftList?.firstOrNull {
+                it.id == id
+            }
+            val gift: GiftModel =
+                giftt?.copy(title = title, price = price) ?: GiftModel(id, title, title, price, 1, false)
+
+            viewModelScope.launch {
+                val newGiftList = firebaseDataSource.updateGift(gift)
+                when(state.user.invoke()){
+                    is Child ->{
+                        val gifts_inx = (state.user.invoke()!! as Child).gifts + id
+                        val user = (state.user.invoke()!! as Child).copy(gifts = gifts_inx)
+                        firebaseDataSource.saveUser(user)
+                    }
+                    is Parent ->{
+                        val gifts_inx = (state.user.invoke()!! as Parent).childList[0].gifts + id
+                        val user = (state.user.invoke()!! as Parent).childList[0].copy(gifts = gifts_inx)
+                        firebaseDataSource.saveUser(user)
+                    }
+                }
+                setState { copy(giftList = Success(newGiftList)) }
+            }
+        }
+    }
+
 
     companion object : MavericksViewModelFactory<GiftViewModel, GiftState> {
         override fun create(viewModelContext: ViewModelContext, state: GiftState): GiftViewModel {
