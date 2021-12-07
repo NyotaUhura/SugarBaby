@@ -306,9 +306,9 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 .addOnSuccessListener { snapShot ->
                     val isParent = snapShot.getBoolean("isParent") ?: false
                     val user = if (isParent) {
-                        snapShot.toObject(ParentFirebaseModel::class.java)
+                        snapShot.toObject(ParentFirebaseModel::class.java)?.copy(id = snapShot.id)
                     } else {
-                        snapShot.toObject(ChildFirebaseModel::class.java)
+                        snapShot.toObject(ChildFirebaseModel::class.java)?.copy(id = snapShot.id)
                     }
                     if (user != null) con.resume(Result.Success(user))
                     else con.resume(Result.Error(NullPointerException()))
