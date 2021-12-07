@@ -28,21 +28,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 app:layout_constraintBottom_toTopOf="@id/price_block"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="You can get this bonus!" />
 
             <LinearLayout
                 android:id="@+id/price_block"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
                     android:id="@+id/money_text"
@@ -67,58 +67,50 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/control_part_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/left_part"
-        app:layout_constraintEnd_toEndOf="parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_delete_part_layout"
-            android:layout_width="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/control_part_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="match_parent">
+            app:layout_constraintStart_toEndOf="@id/left_part">
 
-            <ImageButton
-                android:id="@+id/edit_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/ic_edit_task"
-
-                >
-            </ImageButton>
-
-            <ImageButton
-                android:id="@+id/disagree_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:layout_constraintTop_toTopOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_delete_part_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/ic_delete_task"
-                >
-            </ImageButton>
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageButton
+                    android:id="@+id/edit_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_edit_task"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageButton
+                    android:id="@+id/disagree_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_delete_task"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/agree_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_delete_part_layout"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/agree_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/edit_delete_part_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Submit"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-
-            >
-        </Button>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

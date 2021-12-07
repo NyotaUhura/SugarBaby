@@ -37,4 +37,11 @@
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="ukrainian">Ukrainian</string>
+    <string name="new_task">New task</string>
+    <string name="title_hint">Title:</string>
+    <string name="description">Description:</string>
+    <string name="deadline">Deadline</string>
+    <string name="photo">Photo</string>
+    <string name="submit">Submit</string>
+    <string name="prise">Prise:</string>
 </resources>
