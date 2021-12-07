@@ -39,17 +39,15 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val taskList = state.taskList
         val user = state.user.invoke() ?: return@simpleController
-        if (taskList is Success) {
-            val tasks = taskList.invoke()
-            when (user) {
-                is Parent -> {
-                    renderParentTasks(tasks)
-                }
-                is Child -> {
-                    renderChildTasks(tasks)
-                }
+        when(user) {
+            is Parent -> {
+                val selectedChild = state.selectedChild.invoke()?: return@simpleController
+                renderParentTasks(selectedChild.taskList)
+            }
+            is Child -> {
+                val taskList = state.taskList.invoke()?: return@simpleController
+                renderChildTasks(taskList)
             }
         }
     }
@@ -116,7 +114,6 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             doneCheckbox.visibility = View.VISIBLE
             inProgressCheckbox.visibility = View.VISIBLE
             changeButton.setBackgroundResource(R.drawable.ic_change)
-            /*
             doneCheckbox.setOnCheckedChangeListener { _, _ ->
                 viewModel.filterGifts(
                     doneCheckbox.isChecked,
@@ -129,7 +126,6 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                     inProgressCheckbox.isChecked
                 )
             }
-             */
             addTaskButton.setOnClickListener {
                 val dialog = AddTaskDialogFragment(add)
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")

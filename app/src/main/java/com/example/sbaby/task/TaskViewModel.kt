@@ -30,14 +30,24 @@ class TaskViewModel(
             val user = state.user.invoke() ?: return@withState
             when (user) {
                 is Parent -> {
-                    val child = user.childList[0]
+                    val child = state.selectedChild.invoke() ?: return@withState
                     val taskList = child.taskList
                     val newTaskList = taskList.toMutableList()
                     newTaskList.add(task)
-                    val newUser = child.copy(
+                    val newChild = child.copy(
                         taskList = newTaskList,
                     )
-                    updateChildInParent(newUser)
+                    val newChildList = user.childList.map {
+                        if (it.id == child.id) {
+                            newTaskList
+                        } else {
+                            it
+                        }
+                    }
+                    val newUser = user.copy(
+                        childList = newChildList as List<Child>
+                    )
+                    updateChildInParent(newChild, newUser)
                 }
             }
         }
@@ -146,17 +156,17 @@ class TaskViewModel(
         }
     }
 
-    private fun updateChildInParent(user: User) {
+    private fun updateChildInParent(child: User, parent: User) {
         viewModelScope.launch {
-            val res = firebaseDataSource.saveUser(user)
+            val res = firebaseDataSource.saveUser(child)
             if (res) {
-                val taskList = when (user) {
+                val taskList = when (child) {
                     is Child -> {
-                        user.taskList
+                        child.taskList
                     }
                     else -> throw IllegalAccessError()
                 }
-                setState { copy(selectedChild = Success(user), taskList = Success(taskList)) }
+                setState { copy(user = Success(parent), selectedChild = Success(child), taskList = Success(taskList)) }
             }
         }
     }
