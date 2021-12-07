@@ -43,7 +43,7 @@ class CreateGiftDialogFragment(val edit : GiftFragment.editGift): DialogFragment
             if(mArgs?.containsKey("title") == true && mArgs.containsKey("price")  && mArgs.containsKey("id")){
                 title = mArgs.getString("title")
                 price = mArgs.getInt("price")
-                id = mArgs.getString("id").toString()
+                id = mArgs.getString("id")!!
             }
             else{
                 id = UUID.randomUUID().toString()

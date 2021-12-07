@@ -8,6 +8,7 @@ private const val defaultPhoto =
 data class Family(
     val id: String = "",
     val surname: String = "",
+    @field:JvmField
     val isPremium: Boolean = false
 )
 
@@ -99,7 +100,8 @@ data class GiftModel(
     val description: String = "",
     val price: Int = 0,
     val availableCount: Int = 0,
-    val agree: Boolean = false,
+    @field:JvmField
+    val isAgree: Boolean = false,
 )
 
 data class TaskModel(

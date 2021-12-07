@@ -25,8 +25,8 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
     private val buttons: GiftCardViewHolder.buttonsOnclick =
         object : GiftCardViewHolder.buttonsOnclick {
-            override fun checkButtonOnclick(id: String) {
-                viewModel.changeCheckGiftStatus(id)
+            override fun checkButtonOnclick(id: String, money: Int) {
+                viewModel.changeCheckGiftStatus(id, money)
             }
 
         }
@@ -37,8 +37,18 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                 viewModel.changeIsAgreeGiftStatus(id)
             }
 
-            override fun editButtonOnclick(id: String) {
-                viewModel.changeDataGiftStatus(id)
+            override fun editButtonOnclick(id: String, title: String, price: Int) {
+                val dialog = CreateGiftDialogFragment(edit)
+                val bundle = Bundle()
+                //TODO: PASS DATA
+
+                if(id != "-1") {
+                    bundle.putString("id", id)
+                    bundle.putString("title", title)
+                    bundle.putInt("price", price)
+                    dialog.arguments = bundle
+                }
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
 
             override fun disagreeButtonOnclick(id: String) {
@@ -55,14 +65,15 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
     private val buttonsCreate: GiftCardChildAddViewHolder.buttonsOnclick =
         object : GiftCardChildAddViewHolder.buttonsOnclick {
-            override fun createButtonOnclick(id: String) {
+            override fun createButtonOnclick(id: String, title: String, price: Int) {
                 val dialog = CreateGiftDialogFragment(edit)
                 val bundle = Bundle()
                 //TODO: PASS DATA
 
                 if(id != "-1") {
-                    bundle.putString("title", viewModel.getTitleGift(id))
-                    bundle.putString("price", viewModel.getPriceGift(id).toString())
+                    bundle.putString("id", id)
+                    bundle.putString("title", title)
+                    bundle.putInt("price", price)
                     dialog.arguments = bundle
                 }
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
@@ -75,7 +86,6 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
         if (giftList is Success) {
             val gifts = giftList.invoke()
-            Log.d("list", gifts.toString())
             when (user) {
                 is Parent -> {
                     renderParentTasks(gifts)
@@ -111,6 +121,9 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                             binding.needAgreementCheckbox.isChecked
                         )
                     }
+
+                    binding.userNameTextView.text = user.childList[0].name
+                    binding.moneyTextView.text = user.childList[0].money.toString()
                 }
                 is Child -> {
 
@@ -132,7 +145,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
         gifts.forEach { giftModel ->
             print(giftModel)
-            when (giftModel.agree) {
+            when (giftModel.isAgree) {
                 true -> giftCardViewHolder {
                     id(giftModel.id)
                     gift(giftModel)
@@ -149,7 +162,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
 
     private fun EpoxyController.renderChildTasks(gifts: List<GiftModel>) {
         Log.d("list", gifts.toString())
-        gifts.filter { it.agree }.forEach { giftModel ->
+        gifts.filter { it.isAgree }.forEach { giftModel ->
             giftCardChildViewHolder {
                 id(giftModel.id)
                 gift(giftModel)
@@ -167,7 +180,6 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
         object : editGift {
             override fun updateGift(id: String, title: String, price: Int){
                 viewModel.updateGift(id, title, price)
-
             }
         }
 }
