@@ -32,7 +32,7 @@ class TaskViewModel(
                 is Parent -> {
                     val child = user.childList[0]
                     val taskList = child.taskList
-                    val newTaskList = taskList as MutableList<TaskModel>
+                    val newTaskList = taskList.toMutableList()
                     newTaskList.add(task)
                     val newUser = child.copy(
                         taskList = newTaskList,
