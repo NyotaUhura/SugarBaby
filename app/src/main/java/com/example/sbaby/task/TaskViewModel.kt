@@ -28,18 +28,15 @@ class TaskViewModel(
     fun addTask(task: TaskModel) {
         withState { state: TaskState ->
             val user = state.user.invoke() ?: return@withState
-            Log.e("user", user.toString())
             when (user) {
                 is Parent -> {
                     val child = user.childList[0]
-                    Log.e("child", child.toString())
                     val taskList = child.taskList
                     val newTaskList = taskList as MutableList<TaskModel>
                     newTaskList.add(task)
                     val newUser = child.copy(
-                        taskList = newTaskList as List<TaskModel>,
+                        taskList = newTaskList,
                     )
-                    Log.e("newUser", newUser.toString())
                     updateChildInParent(newUser)
                 }
             }
@@ -159,7 +156,7 @@ class TaskViewModel(
                     }
                     else -> throw IllegalAccessError()
                 }
-                setState { copy(taskList = Success(taskList)) }
+                setState { copy(selectedChild = Success(user), taskList = Success(taskList)) }
             }
         }
     }
