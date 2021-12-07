@@ -42,7 +42,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
     }
 
     suspend fun getGiftList(): List<GiftModel> {
-        if (gifts.isEmpty()) loadGiftList()
+        loadGiftList()
         return gifts.toList()
     }
 
@@ -103,7 +103,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         else false
     }
 
-    suspend fun saveUser(user: User): Boolean {
+    suspend fun saveUser(user: User, update: Boolean = true): Boolean {
         val data = when (user) {
             is Child -> {
                 mapOf(
@@ -119,7 +119,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
             is Parent -> {
                 mapOf(
                     "photo" to user.photo,
-                    "childList" to fireStore.collection(USERS_COLLECTION).document(user.id)
+                    "childList" to user.childList.map { fireStore.collection("users").document(it.id) }
+//                    "childList" to fireStore.collection(USERS_COLLECTION).document(user.id)
                 )
             }
             else -> {
@@ -128,10 +129,11 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
         }
         val res = saveUserToDB(user.id, data)
         return if (res is Result.Success) {
-            this.user = user
+            if (update) {
+                this.user = user
+            }
             res.data
-        }
-        else false
+        } else false
     }
 
     suspend fun updateGift(gift: GiftModel): List<GiftModel> {
@@ -142,11 +144,14 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                 else it
             }
             gifts = newList.toMutableList()
+            saveUser(user!!)
         } else {
             gifts.add(gift)
         }
-        Log.d("gift:::::", gift.toString())
+
         addGiftDoc(gift)
+        Log.d("gift:::::", gift.toString())
+
         return gifts.toList()
     }
 
@@ -221,6 +226,7 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
 
     private suspend fun loadGiftList() {
         if (user == null) return
+        getUser(isForced = true)
         val ids = mutableListOf<String>()
         when (user) {
             is Child -> ids.addAll((user as Child).gifts)
@@ -290,7 +296,8 @@ class FirebaseDataSource(private val fireStore: FirebaseFirestore, private val a
                         val childRes = loadUserByRef(ref)
                         if (childRes is Result.Success) {
                             if (childRes.data is ChildFirebaseModel) {
-                                children.add(childRes.data.mapToChildModel())
+                                val newChildRes = childRes.data.copy(id = ref.id)
+                                children.add(newChildRes.mapToChildModel())
                             }
                         }
                     }
