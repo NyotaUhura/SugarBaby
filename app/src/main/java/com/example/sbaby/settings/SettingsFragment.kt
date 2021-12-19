@@ -31,7 +31,7 @@ class SettingsFragment : MvRxBaseFragment(R.layout.fragment_settings) {
             }
 
             override fun changeLanguageOnClick() {
-                val dialog = LanguageDialogFragment()
+                val dialog = LanguageDialogFragment(context!!)
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
 
@@ -60,12 +60,12 @@ class SettingsFragment : MvRxBaseFragment(R.layout.fragment_settings) {
     private val settingsList = mutableListOf<Setting>()
 
     override fun epoxyController() = simpleController() {
-        settingsList.add(Setting(2, R.drawable.ic_family, "Family"))
-        settingsList.add(Setting(3, R.drawable.ic_language, "Language"))
-        settingsList.add(Setting(4, R.drawable.ic_password, "Change password"))
-        settingsList.add(Setting(5, R.drawable.ic_private, "Privacy Policy"))
-        settingsList.add(Setting(6, R.drawable.ic_rate, "Rate the app"))
-        settingsList.add(Setting(7, R.drawable.ic_log_out, "Log out"))
+        settingsList.add(Setting(2, R.drawable.ic_family, getString(R.string.Family)))
+        settingsList.add(Setting(3, R.drawable.ic_language, getString(R.string.Language)))
+        settingsList.add(Setting(4, R.drawable.ic_password, getString(R.string.Change_password)))
+        settingsList.add(Setting(5, R.drawable.ic_private, getString(R.string.Privacy_Policy)))
+        settingsList.add(Setting(6, R.drawable.ic_rate, getString(R.string.Rate_the_app)))
+        settingsList.add(Setting(7, R.drawable.ic_log_out, getString(R.string.Log_out)))
         settingsList.forEach { s ->
             settingsCardViewHolder {
                 id(s.id)

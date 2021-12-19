@@ -44,4 +44,15 @@
     <string name="photo">Photo</string>
     <string name="submit">Submit</string>
     <string name="prise">Prise:</string>
+    <string name="Family">Family</string>
+    <string name="Language">Language</string>
+    <string name="Change_password">Change password</string>
+    <string name="Privacy_Policy">Privacy Policy</string>
+    <string name="Rate_the_app">Rate the app</string>
+    <string name="Log_out">Log out</string>
+    <string name="Wow_I_am">"Wow! I am "</string>
+    <string name="share1">\" level Helper. Download and check out how much fun it is! Help your parents to get gifts and make your dreams come true!\"</string>
+    <string name="share2">https://github.com/NyotaUhura/SugarBaby/tree/develop</string>
+    <string name="need_to_be_done">Need to be done</string>
+    <string name="need_agreement">Need Agreement</string>
 </resources>
