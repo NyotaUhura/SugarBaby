@@ -69,7 +69,7 @@
 
                 android:visibility="invisible"
                 android:checked="true"
-                android:text="Need to be done"
+                android:text="@string/need_to_be_done"
                 app:layout_constraintEnd_toStartOf="@+id/need_agreement_checkbox"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -77,10 +77,9 @@
                 android:id="@+id/need_agreement_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:visibility="invisible"
                 android:checked="true"
-                android:text="Need Agreement"
+                android:text="@string/need_agreement"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/need_to_be_done_checkbox" />
         </androidx.constraintlayout.widget.ConstraintLayout>

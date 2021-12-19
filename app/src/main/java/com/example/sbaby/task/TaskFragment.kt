@@ -153,7 +153,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     val textInfo =
-                        "Wow! I am " + user.process / 1000 + 1 + " level Helper. Download and check out how much fun it is! Help your parents to get gifts and make your dreams come true! \n https://github.com/NyotaUhura/SugarBaby/tree/develop"
+                        getString(R.string.Wow_I_am) + user.level + getString(R.string.share1)+  "\n " + getString(R.string.share2)
                     putExtra(Intent.EXTRA_TEXT, textInfo)
                     type = "text/plain"
                 }
