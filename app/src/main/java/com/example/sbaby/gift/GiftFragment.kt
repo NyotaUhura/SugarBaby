@@ -3,6 +3,7 @@ package com.example.sbaby.gift
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,6 +15,7 @@ import com.example.sbaby.*
 import com.example.sbaby.databinding.FragmentGiftBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.gift.*
+import com.google.android.material.snackbar.Snackbar
 
 class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     companion object {
@@ -40,7 +42,6 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
             override fun editButtonOnclick(id: String, title: String, price: Int) {
                 val dialog = CreateGiftDialogFragment(edit)
                 val bundle = Bundle()
-                //TODO: PASS DATA
 
                 if(id != "-1") {
                     bundle.putString("id", id)
@@ -49,6 +50,8 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                     dialog.arguments = bundle
                 }
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+
+
             }
 
             override fun disagreeButtonOnclick(id: String) {
@@ -77,6 +80,8 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
                     dialog.arguments = bundle
                 }
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+
+//                Snackbar.make(requireView(), "OK\nYou have added gift", Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -179,6 +184,7 @@ class GiftFragment : MvRxBaseFragment(R.layout.fragment_gift) {
     private val edit =
         object : editGift {
             override fun updateGift(id: String, title: String, price: Int){
+                    Snackbar.make(requireView(), "OK\nYou have updated gift", Snackbar.LENGTH_LONG).show()
                 viewModel.updateGift(id, title, price)
             }
         }
