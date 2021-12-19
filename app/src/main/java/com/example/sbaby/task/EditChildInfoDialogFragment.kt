@@ -4,13 +4,12 @@ import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +18,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import com.example.sbaby.R
 import com.example.sbaby.databinding.CardEditProfileBinding
+import com.google.android.material.snackbar.Snackbar
 
 
-class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFragment() {
+class EditChildInfoDialogFragment(val edit: TaskFragment.editProfile) : DialogFragment() {
     private val binding: CardEditProfileBinding by viewBinding()
     private var name: String? = null
     private var photo: String? = null
+    private var bitmap: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +58,7 @@ class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFr
         binding.okButton.setOnClickListener { _ ->
             name = binding.nameEditText.text.toString()
             edit.editName(name.toString())
+            if (bitmap != null) edit.editPhoto(bitmap!!)
             this.dismiss()
         }
         binding.cancelButton.setOnClickListener { _ ->
@@ -86,12 +88,16 @@ class EditChildInfoDialogFragment(val edit : TaskFragment.editProfile): DialogFr
             } catch (e: Exception) {
             }
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
-            try {
-                val selectedImageUri: Uri = data?.getData()!!
-                Log.e("hhhh", selectedImageUri.toString())
-                binding.profileImage.setImageURI(selectedImageUri)
-            } catch (e: Exception) {
+
+            val selectedImage = data?.data
+            if (selectedImage == null) {
+                Snackbar.make(requireView(), "Something went wrong", 2000).show()
+                return
             }
+            val stream = requireContext().contentResolver.openInputStream(selectedImage)
+            val bitmap = BitmapFactory.decodeStream(stream)
+            binding.profileImage.setImageBitmap(bitmap)
+            this.bitmap = bitmap
         }
     }
 

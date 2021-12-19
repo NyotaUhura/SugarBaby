@@ -1,6 +1,8 @@
 package com.example.sbaby.task
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -175,12 +177,18 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
     interface editProfile {
         fun editName(name: String)
+
+        fun editPhoto(bitmap: Bitmap)
     }
 
     private val edit =
         object : editProfile {
             override fun editName(name: String) {
                 viewModel.changeName(name)
+            }
+
+            override fun editPhoto(bitmap: Bitmap) {
+                binding.photoImageView.setImageBitmap(bitmap)
             }
         }
 }
