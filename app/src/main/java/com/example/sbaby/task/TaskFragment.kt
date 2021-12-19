@@ -13,6 +13,7 @@ import com.example.sbaby.databinding.FragmentTaskBinding
 import com.example.sbaby.epoxy.simpleController
 import com.example.sbaby.epoxy.viewholders.task.TaskCardViewHolder
 import com.example.sbaby.epoxy.viewholders.task.taskCardViewHolder
+import com.google.android.material.snackbar.Snackbar
 
 class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
@@ -23,6 +24,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
         object : TaskCardViewHolder.buttonsOnclick {
             override fun doneButtonOnclick(id: String) {
                 viewModel.changeUndoneTaskStatus(id)
+                Snackbar.make(requireView(), "Congratulations! You have completed task!", Snackbar.LENGTH_LONG).show()
             }
 
             override fun deleteButtonOnclick(id: String) {
