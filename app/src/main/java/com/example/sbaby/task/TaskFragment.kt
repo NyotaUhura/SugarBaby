@@ -28,7 +28,7 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             }
 
             override fun deleteButtonOnclick(id: String) {
-                TODO("Not yet implemented")
+                viewModel.deleteTask(id)
             }
 
             override fun editButtonOnClick(id: String) {
@@ -36,22 +36,20 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             }
 
             override fun undoneButtonOnclick(id: String) {
-                // viewModel.changeDoneTaskStatus(id)
+                viewModel.changeDoneTaskStatus(id)
             }
         }
 
     override fun epoxyController() = simpleController(viewModel) { state ->
-        val taskList = state.taskList
         val user = state.user.invoke() ?: return@simpleController
-        if (taskList is Success) {
-            val tasks = taskList.invoke()
-            when (user) {
-                is Parent -> {
-                    renderParentTasks(tasks)
-                }
-                is Child -> {
-                    renderChildTasks(tasks)
-                }
+        when(user) {
+            is Parent -> {
+                val selectedChild = state.selectedChild.invoke()?: return@simpleController
+                renderParentTasks(selectedChild.taskList)
+            }
+            is Child -> {
+                val taskList = state.taskList.invoke()?: return@simpleController
+                renderChildTasks(taskList)
             }
         }
     }
@@ -65,8 +63,6 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
             binding.photoImageView.load(user.photo)
             binding.premiumButton.setOnClickListener {
                 val dialog = PremiumDialogFragment()
-                val bundle = Bundle()
-                dialog.arguments = bundle
                 dialog.show(childFragmentManager, "DialogFragmentWithSetter")
             }
             when (user) {
@@ -132,6 +128,10 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
                     inProgressCheckbox.isChecked
                 )
             }
+            addTaskButton.setOnClickListener {
+                val dialog = AddTaskDialogFragment(add)
+                dialog.show(childFragmentManager, "DialogFragmentWithSetter")
+            }
         }
     }
 
@@ -189,6 +189,17 @@ class TaskFragment : MvRxBaseFragment(R.layout.fragment_task) {
 
             override fun editPhoto(bitmap: Bitmap) {
                 binding.photoImageView.setImageBitmap(bitmap)
+            }
+        }
+
+    interface addTask {
+        fun save(task: TaskModel)
+    }
+
+    private val add =
+        object : addTask {
+            override fun save(task: TaskModel) {
+                viewModel.addTask(task)
             }
         }
 }

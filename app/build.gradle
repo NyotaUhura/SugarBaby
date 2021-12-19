@@ -25,6 +25,7 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -40,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+
     implementation("io.coil-kt:coil:1.4.0")
     implementation "io.insert-koin:koin-androidx-scope:2.2.3"
 

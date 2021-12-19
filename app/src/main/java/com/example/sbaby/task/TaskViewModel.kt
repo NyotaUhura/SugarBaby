@@ -1,5 +1,6 @@
 package com.example.sbaby.task
 
+import android.util.Log
 import com.airbnb.mvrx.*
 import com.example.sbaby.*
 import com.example.sbaby.auth.FirebaseAuthManager
@@ -22,6 +23,34 @@ class TaskViewModel(
 
     init {
         loadData()
+    }
+
+    fun addTask(task: TaskModel) {
+        withState { state: TaskState ->
+            val user = state.user.invoke() ?: return@withState
+            when (user) {
+                is Parent -> {
+                    val child = state.selectedChild.invoke() ?: return@withState
+                    val taskList = child.taskList
+                    val newTaskList = taskList.toMutableList()
+                    newTaskList.add(task)
+                    val newChild = child.copy(
+                        taskList = newTaskList,
+                    )
+                    val newChildList = user.childList.map {
+                        if (it.id == child.id) {
+                            newTaskList
+                        } else {
+                            it
+                        }
+                    }
+                    val newUser = user.copy(
+                        childList = newChildList as List<Child>
+                    )
+                    updateChildInParent(newChild, newUser)
+                }
+            }
+        }
     }
 
     fun changeUndoneTaskStatus(id: String) {
@@ -52,6 +81,64 @@ class TaskViewModel(
         }
     }
 
+    fun changeDoneTaskStatus(id: String) {
+        withState { state: TaskState ->
+            val user = state.user.invoke() ?: return@withState
+            when (user) {
+                is Parent -> {
+                    val newChildList = user.childList.map {
+                        if (it.id == id) {
+                            val taskList = state.taskList.invoke() ?: return@withState
+                            val newTask = taskList.first { it.id == id }.copy(
+                                status = TO_DO
+                            )
+                            if (it.id == id) {
+                                newTask
+                            } else {
+                                it
+                            }
+                            it.money -= newTask.profit
+                            it.process -= newTask.profit
+                            it.level = it.process / 1000 + 1
+
+                        } else {
+                            it
+                        }
+                    }
+                    val newUser = user.copy(
+                        childList = newChildList as List<Child>
+                    )
+                    updateUser(newUser)
+                }
+            }
+        }
+    }
+
+    fun deleteTask(id: String) {
+        withState { state: TaskState ->
+            val user = state.user.invoke() ?: return@withState
+            when (user) {
+                is Parent -> {
+                    val newChildList = user.childList.map {
+                        if (it.id == id) {
+                            val taskList = state.taskList.invoke() ?: return@withState
+                            if (it.id == id) {
+                            } else {
+                                it
+                            }
+                        } else {
+                            it
+                        }
+                    }
+                    val newUser = user.copy(
+                        childList = newChildList as List<Child>
+                    )
+                    updateUser(newUser)
+                }
+            }
+        }
+    }
+
     private fun updateUser(user: User) {
         viewModelScope.launch {
             val res = firebaseDataSource.saveUser(user)
@@ -69,14 +156,29 @@ class TaskViewModel(
         }
     }
 
+    private fun updateChildInParent(child: User, parent: User) {
+        viewModelScope.launch {
+            val res = firebaseDataSource.saveUser(child)
+            if (res) {
+                val taskList = when (child) {
+                    is Child -> {
+                        child.taskList
+                    }
+                    else -> throw IllegalAccessError()
+                }
+                setState { copy(user = Success(parent), selectedChild = Success(child), taskList = Success(taskList)) }
+            }
+        }
+    }
+
     fun countProcessPercent(user: Child): Int {
         return ((user.process % 1000) / 10)
     }
 
     fun filterGifts(isDone: Boolean, isProgress: Boolean) {
         withState { state ->
-            val user = state.user.invoke()
-
+            val user = state.selectedChild.invoke() ?: return@withState
+            Log.e("qqqqqqqqqqq", user.toString())
             val taskList = when (user) {
                 is Child -> user.taskList
                 else -> throw NullPointerException()
@@ -92,7 +194,7 @@ class TaskViewModel(
                 copy(taskList = Success(newList))
             }
             viewModelScope.launch {
-                val newUser = user.copy(level = 10)
+                val newUser = user.copy(taskList = newList)
                 val res = firebaseDataSource.saveUser(user)
                 if (res) setState { copy(user = Success(newUser)) }
             }
@@ -159,46 +261,6 @@ class TaskViewModel(
         }
     }
 
-    /*
-        fun changeDoneTaskStatus(id: String) {
-            withState { state: TaskState ->
-                val parentUser = state.user.invoke() ?: return@withState
-                when (parentUser) {
-                    is Parent -> {
-                        val child = parentUser.childList[parentUser.currChild]
-                        val taskList = child.taskList
-                        val newTaskList = mutableListOf<TaskModel>()
-                        lateinit var newChild: Child
-                        taskList.forEach {
-                            if(it.id.equals(id)) {
-                                newTaskList.add(it.copy(status = TO_DO))
-                                if(child.money < 0) newChild = child.copy(money = 0)
-                                else newChild = child.copy(money = child.money - it.profit)
-                            }
-                            else{
-                                newTaskList.add(it)
-                            }
-                        }
-                        val newNewChild = newChild.copy(
-                            taskList = newTaskList
-                        )
-                        val newChildList = mutableListOf<Child>()
-                        parentUser.childList.forEach {
-                            var i = 0
-                            if(i == 0) {
-                                newChildList.add(newNewChild)
-                                i++
-                            }
-                            else
-                                newChildList.add(it)
-                        }
-                        val newParent = parentUser.copy(childList = newChildList)
-                        setState{copy(parent = Success(newParent))}
-                    }
-                }
-            }
-        }
-     */
     companion object : MavericksViewModelFactory<TaskViewModel, TaskState> {
 
         override fun create(viewModelContext: ViewModelContext, state: TaskState): TaskViewModel {
